@@ -66,7 +66,6 @@ const commonLayout = {
         linecolor: '#ccc',
         linewidth: 1,
         mirror: true,
-        // Plotly è smart, non forzo rangemode per l'anno
     },
     yaxis: {
         title: {
@@ -91,7 +90,6 @@ const commonLayout = {
         borderwidth: 1,
         orientation: 'h'
     },
-    // Abilita le linee degli assi
     'xaxis.showline': true,
     'yaxis.showline': true
 };
@@ -99,23 +97,22 @@ const commonLayout = {
 // Funzione per creare un grafico generico con trendline
 async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
     const plotContainer = document.getElementById(id);
-    // Mostra messaggio di caricamento
     plotContainer.innerHTML = `<p class="loading-message">Caricamento grafico...</p>`;
 
     try {
         const data = await loadCSV(filePath);
         
-        // Estrai Anno e Valore. Assumi che la prima colonna sia l'anno e la seconda il valore.
-        const years = data.map(row => row.Year || row.Anno).filter(year => year !== null);
-        const values = data.map(row => row[Object.keys(row)[1]]).filter(value => value !== null);
+        // Assumi che la prima colonna sia l'anno e la seconda il valore.
+        // PapaParse usa i nomi delle colonne dell'header
+        const years = data.map(row => row.Year).filter(year => year !== null);
+        const valueKey = Object.keys(data[0]).find(key => key !== 'Year'); // Trova la colonna del valore dinamica
+        const values = data.map(row => row[valueKey]).filter(value => value !== null);
 
-        // Controllo per dati insufficienti
         if (years.length === 0 || values.length === 0 || years.length !== values.length) {
-            plotContainer.innerHTML = `<p style="color: red; text-align: center;">Dati insufficienti o non validi per il grafico.</p>`;
+            plotContainer.innerHTML = `<p style="color: red; text-align: center;">Dati insufficienti o non validi per il grafico: ${filePath}.</p>`;
             return;
         }
 
-        // Calcola la regressione lineare
         const { slope, trend_x, trend_y } = calculateLinearRegression(years, values);
 
         const dataTraces = [
@@ -149,7 +146,7 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
                     width: 3,
                     dash: 'dash' // Linea tratteggiata
                 },
-                hoverinfo: 'none' // Non mostrare informazioni al passaggio del mouse sulla trendline
+                hoverinfo: 'none'
             }
         ];
 
@@ -174,11 +171,11 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
                 {
                     xref: 'paper',
                     yref: 'paper',
-                    x: 0.05, // Posizione a sinistra
-                    y: 0.95, // Posizione in alto
+                    x: 0.05,
+                    y: 0.95,
                     xanchor: 'left',
                     yanchor: 'top',
-                    text: `Trend: ${slope.toFixed(3)} ${yAxisTitle}/anno`, // Mostra la pendenza
+                    text: `Trend: ${slope.toFixed(3)} ${yAxisTitle}/anno`,
                     font: {
                         size: 12,
                         color: '#FF0000'
@@ -202,21 +199,21 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
 // Chiama la funzione per creare ogni grafico al caricamento del DOM
 document.addEventListener('DOMContentLoaded', () => {
     // Indici di Precipitazione
-    createPlot('plot-prcptot', 'data/prcptot.csv', 'prcptot: Precipitazione Totale Annuale', 'mm', '#007bff');
-    createPlot('plot-sdii', 'data/sdii.csv', 'sdii: Intensità Media Precipitazioni', 'mm/giorno', '#28a745');
+    createPlot('plot-prcptot', 'data/Vercelli_94_24_prcptot_ANN.csv', 'prcptot: Precipitazione Totale Annuale', 'mm', '#007bff');
+    createPlot('plot-sdii', 'data/Vercelli_94_24_sdii_ANN.csv', 'sdii: Intensità Media Precipitazioni', 'mm/giorno', '#28a745');
 
     // Indici di Siccità
-    createPlot('plot-spi_24_month', 'data/spi_24_month.csv', 'spi_24_month: Indice di Precipitazione Standardizzato (24 Mesi)', 'Valore SPI', '#ffc107');
-    createPlot('plot-spei_24_month', 'data/spei_24_month.csv', 'spei_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)', 'Valore SPEI', '#fd7e14');
+    createPlot('plot-spi_24_month', 'data/Vercelli_94_24_24month_spi_MON.csv', 'spi_24_month: Indice di Precipitazione Standardizzato (24 Mesi)', 'Valore SPI', '#ffc107');
+    createPlot('plot-spei_24_month', 'data/Vercelli_94_24_24month_spei_MON.csv', 'spei_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)', 'Valore SPEI', '#fd7e14');
 
     // Indici di Temperatura Estrema (Minima)
-    createPlot('plot-tn10p', 'data/tn10p.csv', 'tn10p: Giorni con Minima Estremamente Fredda', '% Giorni', '#17a2b8');
-    createPlot('plot-tn90p', 'data/tn90p.csv', 'tn90p: Giorni con Minima Estremamente Calda', '% Giorni', '#dc3545');
+    // createPlot('plot-tn10p', 'data/Vercelli_94_24_tn10p_ANN.csv', 'tn10p: Giorni con Minima Estremamente Fredda', '% Giorni', '#17a2b8'); // Rimosso se non hai il file
+    createPlot('plot-tn90p', 'data/Vercelli_94_24_tn90p_ANN.csv', 'tn90p: Giorni con Minima Estremamente Calda', '% Giorni', '#dc3545');
 
     // Indici di Temperatura Estrema (Massima)
-    createPlot('plot-tx10p', 'data/tx10p.csv', 'tx10p: Giorni con Massima Estremamente Fredda', '% Giorni', '#6c757d');
-    createPlot('plot-tx90p', 'data/tx90p.csv', 'tx90p: Giorni con Massima Estremamente Calda', '% Giorni', '#e83e8c');
+    createPlot('plot-tx10p', 'data/Vercelli_94_24_tx10p_ANN.csv', 'tx10p: Giorni con Massima Estremamente Fredda', '% Giorni', '#6c757d');
+    createPlot('plot-tx90p', 'data/Vercelli_94_24_tx90p_ANN.csv', 'tx90p: Giorni con Massima Estremamente Calda', '% Giorni', '#e83e8c');
     
     // Indice di Ondate di Calore
-    createPlot('plot-hwf_tx90', 'data/hwf_tx90.csv', 'HWF-Tx90: Frequenza Ondate di Calore', 'Giorni', '#6f42c1');
+    // createPlot('plot-hwf_tx90', 'data/Vercelli_94_24_hwf_tx90_ANN.csv', 'HWF-Tx90: Frequenza Ondate di Calore', 'Giorni', '#6f42c1'); // Rimosso se non hai il file
 });
