@@ -20,7 +20,32 @@ async function loadCSV(filePath) {
     });
 }
 
-// Configurazione comune per i layout dei grafici (migliora l'estetica)
+// Funzione per calcolare la regressione lineare (trendline)
+function calculateLinearRegression(x, y) {
+    const n = x.length;
+    let sum_x = 0;
+    let sum_y = 0;
+    let sum_xy = 0;
+    let sum_xx = 0;
+
+    for (let i = 0; i < n; i++) {
+        sum_x += x[i];
+        sum_y += y[i];
+        sum_xy += x[i] * y[i];
+        sum_xx += x[i] * x[i];
+    }
+
+    const slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+    const intercept = (sum_y - slope * sum_x) / n;
+
+    // Genera i punti per la linea di regressione
+    const trend_x = [Math.min(...x), Math.max(...x)];
+    const trend_y = [intercept + slope * trend_x[0], intercept + slope * trend_x[1]];
+
+    return { slope, intercept, trend_x, trend_y };
+}
+
+// Configurazione comune per i layout dei grafici
 const commonLayout = {
     font: {
         family: 'Arial, sans-serif',
@@ -41,7 +66,7 @@ const commonLayout = {
         linecolor: '#ccc',
         linewidth: 1,
         mirror: true,
-        rangemode: 'tozero' // Inizia sempre da zero sull'asse X
+        // Plotly è smart, non forzo rangemode per l'anno
     },
     yaxis: {
         title: {
@@ -66,42 +91,70 @@ const commonLayout = {
         borderwidth: 1,
         orientation: 'h'
     },
-    // Aggiungi un'ombra al grafico
+    // Abilita le linee degli assi
     'xaxis.showline': true,
     'yaxis.showline': true
 };
 
-// Funzione per creare un grafico generico
+// Funzione per creare un grafico generico con trendline
 async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
+    const plotContainer = document.getElementById(id);
+    // Mostra messaggio di caricamento
+    plotContainer.innerHTML = `<p class="loading-message">Caricamento grafico...</p>`;
+
     try {
         const data = await loadCSV(filePath);
         
         // Estrai Anno e Valore. Assumi che la prima colonna sia l'anno e la seconda il valore.
-        const years = data.map(row => row.Year || row.Anno); // Adatta al nome della tua colonna anno
-        const values = data.map(row => row[Object.keys(row)[1]]); // Prende il valore dalla seconda colonna
+        const years = data.map(row => row.Year || row.Anno).filter(year => year !== null);
+        const values = data.map(row => row[Object.keys(row)[1]]).filter(value => value !== null);
 
-        const trace = {
-            x: years,
-            y: values,
-            mode: 'lines+markers',
-            type: 'scatter',
-            name: title.split(':')[0], // Usa solo la prima parte del titolo per la legenda
-            line: {
-                color: color,
-                width: 2
-            },
-            marker: {
-                size: 6,
-                color: color,
+        // Controllo per dati insufficienti
+        if (years.length === 0 || values.length === 0 || years.length !== values.length) {
+            plotContainer.innerHTML = `<p style="color: red; text-align: center;">Dati insufficienti o non validi per il grafico.</p>`;
+            return;
+        }
+
+        // Calcola la regressione lineare
+        const { slope, trend_x, trend_y } = calculateLinearRegression(years, values);
+
+        const dataTraces = [
+            {
+                x: years,
+                y: values,
+                mode: 'lines+markers',
+                type: 'scatter',
+                name: 'Valori',
                 line: {
-                    color: 'white',
-                    width: 1
+                    color: color,
+                    width: 2
+                },
+                marker: {
+                    size: 6,
+                    color: color,
+                    line: {
+                        color: 'white',
+                        width: 1
+                    }
                 }
+            },
+            {
+                x: trend_x,
+                y: trend_y,
+                mode: 'lines',
+                type: 'scatter',
+                name: 'Trend',
+                line: {
+                    color: '#FF0000', // Colore rosso per la trendline
+                    width: 3,
+                    dash: 'dash' // Linea tratteggiata
+                },
+                hoverinfo: 'none' // Non mostrare informazioni al passaggio del mouse sulla trendline
             }
-        };
+        ];
 
         const layout = {
-            ...commonLayout, // Copia le impostazioni comuni
+            ...commonLayout,
             title: {
                 text: `<b>${title}</b>`,
                 font: {
@@ -116,17 +169,37 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
                         size: 14
                     }
                 }
-            }
+            },
+            annotations: [
+                {
+                    xref: 'paper',
+                    yref: 'paper',
+                    x: 0.05, // Posizione a sinistra
+                    y: 0.95, // Posizione in alto
+                    xanchor: 'left',
+                    yanchor: 'top',
+                    text: `Trend: ${slope.toFixed(3)} ${yAxisTitle}/anno`, // Mostra la pendenza
+                    font: {
+                        size: 12,
+                        color: '#FF0000'
+                    },
+                    showarrow: false,
+                    bgcolor: 'rgba(255, 255, 255, 0.7)',
+                    bordercolor: '#ccc',
+                    borderwidth: 1,
+                    borderpad: 4
+                }
+            ]
         };
 
-        Plotly.newPlot(id, [trace], layout, { responsive: true }); // responsive: true per adattarsi alla dimensione del container
+        Plotly.newPlot(id, dataTraces, layout, { responsive: true });
     } catch (error) {
         console.error(`Errore nel caricamento o nella creazione del grafico per ${id}:`, error);
-        document.getElementById(id).innerHTML = `<p style="color: red; text-align: center;">Errore nel caricamento del grafico.</p>`;
+        plotContainer.innerHTML = `<p style="color: red; text-align: center;">Errore nel caricamento del grafico. Controlla la console.</p>`;
     }
 }
 
-// Chiama la funzione per creare ogni grafico
+// Chiama la funzione per creare ogni grafico al caricamento del DOM
 document.addEventListener('DOMContentLoaded', () => {
     // Indici di Precipitazione
     createPlot('plot-prcptot', 'data/prcptot.csv', 'prcptot: Precipitazione Totale Annuale', 'mm', '#007bff');
