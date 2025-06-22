@@ -24,7 +24,7 @@
             </ul>
         </nav>
         <div class="hero">
-            <h1>Analisi Climatica per Vercelli (1988-2023)</h1>
+            <h1>Analisi Climatica per Vercelli (1994-2024)</h1>
             <p>Esplora i trend degli indici climatici derivati da Climpact.</p>
         </div>
     </header>
@@ -32,17 +32,17 @@
     <main>
         <section id="introduzione" class="card">
             <h2>Introduzione al Progetto</h2>
-            <p>Questo progetto, parte del Master in [Nome del tuo Master], presenta un'analisi dettagliata dei trend climatici per la stazione di Vercelli nel periodo 1988-2023. Utilizzando il software Climpact, sono stati calcolati diversi indici climatici per identificare i cambiamenti più significativi.</p>
+            <p>Questo progetto, parte del Master in [Nome del tuo Master], presenta un'analisi dettagliata dei trend climatici per la stazione di Vercelli nel periodo 1994-2024. Utilizzando il software Climpact, sono stati calcolati diversi indici climatici per identificare i cambiamenti più significativi.</p>
             <p>L'obiettivo è visualizzare in modo interattivo le variazioni osservate nelle temperature e nelle precipitazioni, fornendo una chiara comprensione degli impatti del cambiamento climatico sulla regione di Vercelli.</p>
             <h3>Stazione Climatica</h3>
             <p><strong>Località:</strong> Vercelli, Italia</p>
-            <p><strong>Periodo di Analisi:</strong> 1988 - 2023</p>
+            <p><strong>Periodo di Analisi:</strong> 1994 - 2024</p>
             <p><strong>Software Utilizzato:</strong> Climpact</p>
         </section>
 
         <section id="indici">
             <h2>Indici Climatici Chiave</h2>
-            <p>Di seguito sono presentati i 9 indici climatici che mostrano i risultati più interessanti, selezionati per la loro rilevanza nel descrivere i cambiamenti nelle precipitazioni e nelle temperature estreme a Vercelli.</p>
+            <p>Di seguito sono presentati gli indici climatici che mostrano i risultati più interessanti, selezionati per la loro rilevanza nel descrivere i cambiamenti nelle precipitazioni e nelle temperature estreme a Vercelli.</p>
 
             <div class="indice-card">
                 <h3><i class="fas fa-cloud-rain"></i> prcptot: Precipitazione Totale Annuale</h3>
@@ -77,14 +77,6 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-temperature-low"></i> tn10p: Giorni con Minima Estremamente Fredda</h3>
-                <p>Percentuale di giorni in cui la temperatura minima è inferiore al 10° percentile. Un trend in diminuzione indica un riscaldamento delle notti più fredde.</p>
-                <div id="plot-tn10p" class="plot-container">
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
-            </div>
-
-            <div class="indice-card">
                 <h3><i class="fas fa-temperature-high"></i> tn90p: Giorni con Minima Estremamente Calda</h3>
                 <p>Percentuale di giorni in cui la temperatura minima è superiore al 90° percentile. Un trend in aumento indica un aumento delle notti calde.</p>
                 <div id="plot-tn90p" class="plot-container">
@@ -108,23 +100,14 @@
                 </div>
             </div>
 
-            <div class="indice-card">
-                <h3><i class="fas fa-fire-alt"></i> HWF-Tx90: Frequenza Ondate di Calore</h3>
-                <p>Numero di giorni che contribuiscono a eventi di ondate di calore. Un trend in aumento indica ondate di calore più frequenti e durature.</p>
-                <div id="plot-hwf_tx90" class="plot-container">
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
-            </div>
-
-        </section>
+            </section>
 
         <section id="conclusioni" class="card">
             <h2>Conclusioni e Key Findings</h2>
-            <p>I risultati dell'analisi per Vercelli nel periodo 1988-2023 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico:</p>
+            <p>I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico:</p>
             <ul>
                 <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni, indicata dagli indici `prcptot` e `sdii`.</li>
-                <li>**Aumento delle temperature estreme:** Gli indici `tn10p`, `tn90p`, `tx10p`, `tx90p` mostrano un aumento delle temperature minime e massime su scala annuale, con un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi.</li>
-                <li>**Incremento delle ondate di calore:** L'indice `HWF-Tx90` rivela un trend statisticamente significativo di aumento della frequenza e della durata delle ondate di calore, suggerendo che l'aumento delle temperature è spinto soprattutto dall'aumento delle temperature massime.</li>
+                <li>**Aumento delle temperature estreme:** Gli indici `tn90p`, `tx10p`, `tx90p` mostrano un aumento delle temperature minime e massime su scala annuale, con un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi.</li>
                 <li>**Aumento degli eventi siccitosi estremi:** Gli indici `spi_24_month` e `spei_24_month` indicano un incremento dell'intensità e della frequenza degli eventi siccitosi, sottolineando un deficit di precipitazione aggravato dall'aumento dell'evapotraspirazione.</li>
             </ul>
         </section>
