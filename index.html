@@ -79,8 +79,8 @@
             <p>Di seguito sono presentati gli indici climatici che mostrano i risultati più interessanti, selezionati per la loro rilevanza nel descrivere i cambiamenti nelle precipitazioni e nelle temperature estreme a Vercelli. Utilizza il range slider sotto ogni grafico per esplorare specifici intervalli di anni.</p>
 
             <div class="indice-card">
-                <h3><i class="fas fa-cloud-rain"></i> prcptot: Precipitazione Totale Annuale</h3>
-                <p>Somma delle precipitazioni giornaliere superiori o uguali a 1.0 mm. Un indicatore chiave della disponibilità idrica complessiva.</p>
+                <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
+                <p>Somma delle precipitazioni giornaliere superiori o uguali a 1.0 mm. Un indicatore chiave della disponibilità idrica complessiva. Un trend decrescente può indicare un aumento del rischio di siccità meteorologica.</p>
                 <div id="plot-prcptot" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -88,8 +88,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-tint"></i> sdii: Intensità Media delle Precipitazioni</h3>
-                <p>Precipitazione annuale totale divisa per il numero di giorni piovosi. Mostra l'intensità media delle precipitazioni quando piove.</p>
+                <h3><i class="fas fa-tint"></i> SDII: Intensità Media delle Precipitazioni</h3>
+                <p>Precipitazione annuale totale divisa per il numero di giorni piovosi. Mostra l'intensità media delle precipitazioni quando piove. Una diminuzione può suggerire eventi piovosi meno intensi o più rari.</p>
                 <div id="plot-sdii" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -97,8 +97,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-sun"></i> spi_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
-                <p>Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. Trend decrescenti indicano un aumento degli eventi siccitosi.</p>
+                <h3><i class="fas fa-sun"></i> SPI_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
+                <p>Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. Trend decrescenti indicano un aumento degli eventi siccitosi di lunga durata.</p>
                 <div id="plot-spi_24_month" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -106,8 +106,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-thermometer-empty"></i> spei_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
-                <p>Simile all'SPI, ma include anche l'evapotraspirazione, fornendo una visione più completa della siccità.</p>
+                <h3><i class="fas fa-thermometer-empty"></i> SPEI_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
+                <p>Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate.</p>
                 <div id="plot-spei_24_month" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -115,8 +115,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-temperature-high"></i> tn90p: Giorni con Minima Estremamente Calda</h3>
-                <p>Percentuale di giorni in cui la temperatura minima è superiore al 90° percentile. Un trend in aumento indica un aumento delle notti calde.</p>
+                <h3><i class="fas fa-temperature-high"></i> TN90p: Percentuale Giorni con Temperatura Minima Estremamente Calda</h3>
+                <p>Percentuale di giorni in cui la temperatura minima è superiore al 90° percentile. Un trend in aumento indica un significativo incremento delle notti calde, con impatti sulla salute umana e sugli ecosistemi.</p>
                 <div id="plot-tn90p" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -124,8 +124,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-temperature-low"></i> tx10p: Giorni con Massima Estremamente Fredda</h3>
-                <p>Percentuale di giorni in cui la temperatura massima è inferiore al 10° percentile. Un trend in diminuzione suggerisce un riscaldamento delle giornate più fredde.</p>
+                <h3><i class="fas fa-temperature-low"></i> TX10p: Percentuale Giorni con Temperatura Massima Estremamente Fredda</h3>
+                <p>Percentuale di giorni in cui la temperatura massima è inferiore al 10° percentile. Un trend in diminuzione suggerisce un riscaldamento delle giornate più fredde, riducendo gli eventi di freddo estremo.</p>
                 <div id="plot-tx10p" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
@@ -133,8 +133,8 @@
             </div>
 
             <div class="indice-card">
-                <h3><i class="fas fa-temperature-high"></i> tx90p: Giorni con Massima Estremamente Calda</h3>
-                <p>Percentuale di giorni in cui la temperatura massima è superiore al 90° percentile. Un trend in aumento è un forte indicatore di ondate di calore più intense e frequenti.</p>
+                <h3><i class="fas fa-fire-alt"></i> TX90p: Percentuale Giorni con Temperatura Massima Estremamente Calda</h3>
+                <p>Percentuale di giorni in cui la temperatura massima è superiore al 90° percentile. Un trend in aumento è un forte indicatore di ondate di calore più intense e frequenti, con gravi ripercussioni.</p>
                 <div id="plot-tx90p" class="plot-container">
                     <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
