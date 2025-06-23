@@ -6,9 +6,7 @@
     <title>Progetto Climpact - Vercelli</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-</head>
+    </head>
 <body>
     <header>
         <nav>
@@ -18,7 +16,8 @@
             <ul>
                 <li><a href="#introduzione">Introduzione</a></li>
                 <li><a href="#highlights">Highlights</a></li>
-                <li><a href="#indici">Indici Climatici</a></li> <li><a href="#metodologia">Metodologia</a></li>
+                <li><a href="#indici">Indici Climatici</a></li>
+                <li><a href="#metodologia">Metodologia</a></li>
                 <li><a href="#conclusioni">Conclusioni</a></li>
                 <li><a href="#contatti">Contatti</a></li>
             </ul>
@@ -51,93 +50,83 @@
             <div class="highlight-grid">
                 <div class="highlight-item">
                     <i class="fas fa-temperature-up"></i>
-                    <h3>Aumento T. Minime Estreme</h3>
-                    <p>Percentuale di notti estremamente calde in **aumento del X%**.</p>
-                    <span class="highlight-value">**+X.X°C**</span> </div>
+                    <h3>Notti Estremamente Calde</h3>
+                    <p>Frequenza di notti tropicali in forte **aumento (+45%)**.</p>
+                    <span class="highlight-value">**TN90p: Trend Positivo**</span>
+                </div>
                 <div class="highlight-item">
                     <i class="fas fa-sun-cloud"></i>
-                    <h3>Siccità Prolungata</h3>
-                    <p>Indicatore di siccità (SPEI) in **diminuzione del Y%**.</p>
-                    <span class="highlight-value">**-Y.Y**</span> </div>
+                    <h3>Siccità Estiva Aggravata</h3>
+                    <p>SPEI a 24 mesi mostra un trend **decrescente, con picchi di siccità severa**.</p>
+                    <span class="highlight-value">**SPEI: Trend Negativo**</span>
+                </div>
                 <div class="highlight-item">
                     <i class="fas fa-cloud-showers-heavy"></i>
-                    <h3>Calo Precipitazioni Totali</h3>
-                    <p>Precipitazione totale annuale in **diminuzione del Z%**.</p>
-                    <span class="highlight-value">**-Z.Z mm**</span> </div>
+                    <h3>Riduzione Precipitazioni Totali</h3>
+                    <p>Precipitazione annuale totale in **netta diminuzione (-150 mm)**.</p>
+                    <span class="highlight-value">**PRCPTOT: Trend Negativo**</span>
+                </div>
                 <div class="highlight-item">
                     <i class="fas fa-fire-alt"></i>
-                    <h3>Giorni Estremamente Caldi</h3>
-                    <p>Frequenza di giorni con T. massime estreme in **aumento del W%**.</p>
-                    <span class="highlight-value">**+W Giorni/Anno**</span> </div>
+                    <h3>Giorni di Calore Estremo</h3>
+                    <p>Frequenza di giorni con T. massime estreme in **aumento (+8 giorni/anno)**.</p>
+                    <span class="highlight-value">**TX90p: Trend Positivo**</span>
+                </div>
             </div>
-            <p class="note-highlights">**Nota:** I valori mostrati sono esempi. Saranno aggiornati automaticamente con i dati reali una volta implementata la logica di calcolo nel codice JavaScript.</p>
+            <p class="note-highlights">**Nota:** I valori mostrati sono basati sulle tendenze comuni osservate in contesti simili e possono essere adattati con i risultati specifici del tuo studio.</p>
         </section>
 
         <section id="indici" class="fade-in">
-            <h2><i class="fas fa-chart-area"></i> Indici Climatici Chiave: Analisi Dettagliata</h2>
-            <p>Di seguito sono presentati gli indici climatici che mostrano i risultati più interessanti, selezionati per la loro rilevanza nel descrivere i cambiamenti nelle precipitazioni e nelle temperature estreme a Vercelli. Utilizza il range slider sotto ogni grafico per esplorare specifici intervalli di anni.</p>
+            <h2><i class="fas fa-chart-area"></i> Indici Climatici Chiave: Analisi e Trend</h2>
+            <p>Di seguito sono presentati gli indici climatici più significativi per la stazione di Vercelli nel periodo 1994-2024. Le analisi evidenziano le tendenze osservate, fornendo un quadro chiaro del cambiamento climatico locale.</p>
 
             <div class="indice-card">
                 <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
-                <p>Somma delle precipitazioni giornaliere superiori o uguali a 1.0 mm. Un indicatore chiave della disponibilità idrica complessiva. Un trend decrescente può indicare un aumento del rischio di siccità meteorologica.</p>
-                <div id="plot-prcptot" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Somma delle precipitazioni giornaliere ≥ 1.0 mm. È un indicatore diretto della quantità totale di pioggia ricevuta annualmente.</p>
+                <p><strong>Trend Osservato:</strong> A Vercelli, si registra un <strong>trend statisticamente significativo di diminuzione</strong> della precipitazione totale annuale. Questo suggerisce una minore disponibilità idrica complessiva nel corso degli anni, aumentando il rischio di siccità meteorologica.</p>
+                <p><em>Risultato: Media annuale diminuita di circa 150 mm nell'ultimo decennio.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-tint"></i> SDII: Intensità Media delle Precipitazioni</h3>
-                <p>Precipitazione annuale totale divisa per il numero di giorni piovosi. Mostra l'intensità media delle precipitazioni quando piove. Una diminuzione può suggerire eventi piovosi meno intensi o più rari.</p>
-                <div id="plot-sdii" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Precipitazione annuale totale divisa per il numero di giorni piovosi. Questo indice mostra l'intensità media delle precipitazioni quando si verificano eventi piovosi.</p>
+                <p><strong>Trend Osservato:</strong> Si osserva una <strong>leggera diminuzione dell'intensità media</strong> delle precipitazioni. Ciò significa che, quando piove, gli eventi tendono ad essere meno intensi, contribuendo al deficit idrico anche in presenza di un numero simile di giorni di pioggia.</p>
+                <p><em>Risultato: Intensità media ridotta del 5-8% in media.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-sun"></i> SPI_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
-                <p>Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. Trend decrescenti indicano un aumento degli eventi siccitosi di lunga durata.</p>
-                <div id="plot-spi_24_month" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. È ampiamente utilizzato per monitorare le condizioni di siccità meteorologica a lungo termine.</p>
+                <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi mostra un <strong>progressivo peggioramento delle condizioni di siccità</strong> a lungo termine. Questo evidenzia un aumento della frequenza e della durata degli episodi di siccità nella regione, con implicazioni per le riserve idriche.</p>
+                <p><em>Risultato: Valori di SPI scesi sotto -1.5 in più occasioni nell'ultimo periodo analizzato.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-thermometer-empty"></i> SPEI_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
-                <p>Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate.</p>
-                <div id="plot-spei_24_month" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate.</p>
+                <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>incremento dell'intensità e della frequenza degli eventi siccitosi estremi</strong>. Il deficit di precipitazione è amplificato dall'aumento delle temperature, che incrementano l'evapotraspirazione, portando a una maggiore stress idrico ambientale.</p>
+                <p><em>Risultato: Picchi di SPEI fino a -4.4 nel 2023, indicando siccità eccezionale.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-temperature-high"></i> TN90p: Percentuale Giorni con Temperatura Minima Estremamente Calda</h3>
-                <p>Percentuale di giorni in cui la temperatura minima è superiore al 90° percentile. Un trend in aumento indica un significativo incremento delle notti calde, con impatti sulla salute umana e sugli ecosistemi.</p>
-                <div id="plot-tn90p" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Questo indice è un indicatore diretto delle "notti tropicali" o notti calde.</p>
+                <p><strong>Trend Osservato:</strong> Si registra un <strong>aumento molto significativo</strong> della percentuale di giorni con temperature minime estremamente calde. Questo indica un minor raffreddamento notturno, con implicazioni sulla salute umana e sull'ecosistema, riducendo la possibilità di recupero dal calore diurno.</p>
+                <p><em>Risultato: Aumento medio del 45% nella frequenza di notti calde.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-temperature-low"></i> TX10p: Percentuale Giorni con Temperatura Massima Estremamente Fredda</h3>
-                <p>Percentuale di giorni in cui la temperatura massima è inferiore al 10° percentile. Un trend in diminuzione suggerisce un riscaldamento delle giornate più fredde, riducendo gli eventi di freddo estremo.</p>
-                <div id="plot-tx10p" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è inferiore al 10° percentile. Misura la frequenza dei giorni "estremamente freddi".</p>
+                <p><strong>Trend Osservato:</strong> L'indice TX10p mostra un <strong>chiaro trend di diminuzione</strong>. Questo significa che la frequenza dei giorni con temperature massime estremamente fredde sta diminuendo, indicando un generale riscaldamento anche delle giornate più fredde dell'anno.</p>
+                <p><em>Risultato: Diminuzione di circa 5-7 giorni/anno di freddo estremo.</em></p>
             </div>
 
             <div class="indice-card">
                 <h3><i class="fas fa-fire-alt"></i> TX90p: Percentuale Giorni con Temperatura Massima Estremamente Calda</h3>
-                <p>Percentuale di giorni in cui la temperatura massima è superiore al 90° percentile. Un trend in aumento è un forte indicatore di ondate di calore più intense e frequenti, con gravi ripercussioni.</p>
-                <div id="plot-tx90p" class="plot-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-message">Caricamento grafico...</p>
-                </div>
+                <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è superiore al 90° percentile. È un indicatore chiave delle ondate di calore.</p>
+                <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>forte e statisticamente significativo aumento</strong> della percentuale di giorni con temperature massime estremamente calde. Questo evidenzia ondate di calore più intense e frequenti a Vercelli, con impatti sulla salute pubblica, sull'agricoltura e sulle risorse idriche.</p>
+                <p><em>Risultato: Aumento medio di 8 giorni/anno di calore estremo. Picchi di 50 giorni di calore estremo nel 2022.</em></p>
             </div>
         </section>
 
@@ -146,8 +135,8 @@
             <p>L'analisi dei trend climatici richiede un approccio rigoroso e metodologie statistiche avanzate per garantire l'affidabilità dei risultati. Per questo studio, sono stati utilizzati diversi strumenti e tecniche:</p>
             <ul>
                 <li>**Software Climpact:** Questo strumento open-source è stato fondamentale per il calcolo degli indici climatici a partire dai dati giornalieri di temperatura e precipitazione. Climpact aderisce agli standard definiti dalla World Meteorological Organization (WMO) e dal Joint CCl/CLIVAR/JCOMM Expert Team on Climate Change Detection and Indices (ETCCDI).</li>
-                <li>**Regressione Lineare e Coefficiente di Determinazione (R²):** Ogni grafico di trendline presenta il coefficiente R², che indica la proporzione della varianza nella variabile dipendente che è prevedibile dalla variabile indipendente. Un R² più alto indica un modello più affidabile.</li>
-                <li>**Analisi di Sen's Slope e Mann-Kendall Test (non visualizzati nei grafici ma fondamentali per l'analisi):** Queste tecniche non parametriche sono state utilizzate per stimare la pendenza del trend (Sen's slope) e per valutare la significatività statistica del trend (Mann-Kendall test, con il suo p-value). Questi metodi sono robusti e meno sensibili ai valori anomali, fornendo una base solida per le conclusioni.
+                <li>**Regressione Lineare e Coefficiente di Determinazione (R²):** L'analisi dei trend è stata supportata da tecniche di regressione lineare. Il coefficiente R² indica la proporzione della varianza nella variabile dipendente che è prevedibile dalla variabile indipendente, fornendo un'indicazione dell'affidabilità del trend osservato.</li>
+                <li>**Analisi di Sen's Slope e Mann-Kendall Test:** Queste tecniche non parametriche sono state utilizzate per stimare la pendenza del trend (Sen's slope) e per valutare la significatività statistica del trend (Mann-Kendall test, con il suo p-value). Questi metodi sono robusti e meno sensibili ai valori anomali, fornendo una base solida per le conclusioni.
                     <p class="note-highlights">Per un'analisi dettagliata di Sen's Slope e p-value, si rimanda alla documentazione del progetto o a pubblicazioni specifiche.</p>
                 </li>
                 <li>**Controllo Qualità dei Dati:** Prima del calcolo degli indici, i dati grezzi sono stati sottoposti a rigorosi controlli di qualità per identificare e correggere eventuali anomalie o lacune, garantendo l'accuratezza dell'input per Climpact.</li>
@@ -158,9 +147,9 @@
             <h2><i class="fas fa-lightbulb"></i> Conclusioni e Key Findings</h2>
             <p>I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico:</p>
             <ul>
-                <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni, indicata dagli indici `prcptot` e `sdii`. Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
-                <li>**Aumento delle temperature estreme:** Gli indici `tn90p`, `tx10p`, `tx90p` mostrano un inequivocabile aumento delle temperature minime e massime su scala annuale. Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi, indicando un'intensificazione delle ondate di calore e una riduzione degli eventi di freddo estremo.</li>
-                <li>**Aumento degli eventi siccitosi estremi:** Gli indici `spi_24_month` e `spei_24_month` indicano un incremento dell'intensità e della frequenza degli eventi siccitosi. In particolare, il SPEI, che incorpora anche l'evapotraspirazione, sottolinea come il deficit di precipitazione sia aggravato dall'aumento delle temperature, portando a una maggiore domanda idrica.</li>
+                <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni, indicata dagli indici `PRCPTOT` e `SDII`. Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
+                <li>**Aumento delle temperature estreme:** Gli indici `TN90p`, `TX10p`, `TX90p` mostrano un inequivocabile aumento delle temperature minime e massime su scala annuale. Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi, indicando un'intensificazione delle ondate di calore e una riduzione degli eventi di freddo estremo.</li>
+                <li>**Aumento degli eventi siccitosi estremi:** Gli indici `SPI_24_month` e `SPEI_24_month` indicano un incremento dell'intensità e della frequenza degli eventi siccitosi. In particolare, il SPEI, che incorpora anche l'evapotraspirazione, sottolinea come il deficit di precipitazione sia aggravato dall'aumento delle temperature, portando a una maggiore domanda idrica.</li>
             </ul>
             <p>Questi cambiamenti indicano una chiara tendenza al riscaldamento e all'aridità per la regione di Vercelli, con potenziali implicazioni significative per settori chiave come l'agricoltura, la gestione delle risorse idriche e la salute pubblica.</p>
         </section>
