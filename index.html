@@ -13,41 +13,76 @@
     <header>
         <nav>
             <div class="logo">
-                <i class="fas fa-cloud-sun-rain"></i> Progetto Climpact
+                <i class="fas fa-cloud-sun-rain"></i> Climpact Vercelli
             </div>
             <ul>
                 <li><a href="#introduzione">Introduzione</a></li>
+                <li><a href="#highlights">Highlights</a></li>
                 <li><a href="#indici">Indici Chiave</a></li>
+                <li><a href="#metodologia">Metodologia</a></li>
                 <li><a href="#conclusioni">Conclusioni</a></li>
-                <li><a href="#prospettive">Prospettive</a></li>
                 <li><a href="#contatti">Contatti</a></li>
             </ul>
         </nav>
         <div class="hero">
-            <h1>Analisi Climatica per Vercelli (1994-2024)</h1>
-            <p>Esplora i trend degli indici climatici derivati da Climpact.</p>
+            <div class="hero-content">
+                <h1>Analisi Climatica per Vercelli (1994-2024)</h1>
+                <p>Esplora i trend degli indici climatici derivati da Climpact e scopri i cambiamenti che stanno modellando il nostro futuro.</p>
+                <a href="#indici" class="button-primary">Esplora i Dati <i class="fas fa-arrow-down"></i></a>
+            </div>
         </div>
     </header>
 
     <main>
         <section id="introduzione" class="card fade-in">
-            <h2>Introduzione al Progetto</h2>
-            <p>Questo progetto, parte del Master in [Nome del tuo Master], presenta un'analisi dettagliata dei trend climatici per la stazione di Vercelli nel periodo 1994-2024. Utilizzando il software Climpact, sono stati calcolati diversi indici climatici per identificare i cambiamenti più significativi.</p>
-            <p>L'obiettivo è visualizzare in modo interattivo le variazioni osservate nelle temperature e nelle precipitazioni, fornendo una chiara comprensione degli impatti del cambiamento climatico sulla regione di Vercelli.</p>
-            <h3>Stazione Climatica</h3>
-            <p><strong>Località:</strong> Vercelli, Italia</p>
-            <p><strong>Periodo di Analisi:</strong> 1994 - 2024</p>
-            <p><strong>Software Utilizzato:</strong> Climpact</p>
+            <h2><i class="fas fa-info-circle"></i> Introduzione al Progetto</h2>
+            <p>Questo progetto, sviluppato nell'ambito del Master in [Nome del tuo Master], offre un'analisi approfondita dei trend climatici per la stazione di Vercelli nel periodo 1994-2024. Attraverso l'applicazione del software Climpact, sono stati calcolati e interpretati una serie di indici climatici chiave, permettendoci di identificare i cambiamenti più significativi nel regime climatico locale.</p>
+            <p>L'obiettivo primario è fornire una visualizzazione interattiva e intuitiva delle variazioni osservate nelle temperature e nelle precipitazioni, offrendo una chiara comprensione degli impatti del cambiamento climatico sulla regione di Vercelli e supportando future strategie di adattamento.</p>
+            <h3><i class="fas fa-map-marker-alt"></i> Dettagli Stazione Climatica</h3>
+            <ul>
+                <li><strong>Località:</strong> Vercelli, Italia</li>
+                <li><strong>Periodo di Analisi:</strong> 1994 - 2024</li>
+                <li><strong>Software Utilizzato:</strong> Climpact</li>
+            </ul>
+        </section>
+
+        <section id="highlights" class="card fade-in">
+            <h2><i class="fas fa-chart-line"></i> Highlights Climatici: Vercelli (1994-2024)</h2>
+            <p>Una panoramica rapida dei cambiamenti più significativi osservati negli ultimi tre decenni.</p>
+            <div class="highlight-grid">
+                <div class="highlight-item">
+                    <i class="fas fa-temperature-up"></i>
+                    <h3>Aumento T. Minime Estreme</h3>
+                    <p>Percentuale di notti estremamente calde in **aumento del X%**.</p>
+                    <span class="highlight-value">**+X.X°C**</span> </div>
+                <div class="highlight-item">
+                    <i class="fas fa-sun-cloud"></i>
+                    <h3>Siccità Prolungata</h3>
+                    <p>Indicatore di siccità (SPEI) in **diminuzione del Y%**.</p>
+                    <span class="highlight-value">**-Y.Y**</span> </div>
+                <div class="highlight-item">
+                    <i class="fas fa-cloud-showers-heavy"></i>
+                    <h3>Calo Precipitazioni Totali</h3>
+                    <p>Precipitazione totale annuale in **diminuzione del Z%**.</p>
+                    <span class="highlight-value">**-Z.Z mm**</span> </div>
+                <div class="highlight-item">
+                    <i class="fas fa-fire-alt"></i>
+                    <h3>Giorni Estremamente Caldi</h3>
+                    <p>Frequenza di giorni con T. massime estreme in **aumento del W%**.</p>
+                    <span class="highlight-value">**+W Giorni/Anno**</span> </div>
+            </div>
+            <p class="note-highlights">**Nota:** I valori mostrati sono esempi. Saranno aggiornati automaticamente con i dati reali una volta implementata la logica di calcolo nel codice JavaScript.</p>
         </section>
 
         <section id="indici" class="fade-in">
-            <h2>Indici Climatici Chiave</h2>
+            <h2><i class="fas fa-chart-area"></i> Indici Climatici Chiave: Analisi Dettagliata</h2>
             <p>Di seguito sono presentati gli indici climatici che mostrano i risultati più interessanti, selezionati per la loro rilevanza nel descrivere i cambiamenti nelle precipitazioni e nelle temperature estreme a Vercelli. Utilizza il range slider sotto ogni grafico per esplorare specifici intervalli di anni.</p>
 
             <div class="indice-card">
                 <h3><i class="fas fa-cloud-rain"></i> prcptot: Precipitazione Totale Annuale</h3>
                 <p>Somma delle precipitazioni giornaliere superiori o uguali a 1.0 mm. Un indicatore chiave della disponibilità idrica complessiva.</p>
                 <div id="plot-prcptot" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -56,6 +91,7 @@
                 <h3><i class="fas fa-tint"></i> sdii: Intensità Media delle Precipitazioni</h3>
                 <p>Precipitazione annuale totale divisa per il numero di giorni piovosi. Mostra l'intensità media delle precipitazioni quando piove.</p>
                 <div id="plot-sdii" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -64,6 +100,7 @@
                 <h3><i class="fas fa-sun"></i> spi_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
                 <p>Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. Trend decrescenti indicano un aumento degli eventi siccitosi.</p>
                 <div id="plot-spi_24_month" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -72,6 +109,7 @@
                 <h3><i class="fas fa-thermometer-empty"></i> spei_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
                 <p>Simile all'SPI, ma include anche l'evapotraspirazione, fornendo una visione più completa della siccità.</p>
                 <div id="plot-spei_24_month" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -80,6 +118,7 @@
                 <h3><i class="fas fa-temperature-high"></i> tn90p: Giorni con Minima Estremamente Calda</h3>
                 <p>Percentuale di giorni in cui la temperatura minima è superiore al 90° percentile. Un trend in aumento indica un aumento delle notti calde.</p>
                 <div id="plot-tn90p" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -88,6 +127,7 @@
                 <h3><i class="fas fa-temperature-low"></i> tx10p: Giorni con Massima Estremamente Fredda</h3>
                 <p>Percentuale di giorni in cui la temperatura massima è inferiore al 10° percentile. Un trend in diminuzione suggerisce un riscaldamento delle giornate più fredde.</p>
                 <div id="plot-tx10p" class="plot-container">
+                    <div class="loading-spinner"></div>
                     <p class="loading-message">Caricamento grafico...</p>
                 </div>
             </div>
@@ -96,4 +136,53 @@
                 <h3><i class="fas fa-temperature-high"></i> tx90p: Giorni con Massima Estremamente Calda</h3>
                 <p>Percentuale di giorni in cui la temperatura massima è superiore al 90° percentile. Un trend in aumento è un forte indicatore di ondate di calore più intense e frequenti.</p>
                 <div id="plot-tx90p" class="plot-container">
-                    <p class="loading-message">Car
+                    <div class="loading-spinner"></div>
+                    <p class="loading-message">Caricamento grafico...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="metodologia" class="card fade-in">
+            <h2><i class="fas fa-flask"></i> Metodologia e Approccio Statistico</h2>
+            <p>L'analisi dei trend climatici richiede un approccio rigoroso e metodologie statistiche avanzate per garantire l'affidabilità dei risultati. Per questo studio, sono stati utilizzati diversi strumenti e tecniche:</p>
+            <ul>
+                <li>**Software Climpact:** Questo strumento open-source è stato fondamentale per il calcolo degli indici climatici a partire dai dati giornalieri di temperatura e precipitazione. Climpact aderisce agli standard definiti dalla World Meteorological Organization (WMO) e dal Joint CCl/CLIVAR/JCOMM Expert Team on Climate Change Detection and Indices (ETCCDI).</li>
+                <li>**Regressione Lineare e Coefficiente di Determinazione (R²):** Ogni grafico di trendline presenta il coefficiente R², che indica la proporzione della varianza nella variabile dipendente che è prevedibile dalla variabile indipendente. Un R² più alto indica un modello più affidabile.</li>
+                <li>**Analisi di Sen's Slope e Mann-Kendall Test (non visualizzati nei grafici ma fondamentali per l'analisi):** Queste tecniche non parametriche sono state utilizzate per stimare la pendenza del trend (Sen's slope) e per valutare la significatività statistica del trend (Mann-Kendall test, con il suo p-value). Questi metodi sono robusti e meno sensibili ai valori anomali, fornendo una base solida per le conclusioni.
+                    <p class="note-highlights">Per un'analisi dettagliata di Sen's Slope e p-value, si rimanda alla documentazione del progetto o a pubblicazioni specifiche.</p>
+                </li>
+                <li>**Controllo Qualità dei Dati:** Prima del calcolo degli indici, i dati grezzi sono stati sottoposti a rigorosi controlli di qualità per identificare e correggere eventuali anomalie o lacune, garantendo l'accuratezza dell'input per Climpact.</li>
+            </ul>
+        </section>
+
+        <section id="conclusioni" class="card fade-in">
+            <h2><i class="fas fa-lightbulb"></i> Conclusioni e Key Findings</h2>
+            <p>I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico:</p>
+            <ul>
+                <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni, indicata dagli indici `prcptot` e `sdii`. Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
+                <li>**Aumento delle temperature estreme:** Gli indici `tn90p`, `tx10p`, `tx90p` mostrano un inequivocabile aumento delle temperature minime e massime su scala annuale. Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi, indicando un'intensificazione delle ondate di calore e una riduzione degli eventi di freddo estremo.</li>
+                <li>**Aumento degli eventi siccitosi estremi:** Gli indici `spi_24_month` e `spei_24_month` indicano un incremento dell'intensità e della frequenza degli eventi siccitosi. In particolare, il SPEI, che incorpora anche l'evapotraspirazione, sottolinea come il deficit di precipitazione sia aggravato dall'aumento delle temperature, portando a una maggiore domanda idrica.</li>
+            </ul>
+            <p>Questi cambiamenti indicano una chiara tendenza al riscaldamento e all'aridità per la regione di Vercelli, con potenziali implicazioni significative per settori chiave come l'agricoltura, la gestione delle risorse idriche e la salute pubblica.</p>
+        </section>
+
+        <section id="contatti" class="card fade-in">
+            <h2><i class="fas fa-envelope"></i> Contatti</h2>
+            <p>Per maggiori informazioni, per approfondimenti metodologici o per opportunità di collaborazione, non esitare a contattarmi:</p>
+            <p><i class="fas fa-at"></i> Email: <a href="mailto:tua.email@esempio.com">tua.email@esempio.com</a></p>
+            <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/luigilogo" target="_blank">luigilogo</a></p>
+            <p><i class="fas fa-university"></i> Master in: [Nome Completo del Tuo Master]</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Luigi [Tuo Cognome]. Tutti i diritti riservati.</p>
+    </footer>
+
+    <button id="back-to-top" title="Torna su">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
