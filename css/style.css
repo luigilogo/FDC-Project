@@ -52,8 +52,8 @@ header {
     background-color: var(--card-bg);
     box-shadow: var(--shadow-light);
     padding: 1rem 0;
-    /* RIMOSSO: position: sticky; */
-    /* RIMOSSO: top: 0; */
+    /* Rimosso: position: sticky; */
+    /* Rimosso: top: 0; */
     z-index: 1000;
 }
 
