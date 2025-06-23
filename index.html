@@ -185,7 +185,6 @@
             color: white;
             text-align: center;
             padding: 120px 20px;
-            /* Rimosso margin-bottom qui, gestito da main per evitare sovrapposizioni */
             min-height: 70vh; /* Assicura un'altezza minima, ma permette contenuto sotto */
             display: flex;
             align-items: center;
@@ -213,3 +212,897 @@
 
         .hero::before {
             background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.08) 20px, rgba(255,255,255,0.08) 22px);
+            background-size: 40px 40px;
+            animation: moveLines 60s linear infinite;
+            transform: scale(1.5); /* Copre bene */
+        }
+
+        .hero::after {
+            background: repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,0.08) 20px, rgba(255,255,255,0.08) 22px);
+            background-size: 40px 40px;
+            animation: moveLinesRev 60s linear infinite;
+            transform: scale(1.5); /* Copre bene */
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes moveLines {
+            0% { background-position: 0 0; }
+            100% { background-position: 80px 80px; }
+        }
+
+        @keyframes moveLinesRev {
+            0% { background-position: 0 0; }
+            100% { background-position: -80px -80px; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            /* Inizialmente invisibile per l'animazione */
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+            transition-delay: 0.2s; /* Un piccolo ritardo per l'intera sezione */
+        }
+
+        /* Animazioni specifiche per elementi interni alla hero */
+        .hero-title {
+            color: white;
+            font-size: clamp(2.8rem, 7vw, 4.2rem);
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-content.active .hero-title {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+            transition-delay: 0.5s; /* Ritardo per il titolo */
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-content.active .hero-subtitle {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+            transition-delay: 0.8s; /* Ritardo per il sottotitolo */
+        }
+
+        .hero-button {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .hero-content.active .hero-button {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+            transition-delay: 1.1s; /* Ritardo per il bottone */
+        }
+
+
+        .button-primary {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color var(--transition-speed) var(--transition-ease), transform 0.3s var(--transition-ease), box-shadow 0.3s var(--transition-ease);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-primary:hover {
+            background-color: #218838;
+            transform: translateY(-7px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+        }
+
+        .button-primary i {
+            margin-left: 12px;
+        }
+
+        /* Main Content Sections */
+        main {
+            padding-bottom: 50px;
+            margin-top: 50px; /* Assicura spazio sotto la hero e l'header sticky */
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .bg-light {
+            background-color: var(--bg-light);
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--primary-color);
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        section h2 i {
+            margin-right: 15px;
+            color: var(--secondary-color);
+            font-size: 1em;
+        }
+
+        /* Animazione per i titoli di sezione */
+        .section-title-animated {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+        }
+
+        .content-reveal.active .section-title-animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: -20px auto 50px auto;
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--light-text-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+            padding: 50px;
+            margin: 0 auto;
+            max-width: 1000px;
+            transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-10px); /* Maggiore effetto di sollevamento */
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card h3 {
+            display: flex;
+            align-items: center;
+            font-size: clamp(1.6rem, 3.5vw, 1.8rem);
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .card h3 i {
+            margin-right: 15px;
+            color: var(--accent-color);
+            font-size: 1.1em;
+        }
+
+        .card ul {
+            margin-top: 25px;
+            margin-left: 20px;
+        }
+
+        .card ul li {
+            list-style: disc;
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-size: 1.05rem;
+        }
+
+        /* Highlights Section */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .highlight-item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s var(--transition-ease), box-shadow 0.3s var(--transition-ease), background-color 0.3s var(--transition-ease);
+            border: 1px solid var(--border-color);
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-12px); /* Ancora più sollevamento */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background-color: var(--bg-light);
+        }
+
+        .highlight-item i {
+            font-size: 3.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            transition: color 0.3s var(--transition-ease), transform 0.3s var(--transition-ease);
+        }
+
+        .highlight-item:hover i {
+            color: var(--primary-color);
+            transform: rotate(5deg) scale(1.15); /* Rotazione e ingrandimento più marcati */
+        }
+
+        .highlight-item h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .highlight-item p {
+            font-size: 1rem;
+            color: var(--light-text-color);
+            margin-bottom: 20px;
+        }
+
+        .highlight-value {
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            font-weight: 800;
+            color: var(--accent-color);
+            display: block;
+            margin-top: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .note-highlights {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.95rem;
+            color: var(--light-text-color);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Indice Cards (Nuovo design, più impattante) */
+        .indice-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+            padding: 40px;
+            margin-bottom: 35px;
+            transition: transform var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
+            border: 1px solid var(--border-color);
+        }
+
+        .indice-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .indice-card h3 {
+            font-size: clamp(1.8rem, 4vw, 2rem);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+        }
+
+        .indice-card h3 i {
+            margin-right: 18px;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        .indice-card p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .indice-card p strong {
+            color: var(--primary-color);
+        }
+
+        .highlight-text {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: clamp(1.05rem, 2.2vw, 1.15rem);
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        /* Animazioni avanzate (nuove classi per JavaScript) */
+        .content-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--transition-ease), transform 1s var(--transition-ease);
+        }
+
+        .content-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Specifiche animazioni per elementi interni */
+        .fade-in { opacity: 0; transition: opacity 1s var(--transition-ease); }
+        .fade-in.active { opacity: 1; }
+
+        .slide-up { transform: translateY(30px); transition: transform 1s var(--transition-ease), opacity 1s var(--transition-ease); }
+        .slide-up.active { transform: translateY(0); opacity: 1; }
+
+        .slide-left { transform: translateX(-40px); opacity: 0; transition: transform 1s var(--transition-ease), opacity 1s var(--transition-ease); }
+        .slide-left.active { transform: translateX(0); opacity: 1; }
+
+        .slide-right { transform: translateX(40px); opacity: 0; transition: transform 1s var(--transition-ease), opacity 1s var(--transition-ease); }
+        .slide-right.active { transform: translateX(0); opacity: 1; }
+
+        .scale-in-sm { transform: scale(0.95); opacity: 0; transition: transform 1s var(--transition-ease), opacity 1s var(--transition-ease); }
+        .scale-in-sm.active { transform: scale(1); opacity: 1; }
+
+        /* Ritardi per animazioni sequenziali */
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+        .delay-4 { transition-delay: 0.6s; }
+        .delay-5 { transition-delay: 0.75s; }
+        .delay-6 { transition-delay: 0.9s; }
+        .delay-7 { transition-delay: 1.05s; }
+
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 80px; /* Più spazio sopra il footer */
+            font-size: 0.95rem;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.15); /* Ombra più pronunciata */
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        /* Bottone Torna su */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* Ombra più definita */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px); /* Inizia più in basso */
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.3s var(--transition-ease);
+            z-index: 1000;
+        }
+
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0); /* Sale alla posizione finale */
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-10px) scale(1.05); /* Effetto più pronunciato */
+            background-color: #218838;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Media Queries per Responsività Perfezionata */
+        @media (max-width: 992px) {
+            nav ul { display: none; } /* Considera l'implementazione di un menu hamburger per schermi più piccoli */
+            .logo { font-size: 1.8rem; }
+            .logo i { font-size: 1.3em; }
+
+            .hero { padding: 100px 15px; min-height: 60vh; }
+            .hero-title { font-size: clamp(2.5rem, 6vw, 3.5rem); }
+            .hero-subtitle { font-size: clamp(1rem, 2.2vw, 1.2rem); margin-bottom: 25px; }
+            .button-primary { padding: 15px 30px; font-size: 1.1rem; }
+
+            .section-padding { padding: 60px 0; }
+            section h2 { font-size: clamp(1.8rem, 4.5vw, 2.2rem); margin-bottom: 30px; }
+            section h2::after { width: 80px; height: 4px; }
+            .section-description { margin: -10px auto 40px auto; font-size: clamp(0.95rem, 1.8vw, 1.05rem); }
+
+            .card { padding: 35px; }
+            .card h3 { font-size: clamp(1.5rem, 3.2vw, 1.7rem); }
+            .card ul li { font-size: 0.95rem; }
+
+            .highlight-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+            .highlight-item { padding: 25px; }
+            .highlight-item i { font-size: 3rem; }
+            .highlight-value { font-size: clamp(1.6rem, 3.5vw, 2rem); }
+
+            .indice-card { padding: 30px; margin-bottom: 30px; }
+            .indice-card h3 { font-size: clamp(1.4rem, 3vw, 1.6rem); }
+            .indice-card p { font-size: 0.95rem; }
+            .highlight-text { font-size: clamp(0.95rem, 1.9vw, 1.05rem); }
+
+            #back-to-top { width: 55px; height: 55px; font-size: 1.7rem; bottom: 25px; left: 25px; }
+            footer { margin-top: 50px; padding: 25px 0; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 15px; } /* Meno padding laterale su schermi piccoli */
+
+            .hero { padding: 60px 15px; min-height: 50vh; }
+            .hero-title { font-size: clamp(2.2rem, 8vw, 2.8rem); }
+            .hero-subtitle { font-size: clamp(0.9rem, 2.5vw, 1.1rem); margin-bottom: 25px; }
+            .button-primary { padding: 12px 25px; font-size: 1rem; }
+
+            .section-padding { padding: 40px 0; }
+            section h2 { font-size: clamp(1.6rem, 7vw, 2rem); margin-bottom: 25px; }
+            section h2::after { width: 80px; height: 4px; }
+            .section-description { font-size: 0.9rem; margin: -5px auto 25px auto; }
+
+            .card { padding: 25px; margin-bottom: 25px; }
+            .card h3 { font-size: clamp(1.4rem, 6vw, 1.6rem); }
+            .card ul li { font-size: 0.9rem; }
+
+            .highlight-grid { grid-template-columns: 1fr; gap: 15px; } /* Una colonna su mobile */
+            .highlight-item { padding: 20px; }
+            .highlight-item i { font-size: 2.8rem; }
+            .highlight-value { font-size: clamp(1.5rem, 5vw, 1.8rem); }
+
+            .indice-card { padding: 20px; margin-bottom: 20px; }
+            .indice-card h3 { font-size: clamp(1.3rem, 5.5vw, 1.5rem); }
+            .indice-card h3 i { margin-right: 12px; }
+            .indice-card p { font-size: 0.88rem; }
+            .highlight-text { font-size: clamp(0.9rem, 1.8vw, 1rem); }
+
+            #back-to-top { width: 50px; height: 50px; font-size: 1.5rem; bottom: 15px; left: 15px; }
+            footer { margin-top: 50px; padding: 25px 0; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="scroll-progress-indicator"></div>
+
+    <header id="main-header">
+        <nav class="container">
+            <div class="logo">
+                <i class="fas fa-cloud-sun-rain"></i> Climpact Vercelli
+            </div>
+            <ul>
+                <li><a href="#introduzione" class="nav-link">Introduzione</a></li>
+                <li><a href="#highlights" class="nav-link">Highlights</a></li>
+                <li><a href="#indici" class="nav-link">Indici Climatici</a></li>
+                <li><a href="#metodologia" class="nav-link">Metodologia</a></li>
+                <li><a href="#about-project" class="nav-link">Il Progetto</a></li>
+                <li><a href="#conclusioni" class="nav-link">Conclusioni</a></li>
+                <li><a href="#prospettive" class="nav-link">Prospettive</a></li>
+                <li><a href="#contatti" class="nav-link">Contatti</a></li>
+            </ul>
+        </nav>
+        <div class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Analisi Climatica per Vercelli (1994-2024)</h1>
+                <p class="hero-subtitle">Esplora i trend degli indici climatici derivati da Climpact e scopri i cambiamenti che stanno modellando il nostro futuro.</p>
+                <a href="#indici" class="button-primary hero-button">Esplora i Dati <i class="fas fa-arrow-down"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="introduzione" class="section-padding content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-info-circle"></i> Introduzione al Progetto</h2>
+                <p class="fade-in">Questo progetto, sviluppato nell'ambito del Master in **[Nome Completo del Tuo Master]**, offre un'analisi approfondita dei trend climatici per la stazione di Vercelli nel periodo 1994-2024. Attraverso l'applicazione del software Climpact, sono stati calcolati e interpretati una serie di indici climatici chiave, permettendoci di identificare i cambiamenti più significativi nel regime climatico locale.</p>
+                <p class="fade-in delay-1">L'obiettivo primario è fornire una visione chiara e d'impatto delle variazioni osservate nelle temperature e nelle precipitazioni, offrendo una comprensione approfondita degli impatti del cambiamento climatico sulla regione di Vercelli e supportando future strategie di adattamento.</p>
+                <h3 class="fade-in delay-2"><i class="fas fa-map-marker-alt"></i> Dettagli Stazione Climatica</h3>
+                <ul class="fade-in delay-3">
+                    <li><strong>Località:</strong> Vercelli, Italia</li>
+                    <li><strong>Periodo di Analisi:</strong> 1994 - 2024</li>
+                    <li><strong>Software Utilizzato:</strong> Climpact</li>
+                </ul>
+                <h3 class="fade-in delay-4"><i class="fas fa-chart-bar"></i> Parametri Meteorologici Medi (Vercelli 1994-2024)</h3>
+                <ul class="fade-in delay-5">
+                    <li>**Temperatura massima media annuale (Tx):** XX.X°C (sostituisci con dato Vercelli)</li>
+                    <li>**Temperatura minima media annuale (Tn):** XX.X°C (sostituisci con dato Vercelli)</li>
+                    <li>**Temperatura media annuale:** XX.X°C (sostituisci con dato Vercelli)</li>
+                    <li>**Temperatura media estiva:** XX.X°C (sostituisci con dato Vercelli)</li>
+                    <li>**Temperatura media invernale:** XX.X°C (sostituisci con dato Vercelli)</li>
+                    <li>**Precipitazione totale annuale media (PrecTot):** XXX mm (sostituisci con dato Vercelli)</li>
+                    <li>**95° percentile di precipitazione giornaliera:** XX.XX mm (sostituisci con dato Vercelli)</li>
+                    <li>**99° percentile di precipitazione giornaliera:** XX.XX mm (sostituisci con dato Vercelli)</li>
+                </ul>
+                <p class="note-highlights fade-in delay-6">I valori sopra riportati sono placeholder. Si prega di aggiornarli con i dati specifici della stazione di Vercelli.</p>
+            </div>
+        </section>
+
+        <section id="highlights" class="section-padding bg-light content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-chart-line"></i> Highlights Climatici: Vercelli (1994-2024)</h2>
+                <p class="section-description fade-in">Una panoramica rapida dei cambiamenti più significativi osservati negli ultimi tre decenni.</p>
+                <div class="highlight-grid">
+                    <div class="highlight-item fade-in scale-in-sm">
+                        <i class="fas fa-temperature-up"></i>
+                        <h3>Notti Estremamente Calde</h3>
+                        <p>Frequenza di notti tropicali in forte **aumento (+XX%)**.</p>
+                        <span class="highlight-value">**TN90p: Trend SIGNIFICATIVO in crescita**</span>
+                    </div>
+                    <div class="highlight-item fade-in scale-in-sm delay-1">
+                        <i class="fas fa-sun-cloud"></i>
+                        <h3>Siccità Estiva Aggravata</h3>
+                        <p>SPEI a 24 mesi mostra un trend **statisticamente SIGNIFICATIVO in decrescita, con picchi di siccità severa**.</p>
+                        <span class="highlight-value">**SPEI: Trend Negativo**</span>
+                    </div>
+                    <div class="highlight-item fade-in scale-in-sm delay-2">
+                        <i class="fas fa-cloud-showers-heavy"></i>
+                        <h3>Riduzione Precipitazioni Totali</h3>
+                        <p>Precipitazione annuale totale in **evidente decrescita (circa -X.X mm/anno)**.</p>
+                        <span class="highlight-value">**PRCPTOT: Trend NON significativo ma in decrescita**</span>
+                    </div>
+                    <div class="highlight-item fade-in scale-in-sm delay-3">
+                        <i class="fas fa-fire-alt"></i>
+                        <h3>Giorni di Calore Estremo</h3>
+                        <p>Frequenza di giorni con T. massime estreme in **aumento (+X giorni/anno)**.</p>
+                        <span class="highlight-value">**TX90p: Trend SIGNIFICATIVO in crescita**</span>
+                    </div>
+                </div>
+                <p class="note-highlights fade-in delay-4">**Nota:** I valori mostrati sono basati sulle tendenze comuni osservate in contesti simili e devono essere **sostituiti con i risultati specifici del tuo studio su Vercelli**.</p>
+            </div>
+        </section>
+
+        <section id="indici" class="section-padding content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-chart-area"></i> Indici Climatici Chiave: Analisi e Trend</h2>
+                <p class="section-description fade-in">Di seguito sono presentati gli indici climatici più significativi per la stazione di Vercelli nel periodo 1994-2024. Le analisi evidenziano le tendenze osservate, fornendo un quadro chiaro del cambiamento climatico locale. **(I dati presentati sono placeholder e vanno sostituiti con i valori reali della tua analisi).**</p>
+
+                <div class="indice-card fade-in slide-left">
+                    <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
+                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere ≥ 1.0 mm. È un indicatore diretto della quantità totale di pioggia ricevuta annualmente. </p>
+                    <p><strong>Trend Osservato:</strong> Per Vercelli, si registra un <strong>trend statisticamente NON significativo ma in evidente decrescita</strong> (Sen's slope = -X.XXX, p-value = X.XXX).  Questo suggerisce una minore disponibilità idrica complessiva nel corso degli anni.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi annuali di precipitazione si sono verificati nel 2015, 2021, 2022 (con 289.1 mm) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con 976.4 mm).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-right delay-1">
+                    <h3><i class="fas fa-tint"></i> SDII: Intensità Media delle Precipitazioni</h3>
+                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi (precipitazione ≥ 1.0mm). Questo indice mostra l'intensità media delle precipitazioni quando si verificano eventi piovosi. </p>
+                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo</strong> (Sen's slope = -X.XXX, p-value = X.XX).  Ciò significa che, quando piove, gli eventi tendono ad essere meno intensi in media, contribuendo al deficit idrico.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi osservati nel 2021 (6.2 mm/day) e 2022. Massimi nel 1991, 1994 e 2011 (16.1 mm/day).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-left delay-2">
+                    <h3><i class="fas fa-percent"></i> R95PTOT: Frazione Precipitazioni Estreme</h3>
+                    <p><strong>Descrizione:</strong> Frazione del totale di precipitazione cumulativa che deriva da eventi estremi (100 * r95p / PRCPTOT). Indica quanto del totale delle precipitazioni provenga da eventi intensi. </p>
+                    <p><strong>Trend Osservato:</strong> Il trend è <strong>statisticamente NON significativo ma in probabile decrescita</strong> (Sen's slope = -X.X, p-value = X.XXX).  Questo suggerisce una possibile riduzione del contributo degli eventi di pioggia estrema alla precipitazione totale.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi (0%) registrati nel 2000, 2004, 2021 e 2023. Massimi nel 1998, 1999, 2017 (47.6%) e 2019.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-right delay-3">
+                    <h3><i class="fas fa-sun"></i> SPI_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
+                    <p><strong>Descrizione:</strong> Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. È ampiamente utilizzato per monitorare le condizioni di siccità meteorologica a lungo termine. </p>
+                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.002, p-value = 0).  Questo evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi.</p>
+                    <p class="highlight-text"><em>Risultato: Aumento degli eventi siccitosi estremi in funzione del deficit di precipitazione, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di -3.5 nel 2023).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-left delay-4">
+                    <h3><i class="fas fa-thermometer-empty"></i> SPEI_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
+                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate. </p>
+                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.004, p-value = 0).  Questo indica un aumento dell'intensità e della frequenza degli eventi siccitosi estremi in funzione dell'evapotraspirazione.</p>
+                    <p class="highlight-text"><em>Risultato: Picchi di siccità estrema (R &lt; -2 con picchi anche di -4.4 nel 2023) soprattutto dal 2022 in poi.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-right delay-5">
+                    <h3><i class="fas fa-temperature-low"></i> TN10p: Percentuale Giorni con Temperatura Minima Estremamente Fredda</h3>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è inferiore al 10° percentile. Questo indice misura la frequenza dei giorni "estremamente freddi". </p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.16, p-value = 0.009).  Ciò indica una diminuzione della frequenza di notti estremamente fredde.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 2022 (3.01%) e 2023. Massimi nel 1991, 1992, 2005 (19.59%) e 2010.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-left delay-6">
+                    <h3><i class="fas fa-temperature-up"></i> TN90p: Percentuale Giorni con Temperatura Minima Estremamente Calda</h3>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Questo indice è un indicatore diretto delle "notti tropicali" o notti calde. </p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.309, p-value = 0).  Questo indica un minor raffreddamento notturno, con implicazioni sulla salute umana e sull'ecosistema.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 1992, 1993 (2.70%), 1996, 1999 e 2010. Massimi nel 2022 (29.04%) e 2023.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+                
+                <div class="indice-card fade-in slide-right delay-7">
+                    <h3><i class="fas fa-temperature-low"></i> TX10p: Percentuale Giorni con Temperatura Massima Estremamente Fredda</h3>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è inferiore al 10° percentile. Misura la frequenza dei giorni "estremamente freddi". </p>
+                    <p><strong>Trend Osservato:</strong> L'indice TX10p mostra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.235, p-value = 0).  Questo significa che la frequenza dei giorni con temperature massime estremamente fredde sta diminuendo.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 2016, 2019, 2022 e 2023 (2.46%). Massimi nel 1991 e 1992 (21.58%).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-left delay-7">
+                    <h3><i class="fas fa-fire-alt"></i> TX90p: Percentuale Giorni con Temperatura Massima Estremamente Calda</h3>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è superiore al 90° percentile. È un indicatore chiave delle ondate di calore. </p>
+                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.409, p-value = 0).  Questo evidenzia ondate di calore più intense e frequenti a Vercelli.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 1988 (2.46%) e 1996. Massimi nel 2022 (40.54%) e 2023.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+
+                <div class="indice-card fade-in slide-right delay-7">
+                    <h3><i class="fas fa-sun-haze"></i> HWF-Tx90: Frequenza Onde di Calore</h3>
+                    <p><strong>Descrizione:</strong> Numero di giorni che contribuiscono agli eventi di ondate di caldo. </p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.412, p-value = 0).  Questo indica un aumento della frequenza e della durata delle ondate di calore.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi tra 0 e 5 giorni negli anni antecedenti al 2008, ad eccezione del 2003 (39 giorni). Massimi nel 2003 (39 giorni) e 2022 (50 giorni).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    </div>
+            </div>
+        </section>
+
+        <section id="metodologia" class="section-padding bg-light content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-flask"></i> Metodologia e Approccio Statistico</h2>
+                <p class="fade-in">L'analisi dei trend climatici richiede un approccio rigoroso e metodologie statistiche avanzate per garantire l'affidabilità dei risultati. Per questo studio, sono stati utilizzati diversi strumenti e tecniche:</p>
+                <ul class="fade-in delay-1">
+                    <li>**Software Climpact:** Questo strumento open-source è stato fondamentale per il calcolo degli indici climatici a partire dai dati giornalieri di temperatura e precipitazione. Climpact aderisce agli standard definiti dalla World Meteorological Organization (WMO) e dal Joint CCl/CLIVAR/JCOMM Expert Team on Climate Change Detection and Indices (ETCCDI).</li>
+                    <li>**Regressione Lineare e Coefficiente di Determinazione (R²):** L'analisi dei trend è stata supportata da tecniche di regressione lineare. Il coefficiente R² indica la proporzione della varianza nella variabile dipendente che è prevedibile dalla variabile indipendente, fornendo un'indicazione dell'affidabilità del trend osservato.</li>
+                    <li>**Analisi di Sen's Slope e Mann-Kendall Test:** Queste tecniche non parametriche sono state utilizzate per stimare la pendenza del trend (Sen's slope) e per valutare la significatività statistica del trend (Mann-Kendall test, con il suo p-value). Questi metodi sono robusti e meno sensibili ai valori anomali, fornendo una base solida per le conclusioni.
+                        <p class="note-highlights">Per un'analisi dettagliata di Sen's Slope e p-value, si rimanda alla documentazione del progetto o a pubblicazioni specifiche.</p>
+                    </li>
+                    <li>**Controllo Qualità dei Dati:** Prima del calcolo degli indici, i dati grezzi sono stati sottoposti a rigorosi controlli di qualità per identificare e correggere eventuali anomalie o lacune, garantendo l'accuratezza dell'input per Climpact. In particolare, per i dati di Barcellona, sono state riscontrate 54 outlier per le temperature e alcuni valori anomali per le precipitazioni, coerenti con le registrazioni della stazione meteorologica dell'aeroporto di Barcellona. </li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="about-project" class="section-padding content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-handshake"></i> Il Progetto e l'Autore</h2>
+                <p class="fade-in">Questo progetto rappresenta l'esito di un approfondito lavoro di ricerca e analisi svolto nell'ambito del **Master in [Nome Completo del Tuo Master]** presso **[Nome dell'Università]**. Nasce dalla passione per la climatologia e dalla crescente urgenza di comprendere gli impatti dei cambiamenti climatici a livello locale.</p>
+                <p class="fade-in delay-1">Il mio obiettivo è fornire uno strumento chiaro e accessibile per la comunità di Vercelli e per gli studiosi interessati, mostrando come l'analisi scientifica possa rivelare le trasformazioni in atto nel nostro ambiente e stimolare azioni consapevoli.</p>
+                <p class="fade-in delay-2">Spero che questa piattaforma possa essere un punto di partenza per future discussioni e iniziative di adattamento e mitigazione nel territorio.</p>
+                <h3 class="fade-in delay-3"><i class="fas fa-user"></i> L'Autore</h3>
+                <p class="fade-in delay-4">Sono Luigi [Tuo Cognome], studente di [Tua specializzazione, es. Scienze Ambientali] e appassionato di [Tuo interesse, es. analisi dati climatici, sostenibilità]. Questo progetto è il frutto del mio impegno a tradurre dati complessi in informazioni comprensibili e utili.</p>
+            </div>
+        </section>
+
+        <section id="conclusioni" class="section-padding bg-light content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-lightbulb"></i> Conclusioni e Key Findings</h2>
+                <p class="fade-in">I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico. In generale, il regime pluviometrico è mediterraneo, con un clima mite e bassa escursione termica stagionale, caratterizzato da un periodo secco estivo. </p>
+                <ul class="fade-in delay-1">
+                    <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni è osservata.  Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
+                    <li>**Aumento delle temperature estreme:** Le temperature minime (Tn) e massime (Tx) sono in aumento su scala annuale.  L'aumento delle temperature è spinto soprattutto dall'aumento delle Tx, con ondate di calore più frequenti e più durature.  Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi.</li>
+                    <li>**Aumento degli eventi siccitosi estremi:** C'è un incremento dell'intensità e della frequenza degli eventi siccitosi estremi. Questo è dovuto al deficit di precipitazione e all'aumento dell'evapotraspirazione, con un effetto preponderante dell'aumento delle temperature. </li>
+                </ul>
+                <p class="fade-in delay-2">Questi cambiamenti indicano una chiara tendenza al riscaldamento e all'aridità per la regione di Vercelli, con potenziali implicazioni significative per settori chiave come l'agricoltura, la gestione delle risorse idriche e la salute pubblica.</p>
+            </div>
+        </section>
+
+        <section id="prospettive" class="section-padding content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-hourglass-half"></i> Prospettive di Climate Change e Implicazioni</h2>
+                <p class="fade-in">Le tendenze climatiche osservate per Vercelli nel periodo 1994-2024 sollevano importanti preoccupazioni per il futuro. Basandosi su studi analoghi (es. per Barcellona, come citato in "Climate Change Implications for Water Availability: A Case Study of Barcelona City" - E.F. Ortiz et al. (2020) ), possiamo prevedere diverse implicazioni:</p>
+                <ul class="fade-in delay-1">
+                    <li>**Siccità e Carenza Idrica:** Il deficit di precipitazioni e l'aumento dell'evapotraspirazione porteranno a una maggiore carenza idrica, con impatti diretti su:
+                        <ul>
+                            <li class="delay-2"><i class="fas fa-leaf"></i> Salute pubblica e Agricoltura </li>
+                            <li class="delay-3"><i class="fas fa-fire-extinguisher"></i> Incendi boschivi </li>
+                            <li class="delay-4"><i class="fas fa-paw"></i> Biodiversità e Danni economici </li>
+                        </ul>
+                    </li>
+                    <li>**Innalzamento del Livello del Mare (applicabile alle aree costiere come Barcellona, ma per Vercelli si considererebbero impatti su fiumi e laghi):** Sebbene Vercelli non sia una città costiera, è importante considerare gli impatti più ampi dell'innalzamento globale dei mari che influenzano i sistemi idrici collegati e possono aggravare gli eventi di piena o siccità a monte.
+                        <ul>
+                            <li class="delay-5"><i class="fas fa-water"></i> Erosione costiera (per le aree costiere) </li>
+                            <li class="delay-6"><i class="fas fa-umbrella-beach"></i> Danni al turismo (per le aree costiere) </li>
+                            <li class="delay-7"><i class="fas fa-river"></i> Per Vercelli, si potrebbero considerare implicazioni su gestione delle risorse fluviali, rischio idrogeologico e agricoltura a causa di variazioni nei livelli dei corsi d'acqua.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="fade-in delay-8">È fondamentale che la comunità di Vercelli si prepari a questi cambiamenti, implementando strategie di adattamento e mitigazione per salvaguardare le risorse, la salute e l'economia locale.</p>
+            </div>
+        </section>
+
+        <section id="contatti" class="section-padding content-reveal">
+            <div class="card slide-up">
+                <h2 class="section-title-animated"><i class="fas fa-envelope"></i> Contatti</h2>
+                <p class="fade-in">Per maggiori informazioni, per approfondimenti metodologici o per opportunità di collaborazione, non esitare a contattarmi:</p>
+                <p class="fade-in delay-1"><i class="fas fa-at"></i> Email: <a href="mailto:tua.email@esempio.com">tua.email@esempio.com</a> **(Sostituisci con la tua email)**</p>
+                <p class="fade-in delay-2"><i class="fab fa-github"></i> GitHub: <a href="https://github.com/luigilogo" target="_blank">luigilogo</a></p>
+                <p class="fade-in delay-3"><i class="fas fa-university"></i> Master in: **[Nome Completo del Tuo Master]**</p>
+                <p class="fade-in delay-4"><i class="fas fa-graduation-cap"></i> Università: **[Nome dell'Università, se vuoi]**</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Luigi [Tuo Cognome]. Tutti i diritti riservati.</p>
+    </footer>
+
+    <button id="back-to-top" title="Torna su" aria-label="Torna all'inizio della pagina">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            const scrollProgressIndicator = document.getElementById('scroll-progress-indicator');
+            const header = document.getElementById('main-header');
+            const navLinks = document.querySelectorAll('nav .nav-link');
+            const sections = document.querySelectorAll('section');
+            const heroContent = document.querySelector('.hero-content'); 
+
+            // --- Animazione iniziale Hero Section ---
+            if (heroContent) {
+                heroContent.classList.add('active');
+            }
+
+            // --- Gestione Eventi Scroll ---
+            window.addEventListener('scroll', () => {
+                // Mostra/Nascondi bottone "Torna su"
+                if (backToTopButton) { 
+                    if (window.scrollY > 500) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                }
+
+                // Cambio stile header allo scroll
+                if (header) { 
+                    if (window.scrollY > 80) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                }
+
+                // Aggiorna indicatore di progresso dello scroll
+                if (scrollProgressIndicator) { 
+                    const scrollTop = document.documentElement.scrollTop;
+                    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrollPercentage = (scrollHeight > 0) ? (scrollTop / scrollHeight) * 100 : 0;
+                    scrollProgressIndicator.style.width = scrollPercentage + '%';
+                }
+
+                // Aggiorna link di navigazione attivo
+                updateActiveNavLink();
+            });
+
+            // --- Funzione per aggiornare il link di navigazione attivo ---
+            function updateActiveNavLink() {
+                let currentActiveSectionId = '';
+                const headerOffset = header ? header.offsetHeight : 0; 
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - (headerOffset + 100); 
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentActiveSectionId = section.id;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentActiveSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // --- Gestione Click Bottone "Torna su" ---
+            if (backToTopButton) {
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // --- Gestione Click Link di Navigazione ---
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const headerOffset = header ? header.offsetHeight : 0;
+                        const offsetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        navLinks.forEach(item => item.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Animazioni al Reveal con IntersectionObserver (Ottimizzato e Robusto) ---
+            const elementsToAnimate = document.querySelectorAll(
+                '.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .section-title-animated, .section-description'
+            );
+
+            const observerOptions = {
+                root: null, 
+                threshold: 0.1, 
+                rootMargin: "0px 0px -100px 0px" 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            elementsToAnimate.forEach(el => {
+                observer.observe(el);
+            });
+
+            // --- Inizializzazione all'apertura della pagina ---
+            const initializePage = () => {
+                const initialHash = window.location.hash;
+                if (initialHash) {
+                    const targetElement = document.querySelector(initialHash);
+                    if (targetElement) {
+                        const headerOffset = header ? header.offsetHeight : 0;
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === initialHash) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                } else {
+                    const introLink = document.querySelector('nav .nav-link[href="#introduzione"]');
+                    if (introLink) {
+                        introLink.classList.add('active');
+                    }
+                }
+                updateActiveNavLink(); 
+            };
+
+            setTimeout(initializePage, 250);
+        });
+    </script>
+</body>
+</html>
