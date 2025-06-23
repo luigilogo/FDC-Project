@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Gestione del bottone "Torna su"
     const backToTopButton = document.getElementById('back-to-top');
+    // Indicatore di progresso dello scroll
+    const scrollProgressIndicator = document.getElementById('scroll-progress-indicator');
 
     window.addEventListener('scroll', () => {
+        // Logica per il bottone "Torna su"
         if (window.scrollY > 400) { // Mostra il bottone dopo 400px di scroll
             backToTopButton.classList.add('show');
         } else {
@@ -16,6 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             header.classList.remove('scrolled');
         }
+
+        // Logica per l'indicatore di progresso dello scroll
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        scrollProgressIndicator.style.width = scrollPercentage + '%';
 
         // Aggiorna link di navigazione attivo in base alla sezione visibile
         updateActiveNavLink();
@@ -31,11 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funzione per aggiornare il link di navigazione attivo
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav .nav-link');
+    const header = document.getElementById('main-header'); // Ottieni l'header fuori dalla funzione per efficienza
 
     function updateActiveNavLink() {
         let currentActiveSection = '';
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - (header.offsetHeight + 20); // Considera l'altezza dell'header e un offset
+            // Regola l'offset per la barra di navigazione fissa
+            const sectionTop = section.offsetTop - (header.offsetHeight + 50); // Aggiunto un buffer di 50px
             const sectionBottom = sectionTop + section.offsetHeight;
             if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
                 currentActiveSection = section.id;
@@ -51,10 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Gestione animazioni al reveal delle sezioni (Intersection Observer)
-    const revealElements = document.querySelectorAll('.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in, .scale-in-sm');
+    const revealElements = document.querySelectorAll('.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in, .scale-in-sm, .section-title-animated, .section-description');
 
     const observerOptions = {
-        threshold: 0.2, // L'elemento appare quando il 20% è visibile
+        threshold: 0.1, // L'elemento appare quando il 10% è visibile
         rootMargin: "0px 0px -100px 0px" // Inizia a caricare un po' prima di entrare nella viewport
     };
 
@@ -78,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            const headerOffset = document.getElementById('main-header').offsetHeight;
+            const headerOffset = header.offsetHeight;
             const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
             const offsetPosition = elementPosition - headerOffset;
 
@@ -93,17 +104,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Attiva la prima sezione all'apertura se non c'è hash nell'URL
-    if (!window.location.hash) {
-        document.querySelector('nav .nav-link[href="#introduzione"]').classList.add('active');
+    // Imposta la sezione attiva all'apertura se non c'è hash nell'URL o carica la prima
+    const initialHash = window.location.hash;
+    if (initialHash) {
+        const targetElement = document.querySelector(`nav .nav-link[href="${initialHash}"]`);
+        if (targetElement) {
+            targetElement.classList.add('active');
+        }
+        // Scroll to the hash element after DOM is fully loaded to ensure correct offset
+        setTimeout(() => {
+            const el = document.querySelector(initialHash);
+            if (el) {
+                const headerOffset = header.offsetHeight;
+                const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
+        }, 100); // Short delay to ensure all elements are rendered
     } else {
-        // Se c'è un hash, imposta il link attivo corrispondente
-        const initialLink = document.querySelector(`nav .nav-link[href="${window.location.hash}"]`);
-        if (initialLink) {
-            initialLink.classList.add('active');
+        // Se non c'è hash, imposta 'Introduzione' come attivo di default
+        const introLink = document.querySelector('nav .nav-link[href="#introduzione"]');
+        if (introLink) {
+            introLink.classList.add('active');
         }
     }
 
-    // Esegui l'aggiornamento iniziale dello stato attivo dei link
-    updateActiveNavLink();
+    // Esegui l'aggiornamento iniziale dello stato attivo dei link dopo un breve ritardo
+    // per assicurarsi che tutte le altezze degli elementi siano calcolate correttamente
+    setTimeout(updateActiveNavLink, 200); 
 });
