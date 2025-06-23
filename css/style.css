@@ -20,7 +20,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.7; /* Aumenta interlinea per leggibilità */
-    overflow-x: hidden;
+    overflow-x: hidden; /* Mantiene lo scrolling orizzontale bloccato */
     scroll-behavior: smooth;
 }
 
@@ -52,9 +52,9 @@ header {
     background-color: var(--card-bg);
     box-shadow: var(--shadow-light);
     padding: 1rem 0;
-    position: sticky; /* Sticky nav bar */
-    top: 0;
-    z-index: 1000; /* Assicura che sia sopra il resto */
+    /* RIMOSSO: position: sticky; */
+    /* RIMOSSO: top: 0; */
+    z-index: 1000;
 }
 
 nav {
@@ -63,11 +63,11 @@ nav {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 25px; /* Padding aumentato */
+    padding: 0 25px;
 }
 
 .logo {
-    font-size: 1.9rem; /* Più grande */
+    font-size: 1.9rem;
     font-weight: bold;
     color: var(--primary-color);
     display: flex;
@@ -75,7 +75,7 @@ nav {
 }
 
 .logo i {
-    margin-right: 12px; /* Spazio maggiore */
+    margin-right: 12px;
     font-size: 1.6em;
     color: var(--secondary-color);
 }
@@ -85,11 +85,11 @@ nav ul {
 }
 
 nav ul li {
-    margin-left: 30px; /* Spazio tra link */
+    margin-left: 30px;
 }
 
 nav ul li a {
-    font-weight: 600; /* Meno bold del logo */
+    font-weight: 600;
     font-size: 1.05rem;
     padding: 8px 0;
     position: relative;
@@ -100,17 +100,17 @@ nav ul li a::after {
     content: '';
     position: absolute;
     width: 0;
-    height: 3px; /* Linea più spessa */
+    height: 3px;
     display: block;
     margin-top: 5px;
-    left: 50%; /* Centra la linea */
+    left: 50%;
     transform: translateX(-50%);
     background: var(--secondary-color);
     transition: width 0.3s ease;
 }
 
 nav ul li a:hover::after,
-nav ul li a.active::after { /* Aggiunto stato attivo */
+nav ul li a.active::after {
     width: 100%;
 }
 
@@ -119,11 +119,11 @@ nav ul li a.active::after { /* Aggiunto stato attivo */
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
     text-align: center;
-    padding: 100px 20px; /* Più padding */
+    padding: 100px 20px;
     margin-bottom: 30px;
     box-shadow: var(--shadow-light);
     position: relative;
-    overflow: hidden; /* Per le animazioni di sfondo */
+    overflow: hidden;
 }
 
 /* Animazione di sfondo per l'hero (opzionale, per un tocco "tech") */
@@ -147,20 +147,20 @@ nav ul li a.active::after { /* Aggiunto stato attivo */
 
 .hero-content {
     position: relative;
-    z-index: 1; /* Assicura che il contenuto sia sopra l'animazione */
+    z-index: 1;
 }
 
 .hero h1 {
     color: white;
-    font-size: 3.5rem; /* Più grande */
+    font-size: 3.5rem;
     margin-bottom: 20px;
     text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
 }
 
 .hero p {
-    font-size: 1.3rem; /* Più grande */
+    font-size: 1.3rem;
     max-width: 900px;
-    margin: 0 auto 30px; /* Spazio sotto il paragrafo */
+    margin: 0 auto 30px;
     opacity: 0.95;
 }
 
@@ -169,7 +169,7 @@ nav ul li a.active::after { /* Aggiunto stato attivo */
     background-color: var(--accent-color);
     color: white;
     padding: 15px 30px;
-    border-radius: 50px; /* Bottone arrotondato */
+    border-radius: 50px;
     font-weight: bold;
     font-size: 1.1rem;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -177,7 +177,7 @@ nav ul li a.active::after { /* Aggiunto stato attivo */
 }
 
 .button-primary:hover {
-    background-color: #218838; /* Verde più scuro all'hover */
+    background-color: #218838;
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
@@ -189,20 +189,20 @@ nav ul li a.active::after { /* Aggiunto stato attivo */
 /* Main Content */
 main {
     max-width: 1200px;
-    margin: 30px auto; /* Margine superiore aumentato */
+    margin: 30px auto;
     padding: 0 25px;
 }
 
 section {
-    margin-bottom: 50px; /* Spazio maggiore tra le sezioni */
+    margin-bottom: 50px;
     padding: 30px 0;
 }
 
 .card {
     background-color: var(--card-bg);
-    border-radius: 12px; /* Angoli più arrotondati */
+    border-radius: 12px;
     box-shadow: var(--shadow-light);
-    padding: 40px; /* Padding generoso */
+    padding: 40px;
     margin-bottom: 40px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -226,8 +226,8 @@ section {
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    width: 80px; /* Linea più lunga */
-    height: 4px; /* Linea più spessa */
+    width: 80px;
+    height: 4px;
     background-color: var(--secondary-color);
     border-radius: 5px;
 }
@@ -253,11 +253,11 @@ section {
 
 .card ul {
     margin-top: 20px;
-    margin-left: 20px; /* Indentazione per i punti lista */
+    margin-left: 20px;
 }
 
 .card ul li {
-    list-style: disc; /* Punti lista reali */
+    list-style: disc;
     margin-bottom: 10px;
     color: var(--light-text-color);
 }
@@ -266,12 +266,12 @@ section {
 .highlight-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px; /* Spazio tra gli elementi */
+    gap: 25px;
     margin-top: 30px;
 }
 
 .highlight-item {
-    background-color: var(--bg-color); /* Sfondo più chiaro all'interno della card */
+    background-color: var(--bg-color);
     border-radius: 10px;
     padding: 25px;
     text-align: center;
@@ -286,7 +286,7 @@ section {
 }
 
 .highlight-item i {
-    font-size: 3rem; /* Icone più grandi */
+    font-size: 3rem;
     color: var(--secondary-color);
     margin-bottom: 15px;
 }
@@ -306,7 +306,7 @@ section {
 .highlight-value {
     font-size: 1.8rem;
     font-weight: bold;
-    color: var(--accent-color); /* Colore brillante per il valore */
+    color: var(--accent-color);
     display: block;
     margin-top: 10px;
 }
@@ -356,16 +356,16 @@ section {
 
 .plot-container {
     width: 100%;
-    height: 450px; /* Altezza leggermente aumentata */
+    height: 450px;
     margin: 25px 0;
     background-color: #f0f0f0;
     border-radius: 8px;
     overflow: hidden;
     display: flex;
-    flex-direction: column; /* Per spinner e messaggio uno sotto l'altro */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; /* Per posizionare lo spinner */
+    position: relative;
     border: 1px solid var(--border-color);
 }
 
@@ -384,7 +384,7 @@ section {
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
-    display: block; /* Mostra di default */
+    display: block;
 }
 
 @keyframes spin {
@@ -395,8 +395,8 @@ section {
 /* Animazione Fade-in per le sezioni */
 .fade-in {
     opacity: 0;
-    transform: translateY(30px); /* Spostamento maggiore */
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Transizione più lenta */
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .fade-in.active {
@@ -420,18 +420,18 @@ footer {
     position: fixed;
     bottom: 25px;
     left: 25px;
-    background-color: var(--accent-color); /* Verde accento */
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 50%;
-    width: 55px; /* Leggermente più grande */
+    width: 55px;
     height: 55px;
     font-size: 1.6rem;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25); /* Ombra più pronunciata */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.2s ease;
@@ -444,8 +444,8 @@ footer {
 }
 
 #back-to-top:hover {
-    transform: translateY(-5px); /* Effetto hover */
-    background-color: #218838; /* Verde più scuro */
+    transform: translateY(-5px);
+    background-color: #218838;
 }
 
 
@@ -458,13 +458,13 @@ footer {
         font-size: 1.15rem;
     }
     nav ul {
-        display: none; /* Nasconde il menu per mobile */
+        display: none;
     }
     .card h2 {
         font-size: 1.8rem;
     }
     .highlight-grid {
-        grid-template-columns: 1fr; /* Colonna singola su schermi più piccoli */
+        grid-template-columns: 1fr;
     }
 }
 
