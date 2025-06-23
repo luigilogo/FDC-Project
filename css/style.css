@@ -354,7 +354,8 @@ section {
     color: var(--light-text-color);
 }
 
-.plot-container {
+/* NON PIÙ NECESSARIO: Stili per plot-container/spinner */
+/* .plot-container {
     width: 100%;
     height: 450px;
     margin: 25px 0;
@@ -376,7 +377,6 @@ section {
     animation: pulse 1.5s infinite alternate;
 }
 
-/* Loading Spinner CSS */
 .loading-spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-top: 4px solid var(--primary-color);
@@ -390,7 +390,7 @@ section {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
+} */
 
 /* Animazione Fade-in per le sezioni */
 .fade-in {
@@ -495,9 +495,10 @@ footer {
     .indice-card h3 {
         font-size: 1.5rem;
     }
-    .plot-container {
+    /* Rimosso o commentato .plot-container height se non più usato */
+    /* .plot-container {
         height: 350px;
-    }
+    } */
     #back-to-top {
         width: 50px;
         height: 50px;
