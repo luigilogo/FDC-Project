@@ -160,8 +160,20 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
         // Tenta di identificare la colonna dell'anno e dei valori
         if (rawData.length > 0) {
             const headerKeys = Object.keys(rawData[0]);
-            const yearKey = headerKeys.find(key => key.toLowerCase() === 'year' || key.toLowerCase() === 'anno');
-            valueKey = headerKeys.find(key => key.toLowerCase() !== 'year' && key.toLowerCase() !== 'anno' && !key.toLowerCase().includes('date') && !key.toLowerCase().includes('month'));
+            // Trova la colonna dell'anno (insensibile a maiuscole/minuscole e varianti)
+            const yearKey = headerKeys.find(key => 
+                key.toLowerCase() === 'year' || 
+                key.toLowerCase() === 'anno' || 
+                key.toLowerCase().includes('year') // Es: 'Anni'
+            );
+            // Trova la colonna dei valori (non sia l'anno, data o mese)
+            valueKey = headerKeys.find(key => 
+                key.toLowerCase() !== 'year' && 
+                key.toLowerCase() !== 'anno' && 
+                !key.toLowerCase().includes('date') && 
+                !key.toLowerCase().includes('month') &&
+                key // Assicurati che la chiave non sia vuota
+            );
             
             if (!yearKey) {
                 console.error(`Colonna 'Year' o 'Anno' non trovata nel CSV per ${id}. Header disponibili:`, headerKeys);
@@ -177,7 +189,8 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
             rawData.forEach(row => {
                 const year = parseFloat(row[yearKey]);
                 const value = parseFloat(row[valueKey]);
-                if (!isNaN(year) && !isNaN(value)) {
+                // Includi solo righe con numeri validi
+                if (!isNaN(year) && !isNaN(value) && year !== null && value !== null) {
                     years.push(year);
                     values.push(value);
                 }
@@ -289,7 +302,10 @@ async function createPlot(id, filePath, title, yAxisTitle, color = '#007bff') {
 // Funzione per mostrare/nascondere il bottone "Torna su"
 function setupBackToTopButton() {
     const backToTopButton = document.getElementById('back-to-top');
-    if (!backToTopButton) return;
+    if (!backToTopButton) {
+        console.warn("Bottone 'back-to-top' non trovato nell'HTML.");
+        return;
+    }
 
     window.addEventListener('scroll', () => {
         if (window.scrollY > 300) { // Mostra il bottone dopo aver scrollato 300px
@@ -305,11 +321,17 @@ function setupBackToTopButton() {
             behavior: 'smooth'
         });
     });
+    console.log("Bottone 'Torna su' configurato.");
 }
 
 // Funzione per attivare le animazioni fade-in
 function setupFadeInAnimations() {
     const faders = document.querySelectorAll('.fade-in');
+    if (faders.length === 0) {
+        console.warn("Nessun elemento con classe 'fade-in' trovato per le animazioni.");
+        return;
+    }
+
     const appearOptions = {
         threshold: 0.2 // Attiva quando il 20% dell'elemento è visibile
     };
@@ -328,6 +350,7 @@ function setupFadeInAnimations() {
     faders.forEach(fader => {
         appearOnScroll.observe(fader);
     });
+    console.log("Animazioni fade-in configurate.");
 }
 
 
@@ -342,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFadeInAnimations();
 
     // Richiama la funzione per creare ogni grafico con i tuoi NOMI FILE AGGIORNATI
+    // Assicurati che questi file siano nella cartella 'data/' sul tuo GitHub
     createPlot('plot-prcptot', 'data/Vercelli_94_24_prcptot_ANN.csv', 'prcptot: Precipitazione Totale Annuale', 'mm', '#007bff');
     createPlot('plot-sdii', 'data/Vercelli_94_24_sdii_ANN.csv', 'sdii: Intensità Media Precipitazioni', 'mm/giorno', '#28a745');
     createPlot('plot-spi_24_month', 'data/Vercelli_94_24_24month_spi_MON.csv', 'spi_24_month: Indice di Precipitazione Standardizzato (24 Mesi)', 'Valore SPI', '#ffc107');
