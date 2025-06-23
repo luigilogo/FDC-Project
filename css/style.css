@@ -16,6 +16,7 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden; /* Evita scroll orizzontale non voluto */
+    scroll-behavior: smooth; /* Scorrimento fluido per gli anchor link */
 }
 
 a {
@@ -44,7 +45,6 @@ header {
     background-color: var(--card-bg);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 1rem 0;
-    /* Le proprietà 'position: sticky', 'top' e 'z-index' sono state rimosse per far scorrere l'header */
 }
 
 nav {
@@ -224,6 +224,18 @@ section {
     to { opacity: 1; }
 }
 
+/* Animazione Fade-in per le sezioni */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Footer */
 footer {
     background-color: var(--primary-color);
@@ -237,6 +249,35 @@ footer p {
     margin: 0;
     font-size: 0.9rem;
 }
+
+/* Bottone Torna su */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /* Posizionato a sinistra come richiesto */
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    opacity: 0; /* Inizialmente nascosto */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000; /* Assicura che sia sopra gli altri elementi */
+}
+
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 /* Media Queries per Responsività */
 @media (max-width: 768px) {
@@ -281,6 +322,14 @@ footer p {
 
     .plot-container {
         height: 300px;
+    }
+
+    #back-to-top {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        bottom: 15px;
+        left: 15px;
     }
 }
 
