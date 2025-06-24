@@ -20,6 +20,8 @@
             --color-text-light: #555555; /* Testo Grigio per dettagli */
             --color-white: #FFFFFF; /* Bianco Puro */
             --color-border: #DCDCDC; /* Bordo Sottile */
+            --color-warning: #FF6347; /* Rosso-arancio per avvisi/rischi */
+
 
             --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra leggera e diffusa */
             --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15); /* Ombra più pronunciata al hover */
@@ -960,12 +962,9 @@
             .card h3 { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
             .card h3 i { margin-right: 15px; }
             .card ul li { font-size: 1.0rem; }
-            .card ul li::before { font-size: 1.3em; margin-right: 12px; }
+            /* .card ul li::before { font-size: 1.3em; margin-right: 12px; } */ /* Commentato per gestire con il nuovo stile */
 
-            .intro-grid { grid-template-columns: 1fr; gap: 40px; }
-            .intro-content h3 { font-size: clamp(1.8rem, 4.5vw, 2.2rem); }
-            .intro-content p { font-size: 1.0rem; }
-            .intro-visual { padding: 30px; min-height: 280px; }
+            .intro-visual { min-height: 280px; padding: 30px; }
             .intro-visual i { font-size: 4rem; }
 
             .highlight-grid { grid-template-columns: 1fr; gap: 30px; }
@@ -1010,7 +1009,7 @@
             .card h3 { font-size: clamp(1.4rem, 6vw, 1.8rem); }
             .card h3 i { font-size: 0.9em; margin-right: 10px; }
             .card ul li { font-size: 0.95rem; }
-            .card ul li::before { font-size: 1.2em; margin-right: 10px; }
+            /* .card ul li::before { font-size: 1.2em; margin-right: 10px; } */ /* Commentato per gestire con il nuovo stile */
 
             .intro-visual { min-height: 220px; padding: 25px; }
             .intro-visual i { font-size: 3.5rem; }
@@ -1032,6 +1031,87 @@
             .content-swiper-container { min-height: 300px; }
             .content-slide { padding-bottom: 60px; min-height: 250px;}
             .simulated-graph-container { height: 200px; }
+        }
+
+        /* Nuovi stili per le liste di rischi */
+        .risk-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 25px; /* Adjust spacing */
+            margin-left: 0; /* Remove default ul margin */
+            font-size: 1.05em; /* Slightly smaller for detailed points */
+        }
+
+        .risk-list li {
+            display: flex;
+            align-items: center; /* Align icon and text vertically */
+            margin-bottom: 12px; /* Closer spacing for list items */
+            color: var(--color-text-dark);
+            font-weight: 500;
+        }
+
+        .risk-list li i {
+            margin-right: 12px; /* Space between icon and text */
+            font-size: 1.2em; /* Icon size */
+            color: var(--color-warning); /* Warning color for risks */
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+        .risk-list li strong {
+            color: var(--color-primary-dark);
+        }
+
+        /* Stili per la sezione Conclusioni - Nuova struttura */
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .conclusion-item {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-subtle);
+            padding: 40px;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Ensure equal height */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to top */
+        }
+
+        .conclusion-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .conclusion-item i {
+            font-size: 4.5rem;
+            color: var(--color-accent-blue);
+            margin-bottom: 25px;
+        }
+
+        .conclusion-item h3 {
+            font-size: 1.8rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .conclusion-item p {
+            font-size: 1.05rem;
+            color: var(--color-text-light);
+            line-height: 1.7;
+            text-align: center;
+            flex-grow: 1; /* Pushes content down if needed */
+        }
+
+        .conclusion-item p strong {
+            color: var(--color-primary-dark);
         }
     </style>
 </head>
@@ -1140,8 +1220,8 @@
                             <i class="fas fa-cloud-showers-heavy" style="font-size: 3.5rem;"></i>
                             <h3>Precipitazioni</h3>
                             <p>Totale annua: <strong>650 mm</strong></p>
-                            <p>95° perc. giornaliero: <strong>32.5 mm</strong></p>
-                            <p>99° perc. giornaliero: <strong>68.1 mm</strong></p>
+                            <p>95° perc. giornaliero: <strong>37.12 mm</strong></p>
+                            <p>99° perc. giornaliero: <strong>74.57 mm</strong></p>
                         </div>
                     </div>
                     <p class="note-global fade-in delay-6">I dati sopra sono medie del periodo 1994-2024 per la stazione di Vercelli. **(Aggiorna con i tuoi dati specifici e i valori Sen's Slope e P-value per i trend)**</p>
@@ -1276,30 +1356,30 @@
                         <i class="fas fa-seedling" style="color: #68B1A0;"></i>
                         <h3>Agricoltura: Resilienza della Risicoltura</h3>
                         <p>La risicoltura, pilastro dell'economia vercellese, è vulnerabile. L'aumento della siccità e delle ondate di calore estive minaccia la disponibilità idrica per l'irrigazione, causando stress alle colture, calo delle rese e aumento dei costi di produzione.</p>
-                        <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.95em; color: var(--color-text-dark);">
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Stress idrico per riso e mais.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Aumento parassiti e malattie.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Difficoltà per semine e raccolti.</li>
+                        <ul class="risk-list">
+                            <li><i class="fas fa-triangle-exclamation"></i> **Stress idrico** per riso e mais.</li>
+                            <li><i class="fas fa-bug"></i> **Aumento parassiti e malattie**.</li>
+                            <li><i class="fas fa-calendar-times"></i> **Difficoltà per semine e raccolti**.</li>
                         </ul>
                     </div>
                     <div class="highlight-item fade-in scale-in-sm delay-1">
                         <i class="fas fa-house-chimney" style="color: #d62828;"></i>
                         <h3>Salute Pubblica & Vita Urbana</h3>
                         <p>Le ondate di calore prolungate, soprattutto con le "notti tropicali", aumentano il rischio di colpi di calore, disidratazione e stress cardiovascolare, in particolare per anziani e bambini. L'aumento delle temperature favorisce anche la proliferazione di insetti vettori di malattie.</p>
-                        <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.95em; color: var(--color-text-dark);">
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Aumento mortalità/morbilità per caldo.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Disagio urbano e blackout energetici.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Proliferazione vettori (zanzare).</li>
+                        <ul class="risk-list">
+                            <li><i class="fas fa-lungs-virus"></i> **Aumento mortalità/morbilità** per caldo.</li>
+                            <li><i class="fas fa-bolt"></i> **Disagio urbano e blackout** energetici.</li>
+                            <li><i class="fas fa-mosquito"></i> **Proliferazione vettori** (zanzare).</li>
                         </ul>
                     </div>
                     <div class="highlight-item fade-in scale-in-sm delay-2">
                         <i class="fas fa-water" style="color: #007bff;"></i>
                         <h3>Gestione Risorse Idriche</h3>
                         <p>Il fiume Sesia e il sistema di canali (Cavour, Regina Elena) sono vitali. La diminuzione delle precipitazioni e l'aumento dell'evaporazione rendono più complessa la gestione delle riserve idriche, creando conflitti tra usi agricoli, civili e industriali.</p>
-                        <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.95em; color: var(--color-text-dark);">
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Minore disponibilità d'acqua potabile.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Conflitti d'uso dell'acqua.</li>
-                            <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 8px;"></i> Impatto su ecosistemi fluviali.</li>
+                        <ul class="risk-list">
+                            <li><i class="fas fa-faucet-drip"></i> **Minore disponibilità** d'acqua potabile.</li>
+                            <li><i class="fas fa-handshake-slash"></i> **Conflitti d'uso** dell'acqua.</li>
+                            <li><i class="fas fa-fish-fins"></i> **Impatto su ecosistemi** fluviali.</li>
                         </ul>
                     </div>
                 </div>
@@ -1308,22 +1388,36 @@
         </section>
 
         <section id="conclusioni" class="bg-light-section content-reveal">
-            <div class="card slide-up content-swiper-container" data-slide-id="conclusioni">
+            <div class="container">
                 <h2 class="section-title-animated"><i class="fas fa-lightbulb"></i> Le Nostre Conclusioni Principali</h2>
                 <p class="section-description content-reveal">L'analisi del clima di Vercelli nel periodo 1994-2024 rivela un quadro chiaro: la regione sta sperimentando cambiamenti climatici significativi, con implicazioni che toccano ogni aspetto della vita locale.</p>
-                <div class="content-slide">
-                    <ul class="fade-in">
-                        <li>**Allarme Siccità:** Abbiamo riscontrato un <strong>chiaro e significativo deficit nelle precipitazioni totali</strong> e un <strong>aumento dell'intensità degli eventi siccitosi estremi</strong> (come evidenziato da SPI e SPEI). Ciò si traduce in una minore disponibilità idrica e un rischio crescente di periodi di aridità prolungata.</li>
-                        <li>**Riscaldamento Accelerato:** Le temperature, sia massime che minime notturne (TX90p, TN90p), mostrano un trend di crescita statisticamente significativo. Questo significa <strong>più giorni e notti "tropicali" e ondate di calore più frequenti e intense</strong>, con ripercussioni sulla salute umana, sull'agricoltura e sui consumi energetici.</li>
-                    </ul>
+                
+                <div class="conclusion-grid">
+                    <div class="conclusion-item fade-in slide-up">
+                        <i class="fas fa-droplet-slash"></i>
+                        <h3>Allarme Siccità</h3>
+                        <p>Abbiamo riscontrato un **chiaro e significativo deficit nelle precipitazioni totali** e un **aumento dell'intensità degli eventi siccitosi estremi** (come evidenziato da SPI e SPEI). Ciò si traduce in una minore disponibilità idrica e un rischio crescente di periodi di aridità prolungata.</p>
+                    </div>
+                    <div class="conclusion-item fade-in slide-up delay-1">
+                        <i class="fas fa-temperature-full"></i>
+                        <h3>Riscaldamento Accelerato</h3>
+                        <p>Le temperature, sia massime che minime notturne (TX90p, TN90p), mostrano un trend di crescita statisticamente significativo. Questo significa **più giorni e notti "tropicali" e ondate di calore più frequenti e intense**, con ripercussioni sulla salute umana, sull'agricoltura e sui consumi energetici.</p>
+                    </div>
+                    <div class="conclusion-item fade-in slide-up delay-2">
+                        <i class="fas fa-cloud-showers-water"></i>
+                        <h3>Eventi Estremi in Evoluzione</h3>
+                        <p>Nonostante la riduzione delle precipitazioni totali, si osserva una tendenza verso **eventi piovosi più intensi e brevi**, aumentando il rischio di allagamenti localizzati e dissesto idrogeologico.</p>
+                    </div>
+                    <div class="conclusion-item fade-in slide-up delay-3">
+                        <i class="fas fa-person-falling-burst"></i>
+                        <h3>Vulnerabilità Territoriale</h3>
+                        <p>Il combinarsi di meno acqua, più calore e fenomeni estremi crea una **maggiore vulnerabilità per settori chiave** come l'agricoltura (in particolare la risicoltura), la gestione delle risorse idriche e la salute pubblica a Vercelli.</p>
+                    </div>
                 </div>
-                <div class="content-slide">
-                    <ul class="fade-in delay-1">
-                        <li>**Eventi Estremi in Evoluzione:** Nonostante la riduzione delle precipitazioni totali, si osserva una tendenza verso **eventi piovosi più intensi e brevi**, aumentando il rischio di allagamenti localizzati.</li>
-                        <li>**Vulnerabilità del Territorio:** Il combinarsi di meno acqua, più calore e fenomeni estremi crea una **maggiore vulnerabilità per settori chiave** come l'agricoltura (in particolare la risicoltura), la gestione delle risorse idriche e la salute pubblica a Vercelli.</li>
-                    </ul>
-                    <p class="fade-in delay-2" style="margin-top: 30px;">È imperativo che queste evidenze siano considerate nella pianificazione territoriale e nelle strategie di adattamento per costruire una Vercelli più resiliente di fronte ai cambiamenti climatici.</p>
-                </div>
+
+                <p class="note-global fade-in delay-4" style="margin-top: 60px;">
+                    È imperativo che queste evidenze siano considerate nella pianificazione territoriale e nelle strategie di adattamento per costruire una Vercelli più resiliente di fronte ai cambiamenti climatici.
+                </p>
             </div>
         </section>
 
@@ -1334,19 +1428,19 @@
                 <div class="content-slide">
                     <h3 class="fade-in"><i class="fas fa-droplet"></i> Sfida 1: Affrontare la Siccità Cronica</h3>
                     <p class="fade-in delay-1">Il rischio di siccità diventerà più acuto, con impatti diretti sulla **disponibilità d'acqua per agricoltura e usi civili**. La gestione del sistema idrico (canali, Sesia) richiederà interventi innovativi per massimizzare l'efficienza e ridurre gli sprechi.</p>
-                    <ul class="fade-in delay-2" style="list-style: none; padding: 0; text-align: left;">
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Promuovere l'irrigazione a basso consumo (es. a goccia).</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare colture più resistenti alla siccità.</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Implementare sistemi di raccolta e riuso dell'acqua piovana.</li>
+                    <ul style="list-style: none; padding: 0; text-align: left;">
+                        <li><i class="fas fa-leaf" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Promuovere l'irrigazione a basso consumo (es. a goccia).</li>
+                        <li><i class="fas fa-seedling" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare colture più resistenti alla siccità.</li>
+                        <li><i class="fas fa-recycle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Implementare sistemi di raccolta e riuso dell'acqua piovana.</li>
                     </ul>
                 </div>
                 <div class="content-slide">
                     <h3 class="fade-in delay-3"><i class="fas fa-temperature-full"></i> Sfida 2: Gestire le Ondate di Calore</h3>
                     <p class="fade-in delay-4">Le temperature estreme, specialmente di notte, richiederanno nuove strategie per proteggere la popolazione. Il rischio di **incendi boschivi** nelle aree limitrofe aumenterà.</p>
-                    <ul class="fade-in delay-5" style="list-style: none; padding: 0; text-align: left;">
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Piani di emergenza e allerta per ondate di calore.</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Aumentare le aree verdi urbane e la forestazione per mitigare l'isola di calore.</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare l'efficienza energetica e le energie rinnovabili.</li>
+                    <ul style="list-style: none; padding: 0; text-align: left;">
+                        <li><i class="fas fa-bell" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Piani di emergenza e allerta per ondate di calore.</li>
+                        <li><i class="fas fa-city" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Aumentare le aree verdi urbane e la forestazione per mitigare l'isola di calore.</li>
+                        <li><i class="fas fa-solar-panel" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare l'efficienza energetica e le energie rinnovabili.</li>
                     </ul>
                 </div>
                 <div class="content-slide">
@@ -1419,32 +1513,53 @@
                 }
 
                 updateActiveNavLink();
+                revealContentOnScroll();
             });
 
             // --- Funzione per aggiornare il link di navigazione attivo ---
             function updateActiveNavLink() {
                 let currentActiveSectionId = '';
-                const headerOffset = header ? header.offsetHeight : 0; 
-
                 sections.forEach(section => {
-                    // Considera la parte superiore della sezione per l'attivazione
-                    const sectionTop = section.offsetTop - (headerOffset + window.innerHeight * 0.3); // Attiva quando 30% della sezione è visibile
-                    const sectionBottom = sectionTop + section.offsetHeight;
-
-                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                    const rect = section.getBoundingClientRect();
+                    // Considera la sezione attiva se il suo top è visibile o appena sopra il centro della viewport
+                    // E se la sezione è abbastanza grande da non essere solo un "passaggio" rapido
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
                         currentActiveSectionId = section.id;
                     }
                 });
 
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === currentActiveSectionId) {
+                    if (link.getAttribute('href') === `#${currentActiveSectionId}`) {
                         link.classList.add('active');
                     }
                 });
             }
 
-            // --- Gestione Click Bottone "Torna su" ---
+            // Inizializza al caricamento della pagina
+            updateActiveNavLink();
+
+            // --- Smooth Scroll per i link di navigazione ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        // Calcola la posizione di scroll tenendo conto dell'altezza fissa dell'header
+                        const headerOffset = header.offsetHeight;
+                        const elementPosition = targetSection.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+
+            // --- Back to Top Button Listener ---
             if (backToTopButton) {
                 backToTopButton.addEventListener('click', () => {
                     window.scrollTo({
@@ -1454,287 +1569,232 @@
                 });
             }
 
-            // --- Gestione Click Link di Navigazione (Scroll to Section) ---
-            navLinks.forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
+            // --- Inizializzazione Leaflet Map ---
+            let map;
+            let markers = [];
 
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-
-                    if (targetElement) {
-                        const headerOffset = header ? header.offsetHeight : 0;
-                        const offsetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        // Set active class after scroll, for smooth transition
-                        setTimeout(() => {
-                            navLinks.forEach(item => item.classList.remove('active'));
-                            this.classList.add('active');
-                        }, 600); // Allow scroll to finish before updating active class
-                    }
-                });
-            });
-
-            // --- Animazioni al Reveal con IntersectionObserver ---
-            const elementsToAnimate = document.querySelectorAll(
-                '.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .section-title-animated, .section-description, .simulated-graph-container, .intro-content, .intro-visual, .highlight-item.small-note'
-            );
-
-            const observerOptions = {
-                root: null, 
-                threshold: 0.1, 
-                rootMargin: "0px 0px -100px 0px" // Start observing 100px before bottom of viewport
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        // Unobserve only non-swiper containers and non-graph containers
-                        if (!entry.target.classList.contains('content-swiper-container') && !entry.target.classList.contains('simulated-graph-container')) {
-                             observer.unobserve(entry.target); 
-                        }
-                    } else {
-                        // Optional: remove 'active' class if you want animations to replay on scroll up
-                        // entry.target.classList.remove('active'); 
-                    }
-                });
-            }, observerOptions);
-
-            elementsToAnimate.forEach(el => {
-                observer.observe(el);
-            });
-
-            // --- Inizializzazione all'apertura della pagina (per hash in URL) ---
-            const initializePage = () => {
-                const initialHash = window.location.hash;
-                if (initialHash) {
-                    const targetElement = document.querySelector(initialHash);
-                    if (targetElement) {
-                        const headerOffset = header ? header.offsetHeight : 0;
-                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-                        const offsetPosition = elementPosition - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: 'auto' }); 
-                        
-                        setTimeout(() => {
-                            navLinks.forEach(link => {
-                                link.classList.remove('active');
-                                if (link.getAttribute('href') === initialHash) {
-                                    link.classList.add('active');
-                                }
-                            });
-                        }, 300);
-                    }
-                } else {
-                    const firstNavLink = document.querySelector('nav .nav-link'); // Activate first link by default
-                    if (firstNavLink) {
-                        firstNavLink.classList.add('active');
-                    }
+            function initMap() {
+                if (map) {
+                    map.remove(); // Rimuove la mappa esistente se la funzione viene chiamata di nuovo
                 }
-                updateActiveNavLink(); 
-            };
+                map = L.map('map').setView([45.326, 8.423], 12); // Coordinate di Vercelli
 
-            setTimeout(initializePage, 250);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
 
-            // --- Logica per il Content Swiper (interazione testuale) ---
-            const contentSwipers = document.querySelectorAll('.content-swiper-container');
+                // Dati di esempio per i marker (Vercelli e dintorni)
+                const locations = [
+                    {
+                        lat: 45.326,
+                        lng: 8.423,
+                        name: 'Centro Urbano di Vercelli',
+                        icon: 'fas fa-city',
+                        color: 'red',
+                        risks: [
+                            'Ondate di calore estreme (TX90p, TN90p)',
+                            'Stress termico per la popolazione (specialmente anziani)',
+                            'Aumento consumi energetici per raffreddamento',
+                            'Problemi di qualità dell\'aria amplificati dal calore'
+                        ]
+                    },
+                    {
+                        lat: 45.335,
+                        lng: 8.360,
+                        name: 'Aree Agricole (Risaie Ovest)',
+                        icon: 'fas fa-seedling',
+                        color: 'green',
+                        risks: [
+                            'Stress idrico severo per risicoltura (SPEI, SPI)',
+                            'Aumento parassiti e malattie delle colture',
+                            'Riduzione della resa e della qualità del raccolto',
+                            'Maggiori costi per l\'irrigazione'
+                        ]
+                    },
+                    {
+                        lat: 45.310,
+                        lng: 8.470,
+                        name: 'Fiume Sesia e Canali (Est)',
+                        icon: 'fas fa-water',
+                        color: 'blue',
+                        risks: [
+                            'Riduzione della portata del fiume (PRCPTOT)',
+                            'Crisi idrica per uso irriguo e civile',
+                            'Impatto sulla biodiversità acquatica',
+                            'Rischio di intrusioni saline in falda (se rilevante)'
+                        ]
+                    },
+                    {
+                        lat: 45.380,
+                        lng: 8.400,
+                        name: 'Periferia Nord Vercelli',
+                        icon: 'fas fa-road',
+                        color: 'orange',
+                        risks: [
+                            'Danni alle infrastrutture stradali per sbalzi termici',
+                            'Rischio frane e smottamenti (in aree collinari limitrofe, se applicabile)',
+                            'Problemi di drenaggio urbano con piogge intense'
+                        ]
+                    }
+                ];
 
-            contentSwipers.forEach(container => {
-                const slides = container.querySelectorAll('.content-slide');
-                let currentSlide = 0;
-
-                // Create controls if they don't exist
-                let controlsDiv = container.querySelector('.content-controls');
-                if (!controlsDiv) {
-                    controlsDiv = document.createElement('div');
-                    controlsDiv.classList.add('content-controls');
-                    controlsDiv.innerHTML = `
-                        <button class="prev-content" disabled><i class="fas fa-arrow-left"></i> Indietro</button>
-                        <span class="page-indicator">Pagina ${currentSlide + 1} di ${slides.length}</span>
-                        <button class="next-content">Continua a Leggere <i class="fas fa-arrow-right"></i></button>
-                    `;
-                    container.appendChild(controlsDiv);
-                }
-
-                const prevButton = controlsDiv.querySelector('.prev-content');
-                const nextButton = controlsDiv.querySelector('.next-content');
-                const pageIndicator = controlsDiv.querySelector('.page-indicator');
-
-                const showSlide = (index) => {
-                    slides.forEach((slide, i) => {
-                        if (i === index) {
-                            slide.classList.add('active');
-                            slide.classList.remove('hidden'); // Ensure hidden class is removed
-                            // Re-trigger animations for elements inside the active slide
-                            const elementsInsideSlide = slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .simulated-graph-container');
-                            elementsInsideSlide.forEach(el => {
-                                el.classList.remove('active'); // Remove to re-trigger
-                                void el.offsetWidth; // Trigger reflow
-                                el.classList.add('active');
-                            });
-                        } else {
-                            slide.classList.remove('active');
-                            slide.classList.add('hidden'); // Hide non-active slides
-                        }
-                    });
-
-                    prevButton.disabled = (index === 0);
-                    nextButton.disabled = (index === slides.length - 1);
-                    pageIndicator.textContent = `Pagina ${index + 1} di ${slides.length}`;
-
-                    // Adjust container height to active slide height + controls
-                    requestAnimationFrame(() => {
-                        let activeSlideHeight = 0;
-                        const activeSlide = slides[index];
-                        if (activeSlide) {
-                            activeSlideHeight = activeSlide.scrollHeight; 
-                            const computedStyle = window.getComputedStyle(activeSlide);
-                            const slidePaddingBottom = parseFloat(computedStyle.paddingBottom);
-                            activeSlideHeight += slidePaddingBottom;
-                        }
-                        
-                        const controlsHeight = controlsDiv.offsetHeight;
-                        container.style.minHeight = `${activeSlideHeight + controlsHeight + 60}px`; 
+                // Funzione per creare icone personalizzate
+                const createCustomIcon = (iconClass, color) => {
+                    return L.divIcon({
+                        html: `<i class="${iconClass}" style="color: ${color}; font-size: 2.5rem;"></i>`,
+                        className: 'map-icon', // Aggiungi una classe per styling extra se necessario
+                        iconSize: [40, 40], // Dimensione dell'icona (width, height)
+                        iconAnchor: [20, 40], // Punto dell'icona che corrisponde alla posizione del marker (metà larghezza, fondo)
+                        popupAnchor: [0, -40] // Sposta il popup sopra l'icona
                     });
                 };
 
-                prevButton.addEventListener('click', () => {
-                    if (currentSlide > 0) {
-                        currentSlide--;
-                        showSlide(currentSlide);
-                    }
+                // Aggiungi marker alla mappa
+                locations.forEach(loc => {
+                    const customIcon = createCustomIcon(loc.icon, loc.color);
+                    const marker = L.marker([loc.lat, loc.lng], { icon: customIcon }).addTo(map);
+
+                    let popupContent = `<strong>${loc.name}</strong><br><br><strong>Rischi Climatici Principali:</strong><ul>`;
+                    loc.risks.forEach(risk => {
+                        popupContent += `<li>${risk}</li>`;
+                    });
+                    popupContent += `</ul><p style="font-size:0.85em; margin-top:10px;"><em>(Dati simulati per l'esempio)</em></p>`;
+                    
+                    marker.bindPopup(popupContent);
+                    markers.push(marker); // Aggiungi il marker all'array
                 });
 
-                nextButton.addEventListener('click', () => {
-                    if (currentSlide < slides.length - 1) {
-                        currentSlide++;
-                        showSlide(currentSlide);
+                // Aggiungi Legenda Personalizzata
+                const legend = L.control({ position: 'bottomright' });
+
+                legend.onAdd = function (map) {
+                    const div = L.DomUtil.create('div', 'info legend');
+                    div.innerHTML = '<b>Aree di Rischio</b><br>';
+                    locations.forEach(loc => {
+                        div.innerHTML +=
+                            `<span style="background-color:${loc.color};"></span> ${loc.name}<br>`;
+                    });
+                    return div;
+                };
+
+                legend.addTo(map);
+            }
+
+            // Inizializza la mappa quando la sezione "mappa-rischi" diventa visibile
+            const mapSection = document.getElementById('mappa-rischi');
+            const mapObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        initMap();
+                        observer.disconnect(); // Smetti di osservare una volta che la mappa è stata inizializzata
                     }
                 });
+            }, { threshold: 0.1 }); // Trigger quando il 10% della sezione è visibile
 
-                if (slides.length > 0) {
-                    showSlide(currentSlide);
-                } else {
-                    controlsDiv.style.display = 'none';
-                }
+            mapObserver.observe(mapSection);
 
-                // Ensure slide is shown when container becomes visible
-                const swiperObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            showSlide(currentSlide); // Re-render current slide to ensure height is correct
+
+            // --- Content Reveal (Scroll Animation) ---
+            const contentRevealElements = document.querySelectorAll('.content-reveal');
+            const animatedTitles = document.querySelectorAll('.section-title-animated');
+            const animatedGraphs = document.querySelectorAll('.simulated-graph-container');
+
+            function revealContentOnScroll() {
+                contentRevealElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    // Se l'elemento è visibile (almeno una parte)
+                    if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+                        element.classList.add('active');
+                        // Attiva animazioni interne con ritardo
+                        element.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
+                            child.classList.add('active');
+                        });
+                        // Attiva specifici grafici simulati quando visibili
+                        element.querySelectorAll('.simulated-graph-container').forEach(graph => {
+                            graph.classList.add('active');
+                        });
+                    } else {
+                        // Optional: remove 'active' when out of view to re-trigger on scroll up
+                        // element.classList.remove('active');
+                        // element.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
+                        //     child.classList.remove('active');
+                        // });
+                        // element.querySelectorAll('.simulated-graph-container').forEach(graph => {
+                        //     graph.classList.remove('active');
+                        // });
+                    }
+                });
+            }
+
+            // Trigger on load and on scroll
+            revealContentOnScroll(); // Initial check
+            window.addEventListener('scroll', revealContentOnScroll);
+
+
+            // --- Content Swiper Logic (for Indici and Prospettive) ---
+            document.querySelectorAll('.content-swiper-container').forEach(container => {
+                const slides = container.querySelectorAll('.content-slide');
+                const nextBtn = document.createElement('button');
+                nextBtn.innerHTML = 'Continua <i class="fas fa-arrow-right"></i>';
+                const prevBtn = document.createElement('button');
+                prevBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Indietro';
+                const pageInfo = document.createElement('span');
+                
+                const controls = document.createElement('div');
+                controls.classList.add('content-controls');
+                controls.appendChild(prevBtn);
+                controls.appendChild(pageInfo);
+                controls.appendChild(nextBtn);
+                container.appendChild(controls);
+
+                let currentIndex = 0;
+
+                function showSlide(index) {
+                    slides.forEach((slide, i) => {
+                        if (i === index) {
+                            slide.classList.add('active');
+                            // Attiva animazioni interne quando lo slide diventa attivo
+                            slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
+                                child.classList.add('active');
+                            });
+                             // Attiva il grafico simulato specifico dello slide
+                            slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
+                                graph.classList.add('active');
+                            });
+                        } else {
+                            slide.classList.remove('active');
+                            // Rimuovi animazioni quando lo slide non è attivo
+                            slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
+                                child.classList.remove('active');
+                            });
+                             slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
+                                graph.classList.remove('active');
+                            });
                         }
                     });
-                }, { root: null, threshold: 0.1 });
-                
-                swiperObserver.observe(container);
 
-                // Re-adjust height on window resize
-                window.addEventListener('resize', () => showSlide(currentSlide));
-            });
-
-
-            // --- Codice Leaflet per la Mappa dei Rischi Climatici ---
-            const map = L.map('map').setView([45.3199, 8.4236], 11); // Coordinate di Vercelli
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            // Icone personalizzate per la mappa (usando SVG di Font Awesome per coerenza)
-            const createCustomIcon = (iconClass, color) => {
-                // For simplicity, using a generic Font Awesome path or assuming it's loaded via CSS
-                // For production, you'd need the actual SVG path for each icon or use L.divIcon
-                return L.divIcon({
-                    html: `<i class="${iconClass}" style="color:${color}; font-size:38px;"></i>`, // Use Font Awesome CSS
-                    iconSize: [38, 38],
-                    iconAnchor: [19, 38],
-                    popupAnchor: [0, -30],
-                    className: 'map-icon' // Add a class for custom CSS
-                });
-            };
-
-
-            // Simuliamo punti di interesse e i loro rischi
-            const puntiInteresse = [
-                {
-                    nome: "Zona Risicoltura Ovest",
-                    coords: [45.28, 8.35],
-                    rischi: "<h4>Rischio Agricolo: Siccità</h4><p>Le **risaie** in quest'area sono altamente vulnerabili a prolungati periodi di siccità (come evidenziato da SPI e SPEI). Necessità di gestione idrica avanzata e varietà resistenti.</p>",
-                    icon: createCustomIcon('fas fa-seedling', '#68B1A0'), // Verde per agricoltura
-                    colore: "#68B1A0" 
-                },
-                {
-                    nome: "Area Urbana di Vercelli",
-                    coords: [45.32, 8.42],
-                    rischi: "<h4>Rischio Urbano: Ondate di Calore</h4><p>L'area urbana è soggetta a stress da calore, con rischio aumentato di colpi di calore (da TX90p, TN90p) e sovraccarico delle infrastrutture energetiche.</p>",
-                    icon: createCustomIcon('fas fa-house-chimney', '#d62828'), // Rosso per urbano/calore
-                    colore: "#d62828" 
-                },
-                {
-                    nome: "Fiume Sesia (tratto a monte)",
-                    coords: [45.35, 8.48],
-                    rischi: "<h4>Rischio Idrico: Deflusso Ridotto</h4><p>Il tratto a monte del Sesia mostra un rischio di riduzione del deflusso (da PRCPTOT, SDII), impattando l'approvvigionamento idrico per l'agricoltura e gli usi civili a valle.</p>",
-                    icon: createCustomIcon('fas fa-water', '#007bff'), // Blu per idrico
-                    colore: "#007bff" 
-                },
-                {
-                    nome: "Canale Cavour (Area Irrigua Nord)",
-                    coords: [45.38, 8.3],
-                    rischi: "<h4>Rischio Irrigazione: Carenza Idrica</h4><p>Vulnerabilità del Canale Cavour a periodi di scarsa precipitazione e fusione nivale ridotta. Fondamentale per l'irrigazione del mais e altre colture. Necessità di invasi e stoccaggio.</p>",
-                    icon: createCustomIcon('fas fa-water', '#00ADB5'), // Azzurro/Acqua
-                    colore: "#00ADB5" 
-                },
-                {
-                    nome: "Zona Industriale/Artigianale",
-                    coords: [45.30, 8.40],
-                    rischi: "<h4>Rischio Economico: Interruzioni per Caldo/Siccità</h4><p>Le attività industriali possono subire interruzioni a causa di stress termico sugli impianti (per HWF) o restrizioni idriche dovute alla siccità. Aumento costi di raffreddamento.</p>",
-                    icon: createCustomIcon('fas fa-industry', '#9b59b6'), // Viola per industria
-                    colore: "#9b59b6" 
+                    prevBtn.disabled = index === 0;
+                    nextBtn.disabled = index === slides.length - 1;
+                    pageInfo.textContent = `${index + 1} / ${slides.length}`;
                 }
-            ];
 
-            puntiInteresse.forEach(p => {
-                L.marker(p.coords, { icon: p.icon })
-                    .addTo(map)
-                    .bindPopup(p.rischi)
-                    .on('mouseover', function () {
-                        this.openPopup();
-                    })
-                    .on('mouseout', function () {
-                        this.closePopup();
-                    });
-                
-                // Aggiungere un cerchio per evidenziare l'area di influenza del punto
-                L.circle(p.coords, {
-                    color: p.colore,
-                    fillColor: p.colore,
-                    fillOpacity: 0.1, // Meno opaco
-                    radius: 2500 // Raggio leggermente più grande
-                }).addTo(map);
+                prevBtn.addEventListener('click', () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        showSlide(currentIndex);
+                    }
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    if (currentIndex < slides.length - 1) {
+                        currentIndex++;
+                        showSlide(currentIndex);
+                    }
+                });
+
+                showSlide(currentIndex); // Mostra il primo slide all'inizializzazione
             });
-
-            // Legenda avanzata
-            const legend = L.control({ position: 'bottomright' });
-            legend.onAdd = function () {
-                const div = L.DomUtil.create('div', 'legend');
-                div.innerHTML = `
-                    <b>Rischi Climatici a Vercelli:</b><br>
-                    <span style="background-color:#68B1A0;"></span> Agricoltura / Siccità<br>
-                    <span style="background-color:#d62828;"></span> Salute / Urbano<br>
-                    <span style="background-color:#007bff;"></span> Risorse Idriche Fluviali<br>
-                    <span style="background-color:#00ADB5;"></span> Irrigazione Canali<br>
-                    <span style="background-color:#9b59b6;"></span> Economia / Industria
-                `;
-                return div;
-            };
-            legend.addTo(map);
-            // Fine Codice Leaflet
         });
     </script>
 </body>
