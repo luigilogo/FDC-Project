@@ -6,6 +6,7 @@
     <title>Climpact Vercelli - Analisi Climatica Avanzata</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Raleway:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <style>
         /* Stile Generale e Reset */
@@ -97,18 +98,11 @@
 
         /* Header e Navigazione */
         #main-header {
-            position: sticky; /* Rende l'header sticky */
-            top: 0;
             background-color: var(--card-bg);
             box-shadow: var(--shadow-light);
             padding: 1rem 0;
             z-index: 1000;
             transition: background-color var(--transition-speed) var(--transition-ease), box-shadow var(--transition-speed) var(--transition-ease);
-        }
-
-        #main-header.scrolled {
-            background-color: rgba(255, 255, 255, 0.98); /* Meno trasparente quando scrollato */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         nav {
@@ -331,7 +325,7 @@
         /* Main Content Sections */
         main {
             padding-bottom: 50px;
-            margin-top: 50px; /* Assicura spazio sotto la hero e l'header sticky */
+            margin-top: 50px; /* Assicura spazio sotto la hero e l'header */
         }
 
         .section-padding {
@@ -547,6 +541,37 @@
             padding-left: 15px;
         }
 
+        /* Stili specifici per la mappa Leaflet */
+        #map {
+            height: 500px; /* Altezza fissa per la mappa all'interno della sezione */
+            width: 100%;
+            border-radius: 15px; /* Bordi arrotondati per la mappa */
+            box-shadow: var(--shadow-light); /* Ombra leggera */
+            margin-top: 40px;
+        }
+        .legend {
+            background: white;
+            padding: 8px;
+            font-size: 13px;
+            line-height: 1.4;
+            box-shadow: 0 0 5px #aaa;
+            border-radius: 8px; /* Bordi arrotondati per la legenda */
+        }
+        .legend b {
+            font-family: 'Raleway', sans-serif;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        .legend span {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+
         /* Animazioni avanzate (nuove classi per JavaScript) */
         .content-reveal {
             opacity: 0;
@@ -663,6 +688,8 @@
             .indice-card p { font-size: 0.95rem; }
             .highlight-text { font-size: clamp(0.95rem, 1.9vw, 1.05rem); }
 
+            #map { height: 400px; margin-top: 30px; }
+
             #back-to-top { width: 55px; height: 55px; font-size: 1.7rem; bottom: 25px; left: 25px; }
             footer { margin-top: 50px; padding: 25px 0; font-size: 0.85rem; }
         }
@@ -695,6 +722,8 @@
             .indice-card p { font-size: 0.88rem; }
             .highlight-text { font-size: clamp(0.9rem, 1.8vw, 1rem); }
 
+            #map { height: 350px; margin-top: 25px; }
+
             #back-to-top { width: 50px; height: 50px; font-size: 1.5rem; bottom: 15px; left: 15px; }
             footer { margin-top: 50px; padding: 25px 0; font-size: 0.85rem; }
         }
@@ -716,7 +745,7 @@
                 <li><a href="#about-project" class="nav-link">Il Progetto</a></li>
                 <li><a href="#conclusioni" class="nav-link">Conclusioni</a></li>
                 <li><a href="#prospettive" class="nav-link">Prospettive</a></li>
-                <li><a href="#contatti" class="nav-link">Contatti</a></li>
+                <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li> <li><a href="#contatti" class="nav-link">Contatti</a></li>
             </ul>
         </nav>
         <div class="hero">
@@ -796,72 +825,72 @@
 
                 <div class="indice-card fade-in slide-left">
                     <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
-                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere ≥ 1.0 mm. È un indicatore diretto della quantità totale di pioggia ricevuta annualmente. </p>
-                    <p><strong>Trend Osservato:</strong> Per Vercelli, si registra un <strong>trend statisticamente NON significativo ma in evidente decrescita</strong> (Sen's slope = -X.XXX, p-value = X.XXX).  Questo suggerisce una minore disponibilità idrica complessiva nel corso degli anni.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi annuali di precipitazione si sono verificati nel 2015, 2021, 2022 (con 289.1 mm) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con 976.4 mm).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere ≥ 1.0 mm. È un indicatore diretto della quantità totale di pioggia ricevuta annualmente.</p>
+                    <p><strong>Trend Osservato:</strong> Per Vercelli, si registra un <strong>trend statisticamente NON significativo ma in evidente decrescita</strong> (Sen's slope = -X.XXX, p-value = X.XXX). Questo suggerisce una minore disponibilità idrica complessiva nel corso degli anni.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi annuali di precipitazione si sono verificati nel 2015, 2021, 2022 (con 289.1 mm) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con 976.4 mm). **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-right delay-1">
                     <h3><i class="fas fa-tint"></i> SDII: Intensità Media delle Precipitazioni</h3>
-                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi (precipitazione ≥ 1.0mm). Questo indice mostra l'intensità media delle precipitazioni quando si verificano eventi piovosi. </p>
-                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo</strong> (Sen's slope = -X.XXX, p-value = X.XX).  Ciò significa che, quando piove, gli eventi tendono ad essere meno intensi in media, contribuendo al deficit idrico.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi osservati nel 2021 (6.2 mm/day) e 2022. Massimi nel 1991, 1994 e 2011 (16.1 mm/day).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi (precipitazione ≥ 1.0mm). Questo indice mostra l'intensità media delle precipitazioni quando si verificano eventi piovosi.</p>
+                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo</strong> (Sen's slope = -X.XXX, p-value = X.XX). Ciò significa che, quando piove, gli eventi tendono ad essere meno intensi in media, contribuendo al deficit idrico.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi osservati nel 2021 (6.2 mm/day) e 2022. Massimi nel 1991, 1994 e 2011 (16.1 mm/day). **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-left delay-2">
                     <h3><i class="fas fa-percent"></i> R95PTOT: Frazione Precipitazioni Estreme</h3>
-                    <p><strong>Descrizione:</strong> Frazione del totale di precipitazione cumulativa che deriva da eventi estremi (100 * r95p / PRCPTOT). Indica quanto del totale delle precipitazioni provenga da eventi intensi. </p>
-                    <p><strong>Trend Osservato:</strong> Il trend è <strong>statisticamente NON significativo ma in probabile decrescita</strong> (Sen's slope = -X.X, p-value = X.XXX).  Questo suggerisce una possibile riduzione del contributo degli eventi di pioggia estrema alla precipitazione totale.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi (0%) registrati nel 2000, 2004, 2021 e 2023. Massimi nel 1998, 1999, 2017 (47.6%) e 2019.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Frazione del totale di precipitazione cumulativa che deriva da eventi estremi (100 * r95p / PRCPTOT). Indica quanto del totale delle precipitazioni provenga da eventi intensi.</p>
+                    <p><strong>Trend Osservato:</strong> Il trend è <strong>statisticamente NON significativo ma in probabile decrescita</strong> (Sen's slope = -X.X, p-value = X.XXX). Questo suggerisce una possibile riduzione del contributo degli eventi di pioggia estrema alla precipitazione totale.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi (0%) registrati nel 2000, 2004, 2021 e 2023. Massimi nel 1998, 1999, 2017 (47.6%) e 2019. **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-right delay-3">
                     <h3><i class="fas fa-sun"></i> SPI_24_month: Indice di Precipitazione Standardizzato (24 Mesi)</h3>
-                    <p><strong>Descrizione:</strong> Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. È ampiamente utilizzato per monitorare le condizioni di siccità meteorologica a lungo termine. </p>
-                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.002, p-value = 0).  Questo evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi.</p>
-                    <p class="highlight-text"><em>Risultato: Aumento degli eventi siccitosi estremi in funzione del deficit di precipitazione, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di -3.5 nel 2023).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Indicatore di siccità basato solo sulle precipitazioni cumulative in 24 mesi. È ampiamente utilizzato per monitorare le condizioni di siccità meteorologica a lungo termine.</p>
+                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.002, p-value = 0). Questo evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi.</p>
+                    <p class="highlight-text"><em>Risultato: Aumento degli eventi siccitosi estremi in funzione del deficit di precipitazione, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di -3.5 nel 2023). **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-left delay-4">
                     <h3><i class="fas fa-thermometer-empty"></i> SPEI_24_month: Indice Standardizzato di Precipitazione ed Evapotraspirazione (24 Mesi)</h3>
-                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate. </p>
-                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.004, p-value = 0).  Questo indica un aumento dell'intensità e della frequenza degli eventi siccitosi estremi in funzione dell'evapotraspirazione.</p>
-                    <p class="highlight-text"><em>Risultato: Picchi di siccità estrema (R &lt; -2 con picchi anche di -4.4 nel 2023) soprattutto dal 2022 in poi.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione (perdita d'acqua dal suolo e dalle piante). Fornisce una visione più completa della siccità, considerando anche l'impatto delle temperature elevate.</p>
+                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.004, p-value = 0). Questo indica un aumento dell'intensità e della frequenza degli eventi siccitosi estremi in funzione dell'evapotraspirazione.</p>
+                    <p class="highlight-text"><em>Risultato: Picchi di siccità estrema (R &lt; -2 con picchi anche di -4.4 nel 2023) soprattutto dal 2022 in poi. **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-right delay-5">
                     <h3><i class="fas fa-temperature-low"></i> TN10p: Percentuale Giorni con Temperatura Minima Estremamente Fredda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è inferiore al 10° percentile. Questo indice misura la frequenza dei giorni "estremamente freddi". </p>
-                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.16, p-value = 0.009).  Ciò indica una diminuzione della frequenza di notti estremamente fredde.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi nel 2022 (3.01%) e 2023. Massimi nel 1991, 1992, 2005 (19.59%) e 2010.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è inferiore al 10° percentile. Questo indice misura la frequenza dei giorni "estremamente freddi".</p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.16, p-value = 0.009). Ciò indica una diminuzione della frequenza di notti estremamente fredde.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 2022 (3.01%) e 2023. Massimi nel 1991, 1992, 2005 (19.59%) e 2010. **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-left delay-6">
                     <h3><i class="fas fa-temperature-up"></i> TN90p: Percentuale Giorni con Temperatura Minima Estremamente Calda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Questo indice è un indicatore diretto delle "notti tropicali" o notti calde. </p>
-                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.309, p-value = 0).  Questo indica un minor raffreddamento notturno, con implicazioni sulla salute umana e sull'ecosistema.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi nel 1992, 1993 (2.70%), 1996, 1999 e 2010. Massimi nel 2022 (29.04%) e 2023.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Questo indice è un indicatore diretto delle "notti tropicali" o notti calde.</p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.309, p-value = 0). Questo indica un minor raffreddamento notturno, con implicazioni sulla salute umana e sull'ecosistema.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 1992, 1993 (2.70%), 1996, 1999 e 2010. Massimi nel 2022 (29.04%) e 2023. **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
                 
                 <div class="indice-card fade-in slide-right delay-7">
                     <h3><i class="fas fa-temperature-low"></i> TX10p: Percentuale Giorni con Temperatura Massima Estremamente Fredda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è inferiore al 10° percentile. Misura la frequenza dei giorni "estremamente freddi". </p>
-                    <p><strong>Trend Osservato:</strong> L'indice TX10p mostra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.235, p-value = 0).  Questo significa che la frequenza dei giorni con temperature massime estremamente fredde sta diminuendo.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi nel 2016, 2019, 2022 e 2023 (2.46%). Massimi nel 1991 e 1992 (21.58%).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è inferiore al 10° percentile. Misura la frequenza dei giorni "estremamente freddi".</p>
+                    <p><strong>Trend Osservato:</strong> L'indice TX10p mostra un <strong>trend statisticamente SIGNIFICATIVO in evidente decrescita</strong> (Sen's slope = -0.235, p-value = 0). Questo significa che la frequenza dei giorni con temperature massime estremamente fredde sta diminuendo.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 2016, 2019, 2022 e 2023 (2.46%). Massimi nel 1991 e 1992 (21.58%). **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-left delay-7">
                     <h3><i class="fas fa-fire-alt"></i> TX90p: Percentuale Giorni con Temperatura Massima Estremamente Calda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è superiore al 90° percentile. È un indicatore chiave delle ondate di calore. </p>
-                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.409, p-value = 0).  Questo evidenzia ondate di calore più intense e frequenti a Vercelli.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi nel 1988 (2.46%) e 1996. Massimi nel 2022 (40.54%) e 2023.  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura massima giornaliera è superiore al 90° percentile. È un indicatore chiave delle ondate di calore.</p>
+                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.409, p-value = 0). Questo evidenzia ondate di calore più intense e frequenti a Vercelli.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi nel 1988 (2.46%) e 1996. Massimi nel 2022 (40.54%) e 2023. **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
 
                 <div class="indice-card fade-in slide-right delay-7">
                     <h3><i class="fas fa-sun-haze"></i> HWF-Tx90: Frequenza Onde di Calore</h3>
-                    <p><strong>Descrizione:</strong> Numero di giorni che contribuiscono agli eventi di ondate di caldo. </p>
-                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.412, p-value = 0).  Questo indica un aumento della frequenza e della durata delle ondate di calore.</p>
-                    <p class="highlight-text"><em>Risultato: Minimi tra 0 e 5 giorni negli anni antecedenti al 2008, ad eccezione del 2003 (39 giorni). Massimi nel 2003 (39 giorni) e 2022 (50 giorni).  **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
+                    <p><strong>Descrizione:</strong> Numero di giorni che contribuiscono agli eventi di ondate di caldo.</p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO in evidente crescita</strong> (Sen's slope = 0.412, p-value = 0). Questo indica un aumento della frequenza e della durata delle ondate di calore.</p>
+                    <p class="highlight-text"><em>Risultato: Minimi tra 0 e 5 giorni negli anni antecedenti al 2008, ad eccezione del 2003 (39 giorni). Massimi nel 2003 (39 giorni) e 2022 (50 giorni). **(Sostituisci con i tuoi dati reali per Vercelli)**</em></p>
                     </div>
             </div>
         </section>
@@ -876,7 +905,7 @@
                     <li>**Analisi di Sen's Slope e Mann-Kendall Test:** Queste tecniche non parametriche sono state utilizzate per stimare la pendenza del trend (Sen's slope) e per valutare la significatività statistica del trend (Mann-Kendall test, con il suo p-value). Questi metodi sono robusti e meno sensibili ai valori anomali, fornendo una base solida per le conclusioni.
                         <p class="note-highlights">Per un'analisi dettagliata di Sen's Slope e p-value, si rimanda alla documentazione del progetto o a pubblicazioni specifiche.</p>
                     </li>
-                    <li>**Controllo Qualità dei Dati:** Prima del calcolo degli indici, i dati grezzi sono stati sottoposti a rigorosi controlli di qualità per identificare e correggere eventuali anomalie o lacune, garantendo l'accuratezza dell'input per Climpact. In particolare, per i dati di Barcellona, sono state riscontrate 54 outlier per le temperature e alcuni valori anomali per le precipitazioni, coerenti con le registrazioni della stazione meteorologica dell'aeroporto di Barcellona. </li>
+                    <li>**Controllo Qualità dei Dati:** Prima del calcolo degli indici, i dati grezzi sono stati sottoposti a rigorosi controlli di qualità per identificare e correggere eventuali anomalie o lacune, garantendo l'accuratezza dell'input per Climpact. In particolare, per i dati di Barcellona, sono state riscontrate 54 outlier per le temperature e alcuni valori anomali per le precipitazioni, coerenti con le registrazioni della stazione meteorologica dell'aeroporto di Barcellona.</li>
                 </ul>
             </div>
         </section>
@@ -895,11 +924,11 @@
         <section id="conclusioni" class="section-padding bg-light content-reveal">
             <div class="card slide-up">
                 <h2 class="section-title-animated"><i class="fas fa-lightbulb"></i> Conclusioni e Key Findings</h2>
-                <p class="fade-in">I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico. In generale, il regime pluviometrico è mediterraneo, con un clima mite e bassa escursione termica stagionale, caratterizzato da un periodo secco estivo. </p>
+                <p class="fade-in">I risultati dell'analisi per Vercelli nel periodo 1994-2024 evidenziano diversi trend significativi, coerenti con le proiezioni del cambiamento climatico. In generale, il regime pluviometrico è mediterraneo, con un clima mite e bassa escursione termica stagionale, caratterizzato da un periodo secco estivo.</p>
                 <ul class="fade-in delay-1">
-                    <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni è osservata.  Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
-                    <li>**Aumento delle temperature estreme:** Le temperature minime (Tn) e massime (Tx) sono in aumento su scala annuale.  L'aumento delle temperature è spinto soprattutto dall'aumento delle Tx, con ondate di calore più frequenti e più durature.  Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi.</li>
-                    <li>**Aumento degli eventi siccitosi estremi:** C'è un incremento dell'intensità e della frequenza degli eventi siccitosi estremi. Questo è dovuto al deficit di precipitazione e all'aumento dell'evapotraspirazione, con un effetto preponderante dell'aumento delle temperature. </li>
+                    <li>**Deficit di precipitazione:** Una chiara diminuzione nel quantitativo, nell'intensità e nella frequenza delle precipitazioni è osservata. Questo suggerisce una minore disponibilità idrica e un aumento del rischio di siccità meteorologica.</li>
+                    <li>**Aumento delle temperature estreme:** Le temperature minime (Tn) e massime (Tx) sono in aumento su scala annuale. L'aumento delle temperature è spinto soprattutto dall'aumento delle Tx, con ondate di calore più frequenti e più durature. Si osserva un numero maggiore di giorni estremamente caldi e una diminuzione di quelli estremamente freddi.</li>
+                    <li>**Aumento degli eventi siccitosi estremi:** C'è un incremento dell'intensità e della frequenza degli eventi siccitosi estremi. Questo è dovuto al deficit di precipitazione e all'aumento dell'evapotraspirazione, con un effetto preponderante dell'aumento delle temperature.</li>
                 </ul>
                 <p class="fade-in delay-2">Questi cambiamenti indicano una chiara tendenza al riscaldamento e all'aridità per la regione di Vercelli, con potenziali implicazioni significative per settori chiave come l'agricoltura, la gestione delle risorse idriche e la salute pubblica.</p>
             </div>
@@ -908,19 +937,19 @@
         <section id="prospettive" class="section-padding content-reveal">
             <div class="card slide-up">
                 <h2 class="section-title-animated"><i class="fas fa-hourglass-half"></i> Prospettive di Climate Change e Implicazioni</h2>
-                <p class="fade-in">Le tendenze climatiche osservate per Vercelli nel periodo 1994-2024 sollevano importanti preoccupazioni per il futuro. Basandosi su studi analoghi (es. per Barcellona, come citato in "Climate Change Implications for Water Availability: A Case Study of Barcelona City" - E.F. Ortiz et al. (2020) ), possiamo prevedere diverse implicazioni:</p>
+                <p class="fade-in">Le tendenze climatiche osservate per Vercelli nel periodo 1994-2024 sollevano importanti preoccupazioni per il futuro. Basandosi su studi analoghi (es. per Barcellona, come citato in "Climate Change Implications for Water Availability: A Case Study of Barcelona City" - E.F. Ortiz et al. (2020)), possiamo prevedere diverse implicazioni:</p>
                 <ul class="fade-in delay-1">
                     <li>**Siccità e Carenza Idrica:** Il deficit di precipitazioni e l'aumento dell'evapotraspirazione porteranno a una maggiore carenza idrica, con impatti diretti su:
                         <ul>
-                            <li class="delay-2"><i class="fas fa-leaf"></i> Salute pubblica e Agricoltura </li>
-                            <li class="delay-3"><i class="fas fa-fire-extinguisher"></i> Incendi boschivi </li>
-                            <li class="delay-4"><i class="fas fa-paw"></i> Biodiversità e Danni economici </li>
+                            <li class="delay-2"><i class="fas fa-leaf"></i> Salute pubblica e Agricoltura</li>
+                            <li class="delay-3"><i class="fas fa-fire-extinguisher"></i> Incendi boschivi</li>
+                            <li class="delay-4"><i class="fas fa-paw"></i> Biodiversità e Danni economici</li>
                         </ul>
                     </li>
                     <li>**Innalzamento del Livello del Mare (applicabile alle aree costiere come Barcellona, ma per Vercelli si considererebbero impatti su fiumi e laghi):** Sebbene Vercelli non sia una città costiera, è importante considerare gli impatti più ampi dell'innalzamento globale dei mari che influenzano i sistemi idrici collegati e possono aggravare gli eventi di piena o siccità a monte.
                         <ul>
-                            <li class="delay-5"><i class="fas fa-water"></i> Erosione costiera (per le aree costiere) </li>
-                            <li class="delay-6"><i class="fas fa-umbrella-beach"></i> Danni al turismo (per le aree costiere) </li>
+                            <li class="delay-5"><i class="fas fa-water"></i> Erosione costiera (per le aree costiere)</li>
+                            <li class="delay-6"><i class="fas fa-umbrella-beach"></i> Danni al turismo (per le aree costiere)</li>
                             <li class="delay-7"><i class="fas fa-river"></i> Per Vercelli, si potrebbero considerare implicazioni su gestione delle risorse fluviali, rischio idrogeologico e agricoltura a causa di variazioni nei livelli dei corsi d'acqua.</li>
                         </ul>
                     </li>
@@ -929,6 +958,13 @@
             </div>
         </section>
 
+        <section id="mappa-rischi" class="section-padding bg-light content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-map-marked-alt"></i> Mappa dei Rischi Climatici Locali</h2>
+                <p class="section-description fade-in">Esplora le aree produttive chiave di Vercelli e i rischi climatici specifici a cui sono esposte, basandosi sui trend osservati.</p>
+                <div id="map"></div>
+            </div>
+        </section>
         <section id="contatti" class="section-padding content-reveal">
             <div class="card slide-up">
                 <h2 class="section-title-animated"><i class="fas fa-envelope"></i> Contatti</h2>
@@ -949,6 +985,7 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const backToTopButton = document.getElementById('back-to-top');
@@ -974,15 +1011,6 @@
                     }
                 }
 
-                // Cambio stile header allo scroll
-                if (header) { 
-                    if (window.scrollY > 80) {
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-                }
-
                 // Aggiorna indicatore di progresso dello scroll
                 if (scrollProgressIndicator) { 
                     const scrollTop = document.documentElement.scrollTop;
@@ -998,9 +1026,11 @@
             // --- Funzione per aggiornare il link di navigazione attivo ---
             function updateActiveNavLink() {
                 let currentActiveSectionId = '';
+                // Calcola l'offset dell'header una volta
                 const headerOffset = header ? header.offsetHeight : 0; 
 
                 sections.forEach(section => {
+                    // Considera l'altezza dell'header per lo scroll
                     const sectionTop = section.offsetTop - (headerOffset + 100); 
                     const sectionBottom = sectionTop + section.offsetHeight;
 
@@ -1036,6 +1066,7 @@
                     const targetElement = document.querySelector(targetId);
 
                     if (targetElement) {
+                        // Calcola l'offset dell'header per lo scroll
                         const headerOffset = header ? header.offsetHeight : 0;
                         const offsetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerOffset;
 
@@ -1080,6 +1111,7 @@
                 if (initialHash) {
                     const targetElement = document.querySelector(initialHash);
                     if (targetElement) {
+                        // Calcola l'offset dell'header per lo scroll
                         const headerOffset = header ? header.offsetHeight : 0;
                         const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
                         const offsetPosition = elementPosition - headerOffset;
@@ -1102,6 +1134,59 @@
             };
 
             setTimeout(initializePage, 250);
+
+            // --- Codice Leaflet per la Mappa dei Rischi Climatici ---
+            const map = L.map('map').setView([45.3199, 8.4236], 11); // Coordinate di Vercelli
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Simuliamo tre aree produttive con cerchi
+            const colture = [
+                {
+                    nome: "Risaie (zona sud-est)",
+                    coords: [45.25, 8.52],
+                    rischi: "<b>Rischi:</b><ul><li>Siccità estiva (CDD)</li><li>Ondate di calore (HWF)</li><li>Evapotraspirazione notturna (TR)</li></ul>",
+                    colore: "blue"
+                },
+                {
+                    nome: "Mais (zona nord)",
+                    coords: [45.38, 8.4],
+                    rischi: "<b>Rischi:</b><ul><li>Stress da caldo in fioritura (TX90p)</li><li>Raccolta anticipata</li><li>Piogge intense a fine ciclo</li></ul>",
+                    colore: "orange"
+                },
+                {
+                    nome: "Frumento (zona ovest)",
+                    coords: [45.32, 8.3],
+                    rischi: "<b>Rischi:</b><ul><li>Mancata vernalizzazione (TN10p↓)</li><li>Siccità terminale (CDD)</li><li>Germinazione precoce</li></ul>",
+                    colore: "green"
+                }
+            ];
+
+            colture.forEach(c => {
+                L.circle(c.coords, {
+                    color: c.colore,
+                    fillOpacity: 0.5,
+                    radius: 3000
+                }).addTo(map)
+                    .bindPopup(`<h4>${c.nome}</h4>${c.rischi}`);
+            });
+
+            // Legenda
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function () {
+                const div = L.DomUtil.create('div', 'legend');
+                div.innerHTML = `
+                    <b>Legenda:</b><br>
+                    <span style="background-color:blue;"></span> Risaie<br>
+                    <span style="background-color:orange;"></span> Mais<br>
+                    <span style="background-color:green;"></span> Frumento
+                `;
+                return div;
+            };
+            legend.addTo(map);
+            // Fine Codice Leaflet
         });
     </script>
 </body>
