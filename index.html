@@ -647,6 +647,71 @@
             border-radius: var(--border-radius-sm);
         }
 
+        /* Stili specifici per gli SVG all'interno di .simulated-graph-container */
+        .simulated-graph-container svg {
+            width: 95%; /* Leggermente più stretto per i margini */
+            height: 95%;
+            overflow: visible; /* Per permettere ai marker di overflow */
+        }
+        .simulated-graph-container .grid-line {
+            stroke: var(--color-border);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+            opacity: 0.7;
+        }
+        .simulated-graph-container .axis-line {
+            stroke: var(--color-text-light);
+            stroke-width: 1.5;
+        }
+        .simulated-graph-container .axis-label {
+            font-size: 14px;
+            fill: var(--color-text-light);
+            text-anchor: middle;
+        }
+        .simulated-graph-container .data-line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .simulated-graph-container .area {
+            opacity: 0.3;
+        }
+        .simulated-graph-container .data-point {
+            fill: var(--color-accent-blue);
+            stroke: var(--color-white);
+            stroke-width: 2;
+        }
+
+        /* Stili specifici per i vari tipi di grafici simulati */
+        /* Bar Chart (Regime Pluviometrico, SDII, TX90p) */
+        .bar-chart .bar {
+            fill: var(--color-accent-blue);
+            transition: fill 0.3s ease;
+        }
+        .bar-chart .bar:hover {
+            fill: var(--color-accent-green);
+        }
+        .bar-chart text {
+            font-size: 12px;
+            fill: var(--color-text-light);
+            text-anchor: middle;
+        }
+
+        /* Line Chart (Curve Termiche, PRCPTOT, SPI, SPEI, TN90p) */
+        .line-chart .line-max { stroke: #e04e4e; }
+        .line-chart .line-avg { stroke: var(--color-accent-blue); }
+        .line-chart .line-min { stroke: #6b6b6b; }
+        .line-chart .area-avg { fill: var(--color-accent-blue); opacity: 0.1; }
+        .line-chart .area-range { fill: #f0f0f0; opacity: 0.5;} /* Per termogramma */
+
+
+        /* Ombrotermica Specific */
+        .ombrotermica .line-temp { stroke: #d62828; stroke-width: 2.5; }
+        .ombrotermica .line-prec { stroke: #007bff; stroke-width: 2.5; }
+        .ombrotermica .dry-area { fill: #f8d7da; opacity: 0.5; } /* Colore per aree secche */
+        .ombrotermica text { font-size: 12px; fill: var(--color-text-light); }
+
 
         /* Stili specifici per la mappa Leaflet */
         #map {
@@ -1277,9 +1342,39 @@
                             <h3><i class="fas fa-chart-bar"></i> Regime Pluviometrico Annuale</h3>
                             <p><strong>Descrizione:</strong> Questo grafico mostra la distribuzione media mensile delle precipitazioni. A Vercelli, le piogge tendono ad essere più abbondanti in primavera e autunno, con un minimo estivo che può contribuire al rischio siccità.</p>
                             <p class="highlight-text"><em>Risultato stimato per Vercelli: Picchi di precipitazione in Maggio e Ottobre (~80-90 mm/mese), minimi in Luglio-Agosto (~30-40 mm/mese) e Gennaio (~45 mm/mese).</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico Regime Pluviometrico</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 bar-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">100</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">75</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">50</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">25</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Precipitazioni (mm)</text>
+
+                                        <rect class="bar" x="15" y="195" width="20" height="55"></rect> <rect class="bar" x="45" y="190" width="20" height="60"></rect> <rect class="bar" x="75" y="160" width="20" height="90"></rect> <rect class="bar" x="105" y="120" width="20" height="130"></rect> <rect class="bar" x="135" y="90" width="20" height="160"></rect> <rect class="bar" x="165" y="210" width="20" height="40"></rect> <rect class="bar" x="195" y="225" width="20" height="25"></rect> <rect class="bar" x="225" y="220" width="20" height="30"></rect> <rect class="bar" x="255" y="170" width="20" height="80"></rect> <rect class="bar" x="285" y="100" width="20" height="150"></rect> <rect class="bar" x="315" y="150" width="20" height="100"></rect> <rect class="bar" x="345" y="190" width="20" height="60"></rect> <text x="25" y="265" class="axis-label">G</text>
+                                        <text x="55" y="265" class="axis-label">F</text>
+                                        <text x="85" y="265" class="axis-label">M</text>
+                                        <text x="115" y="265" class="axis-label">A</text>
+                                        <text x="145" y="265" class="axis-label">M</text>
+                                        <text x="175" y="265" class="axis-label">G</text>
+                                        <text x="205" y="265" class="axis-label">L</text>
+                                        <text x="235" y="265" class="axis-label">A</text>
+                                        <text x="265" y="265" class="axis-label">S</text>
+                                        <text x="295" y="265" class="axis-label">O</text>
+                                        <text x="325" y="265" class="axis-label">N</text>
+                                        <text x="355" y="265" class="axis-label">D</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1288,9 +1383,50 @@
                             <h3><i class="fas fa-chart-line"></i> Curve Termiche Annuali (Media, Min, Max)</h3>
                             <p><strong>Descrizione:</strong> Queste curve illustrano l'andamento mensile delle temperature medie, minime e massime. A Vercelli si osserva la tipica escursione termica continentale, con inverni freddi ed estati calde.</p>
                             <p class="highlight-text"><em>Risultato stimato per Vercelli: Temperature medie minime in Gennaio (~1°C), massime in Luglio-Agosto (~28-30°C). La curva della temperatura media segue un andamento sinusoidale regolare.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico Curve Termiche</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">30°C</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">20°C</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">10°C</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">0°C</text>
+                                        <text x="-15" y="200" class="axis-label" text-anchor="end">-10°C</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">-20°C</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Temperatura (°C)</text>
+
+                                        <polyline class="data-line line-max" points="
+                                            0,220 30,200 60,160 90,100 120,60 150,20 180,0 210,10 240,50 270,110 300,170 330,210
+                                        "></polyline>
+                                        <polyline class="data-line line-avg" points="
+                                            0,200 30,180 60,140 90,80 120,40 150,0 180,20 210,30 240,70 270,130 300,190 330,200
+                                        "></polyline>
+                                        <polyline class="data-line line-min" points="
+                                            0,180 30,160 60,120 90,60 120,20 150,20 180,40 210,50 240,90 270,150 300,210 330,200
+                                        "></polyline>
+
+                                        <text x="15" y="265" class="axis-label">G</text>
+                                        <text x="45" y="265" class="axis-label">F</text>
+                                        <text x="75" y="265" class="axis-label">M</text>
+                                        <text x="105" y="265" class="axis-label">A</text>
+                                        <text x="135" y="265" class="axis-label">M</text>
+                                        <text x="165" y="265" class="axis-label">G</text>
+                                        <text x="195" y="265" class="axis-label">L</text>
+                                        <text x="225" y="265" class="axis-label">A</text>
+                                        <text x="255" y="265" class="axis-label">S</text>
+                                        <text x="285" y="265" class="axis-label">O</text>
+                                        <text x="315" y="265" class="axis-label">N</text>
+                                        <text x="345" y="265" class="axis-label">D</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1299,9 +1435,49 @@
                             <h3><i class="fas fa-sun"></i> Curva Ombrotermica (Diagramma di Gaussen)</h3>
                             <p><strong>Descrizione:</strong> Il Diagramma di Gaussen sovrappone le curve di temperatura e precipitazione per identificare i periodi di siccità. Un periodo è considerato secco quando la temperatura media (in °C) è più del doppio della precipitazione (in mm).</p>
                             <p class="highlight-text"><em>Risultato stimato per Vercelli: Evidenzia un periodo di aridità estiva, tipicamente tra Luglio e Agosto, quando le temperature elevate superano di molto le scarse precipitazioni, indicando uno stress idrico per la vegetazione.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per la Curva Ombrotermica</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 ombrotermica">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">40°C / 80mm</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">30°C / 60mm</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">20°C / 40mm</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">10°C / 20mm</text>
+                                        <text x="-15" y="200" class="axis-label" text-anchor="end">0°C / 0mm</text>
+                                        <text x="-35" y="100" class="axis-label rotate-neg90">Valori</text>
+
+                                        <polyline class="data-line line-temp" points="
+                                            0,175 30,165 60,140 90,120 120,100 150,80 180,60 210,65 240,90 270,125 300,155 330,170
+                                        "></polyline>
+
+                                        <polyline class="data-line line-prec" points="
+                                            0,87.5 30,75 60,50 90,25 120, -12.5 150,112.5 180,150 210,137.5 240,62.5 270,0 300,37.5 330,75
+                                        "></polyline>
+                                        
+                                        <path class="area dry-area" d="M180,60 L180,150 L210,150 L210,65 Z M150,80 L150,112.5 L180,112.5 L180,80 Z "/>
+
+
+                                        <text x="15" y="265" class="axis-label">G</text>
+                                        <text x="45" y="265" class="axis-label">F</text>
+                                        <text x="75" y="265" class="axis-label">M</text>
+                                        <text x="105" y="265" class="axis-label">A</text>
+                                        <text x="135" y="265" class="axis-label">M</text>
+                                        <text x="165" y="265" class="axis-label">G</text>
+                                        <text x="195" y="265" class="axis-label">L</text>
+                                        <text x="225" y="265" class="axis-label">A</text>
+                                        <text x="255" y="265" class="axis-label">S</text>
+                                        <text x="285" y="265" class="axis-label">O</text>
+                                        <text x="315" y="265" class="axis-label">N</text>
+                                        <text x="345" y="265" class="axis-label">D</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1310,9 +1486,41 @@
                             <h3><i class="fas fa-calendar-alt"></i> Termogramma: Andamento T° Min & Max</h3>
                             <p><strong>Descrizione:</strong> Il termogramma visualizza l'andamento annuale delle temperature minime e massime giornaliere, spesso mettendo in risalto le escursioni termiche e la frequenza di eventi estremi come le gelate o le ondate di calore. Permette di osservare le anomalie annuali.</p>
                             <p class="highlight-text"><em>Risultato stimato per Vercelli: Mostra chiaramente l'aumento delle temperature, con inverni meno rigidi e estati con massime più elevate e minime notturne sempre meno fresche, soprattutto negli ultimi anni del periodo di analisi.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-temperature-arrow-up"></i> Spazio per il Termogramma</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">35°C</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">25°C</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">15°C</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5°C</text>
+                                        <text x="-15" y="200" class="axis-label" text-anchor="end">-5°C</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Temperatura (°C)</text>
+
+                                        <path class="area area-range" d="
+                                            M0,180 L30,170 L60,160 L90,150 L120,130 L150,110 L180,90 L210,80 L240,70 L270,60 L300,50 L330,40
+                                            L330,220 L300,200 L270,180 L240,160 L210,140 L180,120 L150,100 L120,120 L90,140 L60,160 L30,180 L0,190 Z
+                                        "></path>
+
+                                        <polyline class="data-line line-avg" points="
+                                            0,185 30,175 60,165 90,155 120,140 150,120 180,105 210,95 240,85 270,75 300,65 330,55
+                                        "></polyline>
+
+                                        <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                     <div class="content-slide">
@@ -1321,9 +1529,37 @@
                             <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Un indicatore della risorsa idrica complessiva.</p>
                             <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo (p-value > 0.05)</strong>, ma mostra una evidente tendenza alla <strong>decrescita</strong> (Sen's Slope: -0.85 mm/anno). Questo suggerisce una riduzione complessiva della risorsa idrica nel tempo, anche se non ancora "significativa" in termini puramente statistici.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **~290 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **~975 mm**).</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per il Grafico PRCPTOT</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">1000</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">750</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">500</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">250</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Precipitazioni (mm)</text>
+
+                                        <polyline class="data-line line-avg" points="
+                                            0,120 30,80 60,150 90,100 120,180 150,90 180,130 210,70 240,200 270,160 300,190 330,220
+                                        "></polyline>
+                                        
+                                        <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1333,9 +1569,51 @@
                             <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Misura l'intensità media di ogni evento di pioggia.</p>
                             <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo (p-value > 0.05)</strong> (Sen's Slope: -0.002 mm/giorno/anno). Questo indica che, quando piove, gli eventi tendono a essere leggermente meno intensi, aggravando il deficit idrico se combinato con meno giorni di pioggia.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**~6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**~16.1 mm/day**).</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico SDII</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 bar-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">20</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">15</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">10</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Intensità (mm/giorno)</text>
+
+                                        <rect class="bar" x="15" y="100" width="10" height="150"></rect> <rect class="bar" x="30" y="110" width="10" height="140"></rect>
+                                        <rect class="bar" x="45" y="130" width="10" height="120"></rect>
+                                        <rect class="bar" x="60" y="100" width="10" height="150"></rect>
+                                        <rect class="bar" x="75" y="140" width="10" height="110"></rect>
+                                        <rect class="bar" x="90" y="120" width="10" height="130"></rect>
+                                        <rect class="bar" x="105" y="150" width="10" height="100"></rect>
+                                        <rect class="bar" x="120" y="110" width="10" height="140"></rect>
+                                        <rect class="bar" x="135" y="160" width="10" height="90"></rect>
+                                        <rect class="bar" x="150" y="120" width="10" height="130"></rect>
+                                        <rect class="bar" x="165" y="170" width="10" height="80"></rect>
+                                        <rect class="bar" x="180" y="130" width="10" height="120"></rect>
+                                        <rect class="bar" x="195" y="180" width="10" height="70"></rect>
+                                        <rect class="bar" x="210" y="140" width="10" height="110"></rect>
+                                        <rect class="bar" x="225" y="190" width="10" height="60"></rect> <rect class="bar" x="240" y="150" width="10" height="100"></rect>
+                                        <rect class="bar" x="255" y="200" width="10" height="50"></rect>
+                                        <rect class="bar" x="270" y="160" width="10" height="90"></rect>
+                                        <rect class="bar" x="285" y="210" width="10" height="40"></rect>
+                                        <rect class="bar" x="300" y="170" width="10" height="80"></rect>
+                                        <rect class="bar" x="315" y="220" width="10" height="30"></rect> <rect class="bar" x="330" y="180" width="10" height="70"></rect>
+                                        <rect class="bar" x="345" y="230" width="10" height="20"></rect> <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                     
@@ -1345,9 +1623,34 @@
                             <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa. Ideale per siccità a lungo termine.</p>
                             <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi, indicando una condizione di stress idrico cronico.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Aumento degli eventi siccitosi estremi, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di **-3.5** nel 2023).</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPI_24_month</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="125" x2="350" y2="125" class="grid-line" stroke="#888" stroke-dasharray="2 2"></line> <line x1="0" y1="75" x2="350" y2="75" class="grid-line" opacity="0.6"></line>
+                                        <line x1="0" y1="175" x2="350" y2="175" class="grid-line" opacity="0.6"></line>
+
+                                        <text x="-15" y="25" class="axis-label" text-anchor="end">2.5</text>
+                                        <text x="-15" y="75" class="axis-label" text-anchor="end">1.5</text>
+                                        <text x="-15" y="125" class="axis-label" text-anchor="end">0</text>
+                                        <text x="-15" y="175" class="axis-label" text-anchor="end">-1.5</text>
+                                        <text x="-15" y="225" class="axis-label" text-anchor="end">-2.5</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">SPI Value</text>
+
+                                        <polyline class="data-line line-avg" points="
+                                            0,120 30,100 60,110 90,90 120,130 150,100 180,140 210,120 240,160 270,180 300,200 330,220
+                                        "></polyline>
+                                        
+                                        <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1357,9 +1660,34 @@
                             <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione. Fornisce una visione più completa della siccità, considerando l'impatto delle temperature sull'evaporazione dell'acqua.</p>
                             <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore, rendendo la siccità più severa.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Picchi di siccità estrema (R &lt; -2 con picchi anche di **-4.4** nel 2023) soprattutto dal 2022 in poi.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPEI_24_month</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="125" x2="350" y2="125" class="grid-line" stroke="#888" stroke-dasharray="2 2"></line> <line x1="0" y1="50" x2="350" y2="50" class="grid-line" opacity="0.6"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line" opacity="0.6"></line>
+
+                                        <text x="-15" y="25" class="axis-label" text-anchor="end">3.0</text>
+                                        <text x="-15" y="75" class="axis-label" text-anchor="end">1.5</text>
+                                        <text x="-15" y="125" class="axis-label" text-anchor="end">0</text>
+                                        <text x="-15" y="175" class="axis-label" text-anchor="end">-1.5</text>
+                                        <text x="-15" y="225" class="axis-label" text-anchor="end">-3.0</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">SPEI Value</text>
+
+                                        <polyline class="data-line line-avg" points="
+                                            0,110 30,90 60,100 90,80 120,120 150,90 180,130 210,110 240,170 270,190 300,210 330,230
+                                        "></polyline>
+                                        
+                                        <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1369,9 +1697,52 @@
                             <p><strong>Descrizione:</strong> Misura la percentuale di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Un indicatore chiave delle ondate di calore.</p>
                             <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.409, p-value = 0). Ciò indica che Vercelli sta vivendo ondate di calore più intense, lunghe e frequenti.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1988 (**2.46%**) e 1996. Massimi nel 2022 (**40.54%**) e 2023.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-bar"></i> Spazio per il Grafico TX90p</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 bar-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">50%</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">40%</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">30%</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">20%</text>
+                                        <text x="-15" y="200" class="axis-label" text-anchor="end">10%</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0%</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Percentuale Giorni</text>
+
+                                        <rect class="bar" x="15" y="235" width="10" height="15"></rect> <rect class="bar" x="30" y="230" width="10" height="20"></rect>
+                                        <rect class="bar" x="45" y="220" width="10" height="30"></rect>
+                                        <rect class="bar" x="60" y="210" width="10" height="40"></rect>
+                                        <rect class="bar" x="75" y="200" width="10" height="50"></rect>
+                                        <rect class="bar" x="90" y="190" width="10" height="60"></rect>
+                                        <rect class="bar" x="105" y="180" width="10" height="70"></rect>
+                                        <rect class="bar" x="120" y="170" width="10" height="80"></rect>
+                                        <rect class="bar" x="135" y="160" width="10" height="90"></rect>
+                                        <rect class="bar" x="150" y="150" width="10" height="100"></rect>
+                                        <rect class="bar" x="165" y="140" width="10" height="110"></rect>
+                                        <rect class="bar" x="180" y="130" width="10" height="120"></rect>
+                                        <rect class="bar" x="195" y="120" width="10" height="130"></rect>
+                                        <rect class="bar" x="210" y="110" width="10" height="140"></rect>
+                                        <rect class="bar" x="225" y="100" width="10" height="150"></rect>
+                                        <rect class="bar" x="240" y="90" width="10" height="160"></rect>
+                                        <rect class="bar" x="255" y="80" width="10" height="170"></rect>
+                                        <rect class="bar" x="270" y="70" width="10" height="180"></rect>
+                                        <rect class="bar" x="285" y="60" width="10" height="190"></rect>
+                                        <rect class="bar" x="300" y="50" width="10" height="200"></rect>
+                                        <rect class="bar" x="315" y="30" width="10" height="220"></rect> <rect class="bar" x="330" y="20" width="10" height="230"></rect> <rect class="bar" x="345" y="10" width="10" height="240"></rect> <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
@@ -1381,9 +1752,36 @@
                             <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali", con scarso raffreddamento notturno.</p>
                             <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.309, p-value = 0). Questo significa minor recupero termico notturno, con impatti sulla salute, agricoltura e consumo energetico.</p>
                             <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1992, 1993 (**2.70%**), 1996, 1999 e 2010. Massimi nel 2022 (**29.04%**) e 2023.</em></p>
-                            <div class="simulated-graph-container delay-1">
-                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico TN90p</div>
-                                </div>
+                            <div class="simulated-graph-container delay-1 line-chart">
+                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(40, 20)">
+                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
+                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
+                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
+                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
+                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+
+                                        <text x="-15" y="0" class="axis-label" text-anchor="end">35%</text>
+                                        <text x="-15" y="50" class="axis-label" text-anchor="end">25%</text>
+                                        <text x="-15" y="100" class="axis-label" text-anchor="end">15%</text>
+                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5%</text>
+                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0%</text>
+                                        <text x="-35" y="125" class="axis-label rotate-neg90">Percentuale Giorni</text>
+
+                                        <polyline class="data-line line-avg" points="
+                                            0,220 30,230 60,210 90,200 120,180 150,160 180,140 210,120 240,100 270,80 300,60 330,40
+                                        "></polyline>
+                                        
+                                        <text x="15" y="265" class="axis-label">1994</text>
+                                        <text x="80" y="265" class="axis-label">2000</text>
+                                        <text x="150" y="265" class="axis-label">2006</text>
+                                        <text x="220" y="265" class="axis-label">2012</text>
+                                        <text x="290" y="265" class="axis-label">2018</text>
+                                        <text x="345" y="265" class="axis-label">2024</text>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div> </div>
