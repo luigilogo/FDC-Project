@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vercelli - Analisi Climatica Avanzata</title>
+    <title>Vercelli: Uno Sguardo al Clima che Cambia</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Rubik:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -20,8 +20,6 @@
             --color-text-light: #555555; /* Testo Grigio per dettagli */
             --color-white: #FFFFFF; /* Bianco Puro */
             --color-border: #DCDCDC; /* Bordo Sottile */
-            --color-gradient-start: #2c3e50; /* Gradiente Hero (Non usato più per testo hero, ma tenuto per flessibilità) */
-            --color-gradient-end: #007bff; /* Gradiente Hero */
 
             --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra leggera e diffusa */
             --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15); /* Ombra più pronunciata al hover */
@@ -77,7 +75,25 @@
             letter-spacing: -0.02em; /* Leggermente compattato */
         }
 
-        h1 { font-size: clamp(3.5rem, 8vw, 5.8rem); font-weight: 800; } 
+        /* Reintrodotti stili per H1 nell'hero */
+        .hero h1 { 
+            font-size: clamp(2.8rem, 6vw, 4.8rem); 
+            font-weight: 800; 
+            color: var(--color-white);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Ombra per leggibilità */
+            margin-bottom: 0.5em;
+        }
+        .hero p {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: var(--color-white);
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+
         h2 { font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 700; }
         h3 { font-size: clamp(2.0rem, 4vw, 3.2rem); font-weight: 700; } 
 
@@ -202,7 +218,7 @@
         }
 
 
-        /* Hero Section - Puramente Visivo */
+        /* Hero Section - Inclusione del testo */
         .hero {
             background-image: url('https://images.unsplash.com/photo-1628178652431-b84742f1f4b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzM5NTN8MHwxfHNlYXJjaHw1fHxyaWNlJTIwZmllbGRzJTIwZGF3biUyMGl0YWx5fGVufDB8fHx8MTcxOTExOTkwMHww&ixlib=rb-4.0.3&q=80&w=1920'); /* Placeholder: risaie all'alba in Italia */
             background-size: cover;
@@ -210,9 +226,12 @@
             height: 100vh; /* Full height */
             position: relative;
             overflow: hidden;
-            display: flex; /* Centrare il contenuto se in futuro volessi rimettere qualcosa */
+            display: flex; 
+            flex-direction: column; /* Imposta la direzione in colonna per allineare H1 e P */
             align-items: center;
             justify-content: center;
+            text-align: center; /* Centra il testo */
+            padding: 0 20px; /* Padding per evitare che il testo tocchi i bordi */
         }
 
         .hero::before { /* Overlay scuro per l'immagine */
@@ -222,10 +241,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Overlay scuro */
-            backdrop-filter: blur(2px); /* Lieve blur per l'immagine */
-            -webkit-backdrop-filter: blur(2px);
+            background-color: rgba(0, 0, 0, 0.6); /* Overlay più scuro per maggiore leggibilità */
+            backdrop-filter: blur(3px); /* Lieve blur per l'immagine */
+            -webkit-backdrop-filter: blur(3px);
             z-index: 0;
+        }
+
+        .hero-content {
+            position: relative; /* Per posizionare il contenuto sopra l'overlay */
+            z-index: 1;
+            max-width: 900px; /* Limita la larghezza del testo */
+            padding: 20px;
         }
 
         /* Main Content Sections - Più spazio e stile pulito */
@@ -907,6 +933,8 @@
             .nav-link { font-size: 0.85rem; padding: 4px 0;}
 
             .hero { height: 80vh; }
+            .hero h1 { font-size: clamp(2.2rem, 6.5vw, 4rem); }
+            .hero p { font-size: clamp(1.1rem, 2.8vw, 1.6rem); }
 
             section { padding: 80px 0; min-height: 70vh; }
             section h2 { font-size: clamp(2.2rem, 7vw, 3.5rem); margin-bottom: 40px; }
@@ -934,12 +962,12 @@
             .indice-card h3 { font-size: clamp(1.5rem, 4vw, 2rem); }
             .indice-card h3 i { margin-right: 15px; }
             .indice-card p { font-size: 1.0rem; }
-            .highlight-text { font-size: clamp(0.95rem, 2.5vw, 1.15rem); padding-left: 15px; }
+            .highlight-text { font-size: clamp(0.95rem, 2.5vw, 1.15rem); padding-left: 18px; }
 
             #map { height: 450px; margin-top: 30px; }
 
             #back-to-top { width: 60px; height: 60px; font-size: 1.8rem; bottom: 30px; left: 30px; }
-            footer { padding: 40px 0; font-size: 0.9rem; }
+            footer { padding: 40px 0; font-size: 0.95rem; }
 
             .content-swiper-container { min-height: 350px; }
             .content-slide { padding-bottom: 70px; min-height: 280px;}
@@ -956,6 +984,8 @@
             .nav-link { font-size: 0.8rem; padding: 3px 0; }
 
             .hero { height: 70vh; }
+            .hero h1 { font-size: clamp(1.8rem, 7vw, 3rem); }
+            .hero p { font-size: clamp(1.0rem, 3.5vw, 1.4rem); }
 
             section { padding: 60px 0; min-height: 60vh; }
             section h2 { font-size: clamp(2.0rem, 8vw, 3rem); margin-bottom: 30px; }
@@ -1008,7 +1038,11 @@
     </header>
 
     <div class="hero">
+        <div class="hero-content">
+            <h1>Vercelli: Mappa Interattiva dei Rischi Climatici</h1>
+            <p>Esplora le aree chiave del territorio di Vercelli e scopri i rischi climatici specifici a cui sono esposte, con un focus sui settori socio-economici. Clicca sui marker per visualizzare i dettagli.</p>
         </div>
+    </div>
 
     <main>
         <section id="mappa-rischi" class="bg-light-section content-reveal">
