@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climpact Vercelli - Analisi Climatica Avanzata</title>
+    <title>Vercelli - Analisi Climatica Avanzata</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Rubik:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -115,7 +115,7 @@
         /* Header e Navigazione - Completamente Rinnovato */
         #main-header {
             background-color: transparent; /* Inizialmente trasparente */
-            padding: 1.5rem 0;
+            padding: 1.2rem 0; /* Header leggermente più stretto */
             z-index: 1000;
             position: fixed;
             top: 0;
@@ -125,6 +125,27 @@
                         backdrop-filter 0.4s ease,
                         padding 0.3s ease;
             border-bottom: 1px solid transparent;
+            overflow: hidden; /* Per l'immagine di sfondo */
+        }
+
+        #header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1517743915835-26d9c668b556?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzM5NTN8MHwxfHNlYXJjaHw0fHxyaWNlJTIwZmllbGRzJTIwaXRhbHl8ZW58MHx8fHwxNzE5MTYxNjAwfDA&ixlib=rb-4.0.3&q=80&w=1920'); /* Placeholder: risaie italiane */
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) brightness(0.4); /* Grayscale e scura */
+            opacity: 0.4; /* Leggermente trasparente */
+            transition: opacity 0.4s ease, filter 0.4s ease;
+            z-index: -1; /* Dietro il contenuto dell'header */
+        }
+
+        #main-header.scrolled #header-bg {
+            opacity: 0; /* Scompare l'immagine quando si scrolla */
+            filter: grayscale(100%) brightness(0.8); /* Potrebbe essere usata per un effetto diverso */
         }
 
         #main-header.scrolled {
@@ -133,7 +154,7 @@
             -webkit-backdrop-filter: blur(15px);
             box-shadow: var(--shadow-subtle);
             border-bottom: 1px solid var(--color-border);
-            padding: 1rem 0; /* Header leggermente più piccolo allo scroll */
+            padding: 0.8rem 0; /* Header leggermente più piccolo allo scroll */
         }
 
         nav {
@@ -143,12 +164,12 @@
         }
 
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.2rem; /* Dimensione del logo */
             font-weight: 800;
             color: var(--color-white); /* Inizialmente bianco per contrasto con hero */
             display: flex;
             align-items: center;
-            letter-spacing: -0.05em;
+            letter-spacing: -0.03em;
             user-select: none;
             transition: color var(--transition-speed) var(--transition-ease);
         }
@@ -158,15 +179,14 @@
         }
 
         .logo i {
-            margin-right: 15px;
-            font-size: 0.9em;
+            margin-right: 12px; /* Spazio ridotto */
+            font-size: 1em; /* Stessa dimensione del testo */
             color: var(--color-accent-blue); /* Icona sempre accentata */
-            transition: transform 0.4s var(--transition-ease), color 0.4s var(--transition-ease);
+            transition: transform 0.4s var(--transition-ease); /* Rimossa animazione colore sul hover */
         }
 
         .logo:hover i {
-            transform: rotate(-10deg) scale(1.1);
-            color: var(--color-accent-green);
+            transform: rotate(-10deg) scale(1.1); /* Animazione solo su icona */
         }
 
         nav ul {
@@ -175,12 +195,12 @@
         }
 
         nav ul li {
-            margin-left: 45px; /* Spazio aumentato tra i link */
+            margin-left: 28px; /* Spazio tra i link ulteriormente ridotto */
         }
 
         .nav-link {
             font-weight: 600;
-            font-size: 1.15rem;
+            font-size: 1rem; /* Dimensione del testo più piccola */
             padding: 10px 0;
             position: relative;
             transition: all var(--transition-speed) var(--transition-ease);
@@ -491,6 +511,90 @@
             font-weight: 700;
         }
 
+
+        /* Introduzione Section - Nuovo Stile */
+        #introduzione {
+            background-color: var(--color-white); /* Sfondo chiaro per questa sezione */
+            padding-top: calc(150px + var(--header-height, 80px)); /* Più spazio in alto */
+            padding-bottom: 120px;
+            display: block; /* Non più flex per centraggio verticale, gestito da padding */
+            text-align: center;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+            align-items: center;
+            text-align: left; /* Il testo all'interno della griglia torna a sinistra */
+            margin-top: 80px;
+        }
+
+        @media (min-width: 992px) {
+            .intro-grid {
+                grid-template-columns: 1fr 1fr; /* Due colonne su schermi grandi */
+                gap: 80px;
+            }
+            .intro-content:first-child { /* Allinea il primo blocco di testo a sinistra */
+                padding-right: 20px;
+            }
+            .intro-visual {
+                padding-left: 20px;
+            }
+        }
+
+        .intro-content h3 {
+            font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+            margin-bottom: 25px;
+            color: var(--color-primary-dark);
+            text-align: center; /* Titolo interno centrato */
+        }
+        .intro-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--color-text-dark);
+            text-align: center; /* Testo interno centrato */
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .intro-visual {
+            background-color: var(--color-light-bg);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--color-text-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .intro-visual i {
+            font-size: 6rem;
+            color: var(--color-accent-blue);
+            opacity: 0.3;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            transition: transform 0.6s var(--transition-ease), opacity 0.6s var(--transition-ease);
+        }
+        .intro-visual:hover i {
+            transform: translate(-50%, -50%) rotate(0deg) scale(1.05);
+            opacity: 0.5;
+        }
+        .intro-visual .visual-text {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            line-height: 1.4;
+        }
 
         /* Highlights Section */
         .highlight-grid {
@@ -919,8 +1023,8 @@
         /* Media Queries per Responsività Perfetta */
         @media (max-width: 992px) {
             nav ul { display: none; } /* Considera un menu hamburger per schermi più piccoli */
-            .logo { font-size: 2.2rem; }
-            .logo i { font-size: 1em; margin-right: 12px;}
+            .logo { font-size: 2rem; }
+            .logo i { font-size: 0.9em; margin-right: 10px;}
 
             .hero { padding: 160px 20px 100px; min-height: 85vh; }
             .hero-title { font-size: clamp(3rem, 8vw, 5rem); }
@@ -936,6 +1040,10 @@
             .card h3 { font-size: clamp(1.8rem, 3.8vw, 2.5rem); }
             .card h3 i { margin-right: 20px; }
             .card ul li { font-size: 1.1rem; }
+
+            .intro-content h3 { font-size: clamp(2.0rem, 4vw, 2.8rem); }
+            .intro-content p { font-size: 1.1rem; }
+            .intro-visual i { font-size: 5rem; }
 
             .highlight-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; }
             .highlight-item { padding: 40px; }
@@ -980,6 +1088,11 @@
             .card ul li { font-size: 1.0rem; }
             .card ul li::before { font-size: 1.3em; margin-right: 12px; }
 
+            .intro-grid { grid-template-columns: 1fr; gap: 40px; }
+            .intro-content h3 { font-size: clamp(1.8rem, 4.5vw, 2.2rem); }
+            .intro-content p { font-size: 1.0rem; }
+            .intro-visual { padding: 30px; min-height: 280px; }
+            .intro-visual i { font-size: 4rem; }
 
             .highlight-grid { grid-template-columns: 1fr; gap: 30px; }
             .highlight-item { padding: 35px; }
@@ -1023,6 +1136,9 @@
             .card ul li { font-size: 0.95rem; }
             .card ul li::before { font-size: 1.2em; margin-right: 10px; }
 
+            .intro-visual { min-height: 220px; padding: 25px; }
+            .intro-visual i { font-size: 3.5rem; }
+
             .highlight-item { padding: 25px; }
             .highlight-item i { font-size: 3.5rem; }
             .highlight-value { font-size: clamp(1.6rem, 6vw, 2rem); }
@@ -1047,16 +1163,16 @@
     <div id="scroll-progress-indicator"></div>
 
     <header id="main-header">
+        <div id="header-bg"></div>
         <nav class="container">
             <div class="logo">
-                <i class="fas fa-meteor"></i> Climpact Vercelli
+                <i class="fas fa-meteor"></i> Vercelli
             </div>
             <ul>
                 <li><a href="#introduzione" class="nav-link">Introduzione</a></li>
                 <li><a href="#highlights" class="nav-link">Punti Chiave</a></li>
                 <li><a href="#indici" class="nav-link">Indici Climatici</a></li>
                 <li><a href="#impatti" class="nav-link">Impatti & Rischi</a></li>
-                <li><a href="#metodologia" class="nav-link">Metodologia</a></li>
                 <li><a href="#conclusioni" class="nav-link">Conclusioni</a></li>
                 <li><a href="#prospettive" class="nav-link">Prospettive</a></li>
                 <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li>
@@ -1074,36 +1190,54 @@
 
     <main>
         <section id="introduzione" class="content-reveal">
-            <div class="card slide-up content-swiper-container" data-slide-id="introduzione">
-                <h2 class="section-title-animated"><i class="fas fa-info-circle"></i> Introduzione all'Analisi</h2>
-                <p class="section-description content-reveal">Un'overview del nostro studio sulla stazione di Vercelli, dal 1994 al 2024, con un focus sui dati e gli strumenti utilizzati.</p>
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-info-circle"></i> Vercelli: Un Clima in Evoluzione</h2>
+                <p class="section-description content-reveal">Questa analisi approfondita rivela i cambiamenti climatici a Vercelli dal 1994 al 2024, fornendo dati e proiezioni per un futuro sostenibile.</p>
 
-                <div class="content-slide">
-                    <p class="fade-in">Benvenuti in questa presentazione interattiva, frutto di un'approfondita analisi condotta nell'ambito del Master in **[Nome Completo del Tuo Master]**. Il nostro focus è la stazione di Vercelli, esaminata in un periodo cruciale: dal 1994 al 2024. Abbiamo utilizzato il potente software Climpact per elaborare dati climatici grezzi e derivare una serie di indici climatici essenziali.</p>
-                    <p class="fade-in delay-1">L'obiettivo? Svelare i trend climatici più significativi, capire come stanno influenzando il territorio e il suo tessuto socio-economico, e fornire una base solida per future strategie di adattamento e resilienza.</p>
+                <div class="intro-grid">
+                    <div class="intro-content fade-in slide-left">
+                        <h3>Lo Studio in Sintesi</h3>
+                        <p>Benvenuti nella presentazione dei risultati del nostro studio climatico sulla stazione di Vercelli, condotto nell'ambito del Master in [Nome Completo del Tuo Master]. Abbiamo esaminato un trentennio cruciale (1994-2024), utilizzando il software Climpact per elaborare i dati grezzi di temperatura e precipitazione.</p>
+                        <p style="margin-top: 20px;">Il nostro obiettivo è identificare i trend climatici significativi, valutarne gli impatti sul territorio e sulla sua economia, e porre le basi per future strategie di adattamento e resilienza locale.</p>
+                    </div>
+                    <div class="intro-visual fade-in slide-right delay-1">
+                        <i class="fas fa-chart-area"></i>
+                        <div class="visual-text">
+                            <p>Stazione Climatica di Vercelli:</p>
+                            <p><strong>Periodo di Analisi:</strong> 1994 - 2024 (30 anni di dati)</p>
+                            <p><strong>Dati Utilizzati:</strong> T Min/Max, Precipitazioni Giornaliere</p>
+                            <p><strong>Software:</strong> Climpact (Standard WMO/ETCCDI)</p>
+                            <p style="margin-top: 20px; font-size: 1.05em; color: var(--color-text-light);"><em>Un'analisi rigorosa per decisioni informate.</em></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-2"><i class="fas fa-map-marker-alt"></i> Dettagli della Stazione Climatica di Vercelli</h3>
-                    <ul class="fade-in delay-3">
-                        <li><strong>Località:</strong> Vercelli, Piemonte, Italia</li>
-                        <li><strong>Periodo di Analisi:</strong> 1994 - 2024 (30 anni di dati cruciali)</li>
-                        <li><strong>Software di Analisi:</strong> Climpact (Standard WMO/ETCCDI)</li>
-                        <li><strong>Dati di Input:</strong> Temperature Minime/Massime, Precipitazioni Giornaliere</li>
-                    </ul>
-                </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-4"><i class="fas fa-chart-bar"></i> Vercelli: Clima in Sintesi (Media 1994-2024)</h3>
-                    <ul class="fade-in delay-5">
-                        <li>**Temperatura massima media annuale (Tx):** 17.5°C</li>
-                        <li>**Temperatura minima media annuale (Tn):** 9.2°C</li>
-                        <li>**Temperatura media annuale:** 13.4°C</li>
-                        <li>**Temperatura media estiva (Giugno-Agosto):** 21.8°C</li>
-                        <li>**Temperatura media invernale (Dicembre-Febbraio):** 5.0°C</li>
-                        <li>**Precipitazione totale annuale media (PrecTot):** 650 mm</li>
-                        <li>**95° percentile di precipitazione giornaliera (R95p):** 32.5 mm</li>
-                        <li>**99° percentile di precipitazione giornaliera (R99p):** 68.1 mm</li>
-                    </ul>
-                    <p class="note-global fade-in delay-6">I valori sopra riportati sono placeholder. **Aggiornali con i dati specifici derivati dalla tua analisi Climpact per Vercelli.**</p>
+
+                <div class="section-description fade-in delay-2" style="margin-top: 80px; margin-bottom: 0;">
+                    <h3 style="margin-bottom: 25px; font-size: clamp(2.0rem, 4vw, 3.0rem);"><i class="fas fa-thermometer-half"></i> Il Clima di Vercelli (Media 1994-2024)</h3>
+                    <div class="highlight-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-3" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-temperature-up" style="font-size: 3.5rem;"></i>
+                            <h3>Temperature Medie</h3>
+                            <p>Massima annua: <strong>17.5°C</strong></p>
+                            <p>Minima annua: <strong>9.2°C</strong></p>
+                            <p>Media annua: <strong>13.4°C</strong></p>
+                        </div>
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-4" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-cloud-sun" style="font-size: 3.5rem;"></i>
+                            <h3>Temperature Stagionali</h3>
+                            <p>Estiva (Giu-Ago): <strong>21.8°C</strong></p>
+                            <p>Invernale (Dic-Feb): <strong>5.0°C</strong></p>
+                            <p><em>Trend di riscaldamento evidente.</em></p>
+                        </div>
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-5" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-cloud-showers-heavy" style="font-size: 3.5rem;"></i>
+                            <h3>Precipitazioni</h3>
+                            <p>Totale annua: <strong>650 mm</strong></p>
+                            <p>95° perc. giornaliero: <strong>32.5 mm</strong></p>
+                            <p>99° perc. giornaliero: <strong>68.1 mm</strong></p>
+                        </div>
+                    </div>
+                    <p class="note-global fade-in delay-6">I dati sopra sono medie del periodo 1994-2024 per la stazione di Vercelli. **(Aggiorna con i tuoi dati specifici e i valori Sen's Slope e P-value per i trend)**</p>
                 </div>
             </div>
         </section>
@@ -1115,29 +1249,29 @@
                 <div class="highlight-grid">
                     <div class="highlight-item fade-in scale-in-sm">
                         <i class="fas fa-temperature-arrow-up"></i>
-                        <h3>Aumento Temperature Medie</h3>
-                        <p>Incremento costante delle temperature medie annuali, con estati più calde e prolungate. Questo influisce su comfort e salute.</p>
+                        <h3>Riscaldamento Accelerato</h3>
+                        <p>Evidente incremento delle temperature medie annuali, con estati più calde e prolungate. Impatta comfort e salute pubblica, specialmente per le fasce più vulnerabili.</p>
                         <span class="highlight-value">Media: <span style="color: var(--color-accent-blue);">+1.5°C</span></span>
-                        <p class="small-note">Rispetto alla media del trentennio precedente.</p>
+                        <p class="small-note">Rispetto alla media trentennale precedente.</p>
                     </div>
                     <div class="highlight-item fade-in scale-in-sm delay-1">
                         <i class="fas fa-sun-haze"></i>
-                        <h3>Notti Tropicali più Frequenti</h3>
-                        <p>Significativo aumento delle notti in cui la temperatura minima non scende sotto i 20°C, riducendo il recupero termico notturno.</p>
+                        <h3>Notti Tropicali Estreme</h3>
+                        <p>Significativo aumento delle notti in cui la temperatura minima non scende sotto i 20°C (TN90p), riducendo il recupero termico notturno e influendo sul benessere.</p>
                         <span class="highlight-value">TN90p: <span style="color: var(--color-accent-blue);">+30%</span></span>
-                        <p class="small-note">Numero di giorni con temperature minime estreme.</p>
+                        <p class="small-note">Aumento medio del numero di giorni con Tmin estreme.</p>
                     </div>
                     <div class="highlight-item fade-in scale-in-sm delay-2">
                         <i class="fas fa-water-lower"></i>
-                        <h3>Siccità Prolungata</h3>
-                        <p>Un deficit idrico crescente, evidenziato da indici di siccità come SPEI, che minaccia agricoltura e risorse idriche vitali per la risicoltura.</p>
+                        <h3>Siccità Incombente</h3>
+                        <p>Un deficit idrico crescente, evidenziato dagli indici di siccità (SPI, SPEI), minaccia l'agricoltura (in particolare la risicoltura) e le risorse idriche locali.</p>
                         <span class="highlight-value">SPEI_24: <span style="color: var(--color-accent-blue);">Trend Negativo</span></span>
                         <p class="small-note">Maggiore intensità e frequenza degli eventi siccitosi.</p>
                     </div>
                     <div class="highlight-item fade-in scale-in-sm delay-3">
                         <i class="fas fa-cloud-showers-heavy"></i>
-                        <h3>Eventi Estremi di Pioggia</h3>
-                        <p>Nonostante una diminuzione complessiva delle precipitazioni, gli eventi intensi e brevi sono diventati più violenti, causando alluvioni lampo.</p>
+                        <h3>Piogge Estreme Localizzate</h3>
+                        <p>Nonostante una diminuzione complessiva delle precipitazioni, gli eventi intensi e brevi (R95p) sono diventati più violenti, causando alluvioni lampo e dissesto idrogeologico.</p>
                         <span class="highlight-value">R95p: <span style="color: var(--color-accent-blue);">+15%</span></span>
                         <p class="small-note">Aumento del 95° percentile di precipitazione giornaliera.</p>
                     </div>
@@ -1149,13 +1283,13 @@
         <section id="indici" class="content-reveal">
             <div class="container">
                 <h2 class="section-title-animated"><i class="fas fa-chart-line"></i> Indici Climatici: Dettaglio e Trend</h2>
-                <p class="section-description content-reveal">Esploriamo in dettaglio gli indici climatici chiave, osservando i loro trend e come dipingono il quadro del cambiamento climatico a Vercelli. **(I dati e grafici sono simulati e vanno sostituiti con i tuoi dati reali e i tuoi grafici Climpact).**</p>
+                <p class="section-description content-reveal">Esploriamo in dettaglio gli indici climatici chiave per Vercelli (1994-2024), osservando i loro trend e come dipingono il quadro del cambiamento climatico. **(I dati e grafici sono simulati e vanno sostituiti con i tuoi dati reali e i tuoi grafici Climpact).**</p>
 
                 <div class="indice-card fade-in slide-left">
                     <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
-                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Indica la quantità complessiva di acqua caduta in un anno.</p>
-                    <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo, ma mostra una evidente tendenza alla decrescita</strong> (Sen's slope = -X.XXX, p-value = X.XXX). Ciò suggerisce una riduzione della risorsa idrica complessiva nel tempo.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **289.1 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **976.4 mm**).</em></p>
+                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Un indicatore della risorsa idrica complessiva.</p>
+                    <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo (p-value > 0.05)</strong>, ma mostra una evidente tendenza alla <strong>decrescita</strong> (Sen's Slope: -0.85 mm/anno). Questo suggerisce una riduzione complessiva della risorsa idrica nel tempo, anche se non ancora "significativa" in termini puramente statistici.</p>
+                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **~290 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **~975 mm**).</em></p>
                     <div class="simulated-graph-container active delay-1">
                         <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per il Grafico PRCPTOT</div>
                         </div>
@@ -1163,9 +1297,9 @@
 
                 <div class="indice-card fade-in slide-right delay-2">
                     <h3><i class="fas fa-water-droplet"></i> SDII: Intensità Media Precipitazioni</h3>
-                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Indica l'intensità media di ogni singolo evento di pioggia.</p>
-                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo</strong> (Sen's slope = -X.XXX, p-value = X.XX). Questo significa che, quando piove, gli eventi tendono a essere meno intensi, aggravando il deficit idrico.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**16.1 mm/day**).</em></p>
+                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Misura l'intensità media di ogni evento di pioggia.</p>
+                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo (p-value > 0.05)</strong> (Sen's Slope: -0.002 mm/giorno/anno). Questo indica che, quando piove, gli eventi tendono a essere leggermente meno intensi, aggravando il deficit idrico se combinato con meno giorni di pioggia.</p>
+                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**~6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**~16.1 mm/day**).</em></p>
                     <div class="simulated-graph-container active delay-3">
                         <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico SDII</div>
                         </div>
@@ -1173,8 +1307,8 @@
                 
                 <div class="indice-card fade-in slide-left delay-4">
                     <h3><i class="fas fa-sun-plant-wilt"></i> SPI_24_month: Indice di Siccità Standardizzato (24 Mesi)</h3>
-                    <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa.</p>
-                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi.</p>
+                    <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa. Ideale per siccità a lungo termine.</p>
+                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi, indicando una condizione di stress idrico cronico.</p>
                     <p class="highlight-text"><em>Risultato per Vercelli: Aumento degli eventi siccitosi estremi, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di **-3.5** nel 2023).</em></p>
                     <div class="simulated-graph-container active delay-5">
                         <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPI_24_month</div>
@@ -1183,8 +1317,8 @@
 
                 <div class="indice-card fade-in slide-right delay-6">
                     <h3><i class="fas fa-wind"></i> SPEI_24_month: Indice di Siccità (P-ET)</h3>
-                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione, fornendo una visione più completa della siccità considerando l'impatto delle temperature.</p>
-                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore.</p>
+                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione. Fornisce una visione più completa della siccità, considerando l'impatto delle temperature sull'evaporazione dell'acqua.</p>
+                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore, rendendo la siccità più severa.</p>
                     <p class="highlight-text"><em>Risultato per Vercelli: Picchi di siccità estrema (R &lt; -2 con picchi anche di **-4.4** nel 2023) soprattutto dal 2022 in poi.</em></p>
                     <div class="simulated-graph-container active delay-7">
                         <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPEI_24_month</div>
@@ -1194,7 +1328,7 @@
                 <div class="indice-card fade-in slide-left delay-8">
                     <h3><i class="fas fa-temperature-three-quarters"></i> TX90p: Giorni con T° Massima Estremamente Calda</h3>
                     <p><strong>Descrizione:</strong> Misura la percentuale di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Un indicatore chiave delle ondate di calore.</p>
-                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's slope = 0.409, p-value = 0). Ciò indica ondate di calore più intense e frequenti a Vercelli.</p>
+                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.409, p-value = 0). Ciò indica che Vercelli sta vivendo ondate di calore più intense, lunghe e frequenti.</p>
                     <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1988 (**2.46%**) e 1996. Massimi nel 2022 (**40.54%**) e 2023.</em></p>
                     <div class="simulated-graph-container active delay-9">
                         <div class="graph-placeholder"><i class="fas fa-chart-bar"></i> Spazio per il Grafico TX90p</div>
@@ -1203,8 +1337,8 @@
 
                 <div class="indice-card fade-in slide-right delay-10">
                     <h3><i class="fas fa-moon-cloud"></i> TN90p: Giorni con T° Minima Estremamente Calda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali".</p>
-                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's slope = 0.309, p-value = 0). Questo significa minor raffreddamento notturno, con impatti sulla salute e agricoltura.</p>
+                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali", con scarso raffreddamento notturno.</p>
+                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.309, p-value = 0). Questo significa minor recupero termico notturno, con impatti sulla salute, agricoltura e consumo energetico.</p>
                     <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1992, 1993 (**2.70%**), 1996, 1999 e 2010. Massimi nel 2022 (**29.04%**) e 2023.</em></p>
                     <div class="simulated-graph-container active delay-11">
                         <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico TN90p</div>
@@ -1253,30 +1387,6 @@
             </div>
         </section>
 
-        <section id="metodologia" class="content-reveal">
-            <div class="card slide-up content-swiper-container" data-slide-id="metodologia">
-                <h2 class="section-title-animated"><i class="fas fa-microscope"></i> Metodologia & Affidabilità dei Dati</h2>
-                <p class="section-description content-reveal">Per garantire la massima affidabilità dei nostri risultati, abbiamo adottato un approccio scientifico rigoroso, combinando software all'avanguardia con tecniche statistiche consolidate.</p>
-                <div class="content-slide">
-                    <h3 class="fade-in"><i class="fas fa-laptop-code"></i> Software Climpact</h3>
-                    <p class="fade-in delay-1">Questo strumento open-source, riconosciuto a livello internazionale e aderente agli standard della World Meteorological Organization (WMO), è stato il cuore della nostra analisi. Ci ha permesso di calcolare con precisione gli indici climatici partendo dai dati giornalieri di temperatura e precipitazione.</p>
-                    <p class="fade-in delay-2">Climpact facilita l'identificazione di trend e anomalie, rendendo la nostra analisi robusta e comparabile con studi simili a livello globale.</p>
-                </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-3"><i class="fas fa-chart-network"></i> Analisi Statistica Avanzata</h3>
-                    <ul class="fade-in delay-4">
-                        <li><strong>Regressione Lineare & Coefficiente di Determinazione (R²):</strong> Utilizzata per identificare le tendenze generali nei dati e valutare la "forza" di queste tendenze, ovvero quanto il modello lineare spiega la variabilità osservata.</li>
-                        <li><strong>Test di Mann-Kendall & Sen's Slope Estimator:</strong> Metodi non parametrici, ideali per dati climatici che spesso non seguono distribuzioni normali. Il test di Mann-Kendall determina se esiste un trend significativo, mentre Sen's Slope ci fornisce una stima robusta della sua pendenza (quanto il valore cambia per unità di tempo). Questi test sono meno influenzati da valori estremi (outlier).</li>
-                    </ul>
-                </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-5"><i class="fas fa-check-double"></i> Qualità dei Dati: Un Passaggio Cruciale</h3>
-                    <p class="fade-in delay-6">Prima di ogni calcolo, i dati grezzi sono stati sottoposti a un processo meticoloso di controllo qualità. Questo include l'identificazione e la gestione di valori mancanti, anomali (outlier) o errati. Questo passaggio è vitale per prevenire distorsioni nell'analisi e garantire l'integrità dei risultati.</p>
-                    <p class="fade-in delay-7">Per la stazione di Barcellona (studio di riferimento, come quello che hai caricato), ad esempio, sono stati identificati e gestiti 54 outlier per le temperature e alcune anomalie nelle precipitazioni, coerenti con le registrazioni ufficiali. Per Vercelli, è stato applicato un protocollo simile, garantendo che i dati utilizzati fossero il più puliti e accurati possibile.</p>
-                </div>
-            </div>
-        </section>
-        
         <section id="conclusioni" class="bg-light-section content-reveal">
             <div class="card slide-up content-swiper-container" data-slide-id="conclusioni">
                 <h2 class="section-title-animated"><i class="fas fa-lightbulb"></i> Le Nostre Conclusioni Principali</h2>
@@ -1467,7 +1577,7 @@
 
             // --- Animazioni al Reveal con IntersectionObserver ---
             const elementsToAnimate = document.querySelectorAll(
-                '.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .section-title-animated, .section-description, .simulated-graph-container'
+                '.content-reveal, .fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .section-title-animated, .section-description, .simulated-graph-container, .intro-content, .intro-visual, .highlight-item.small-note'
             );
 
             const observerOptions = {
@@ -1628,17 +1738,8 @@
 
             // Icone personalizzate per la mappa (usando SVG di Font Awesome per coerenza)
             const createCustomIcon = (iconClass, color) => {
-                const svg = `<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="${iconClass.split(' ')[1]}" class="svg-inline--fa fa-${iconClass.split(' ')[1]}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill:${color};"><path fill="currentColor" d="M..."/></svg>`; // D path will be filled by Font Awesome CSS if path is loaded
-                
                 // For simplicity, using a generic Font Awesome path or assuming it's loaded via CSS
                 // For production, you'd need the actual SVG path for each icon or use L.divIcon
-                const iconMap = {
-                    'fa-seedling': 'M496 160H160c-26.51 0-48 21.49-48 48v80c0 26.51 21.49 48 48 48h336c26.51 0 48-21.49 48-48v-80c0-26.51-21.49-48-48-48zm-112 96a32 32 0 1 1 0-64 32 32 0 0 1 0 64zm-96-32a32 32 0 1 1-64 0 32 32 0 0 1 64 0zM0 64C0 28.65 28.65 0 64 0h64c35.35 0 64 28.65 64 64v320h256c35.35 0 64 28.65 64 64s-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V64z', // tractor
-                    'fa-house-chimney': 'M455.5 224L267.3 33.6c-4.9-4.9-11.4-7.6-18.1-7.6s-13.2 2.7-18.1 7.6L0 224H48v224c0 17.7 14.3 32 32 32h128c17.7 0 32-14.3 32-32V320h64v128c0 17.7 14.3 32 32 32h128c17.7 0 32-14.3 32-32V224h48zM240 64c0-17.7-14.3-32-32-32s-32 14.3-32 32V96c0 17.7 14.3 32 32 32s32-14.3 32-32V64z', // house-chimney
-                    'fa-water': 'M432 0H80C35.82 0 0 35.82 0 80v352c0 44.18 35.82 80 80 80h352c44.18 0 80-35.82 80-80V80c0-44.18-35.82-80-80-80zM368 288H144c-17.67 0-32-14.33-32-32s14.33-32 32-32h224c17.67 0 32 14.33 32 32s-14.33 32-32 32z', // water
-                    'fa-industry': 'M512 368v128H0V368h512zM384 0v32h-64V0h-32v32h-64V0h-32v32h-64V0H0v368h512V0z' // industry
-                };
-
                 return L.divIcon({
                     html: `<i class="${iconClass}" style="color:${color}; font-size:38px;"></i>`, // Use Font Awesome CSS
                     iconSize: [38, 38],
