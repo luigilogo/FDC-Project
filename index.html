@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -1143,7 +1142,7 @@
         <section id="mappa-rischi" class="bg-light-section content-reveal">
             <div class="container">
                 <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Analisi Spaziale dei Rischi a Vercelli</h2>
-                <p class="section-description content-reveal">L'interazione tra i dati climatici e la geografia locale rivela i punti critici. Esplora le aree più vulnerabili e i settori colpiti.</p>
+                <p class="section-description content-reveal">L'interazione tra i dati climatici e la geografia locale rivela i punti critici. Esplora le aree più vulnerabili e i settori colpiti. Clicca sui marker per visualizzare i dettagli.</p>
                 
                 <div class="map-results fade-in delay-1" style="margin-top: 60px; text-align: center;">
                     <h3 style="font-size: clamp(1.8rem, 3.8vw, 2.5rem); margin-bottom: 25px;"><i class="fas fa-chart-area"></i> Risultati Chiave dalla Mappa</h3>
@@ -1203,7 +1202,7 @@
                     <h3 style="margin-bottom: 25px; font-size: clamp(2.0rem, 4vw, 3.0rem);"><i class="fas fa-thermometer-half"></i> Il Clima di Vercelli (Media 1994-2024)</h3>
                     <div class="highlight-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
                         <div class="highlight-item small-note fade-in scale-in-sm delay-3" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-temperature-up" style="font-size: 3.5rem;"></i>
+                            <i class="fas fa-temperature-arrow-up" style="font-size: 3.5rem;"></i>
                             <h3>Temperature Medie</h3>
                             <p>Massima annua: <strong>17.5°C</strong></p>
                             <p>Minima annua: <strong>9.2°C</strong></p>
@@ -1273,6 +1272,49 @@
                 <p class="section-description content-reveal">Esploriamo in dettaglio gli indici climatici chiave per Vercelli (1994-2024), osservando i loro trend e come dipingono il quadro del cambiamento climatico. **(I dati e grafici sono simulati e vanno sostituiti con i tuoi dati reali e i tuoi grafici Climpact).**</p>
 
                 <div class="card slide-up content-swiper-container" data-slide-id="indici">
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-left">
+                            <h3><i class="fas fa-chart-bar"></i> Regime Pluviometrico Annuale</h3>
+                            <p><strong>Descrizione:</strong> Questo grafico mostra la distribuzione media mensile delle precipitazioni. A Vercelli, le piogge tendono ad essere più abbondanti in primavera e autunno, con un minimo estivo che può contribuire al rischio siccità.</p>
+                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Picchi di precipitazione in Maggio e Ottobre (~80-90 mm/mese), minimi in Luglio-Agosto (~30-40 mm/mese) e Gennaio (~45 mm/mese).</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico Regime Pluviometrico</div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-right">
+                            <h3><i class="fas fa-chart-line"></i> Curve Termiche Annuali (Media, Min, Max)</h3>
+                            <p><strong>Descrizione:</strong> Queste curve illustrano l'andamento mensile delle temperature medie, minime e massime. A Vercelli si osserva la tipica escursione termica continentale, con inverni freddi ed estati calde.</p>
+                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Temperature medie minime in Gennaio (~1°C), massime in Luglio-Agosto (~28-30°C). La curva della temperatura media segue un andamento sinusoidale regolare.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico Curve Termiche</div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-left">
+                            <h3><i class="fas fa-sun"></i> Curva Ombrotermica (Diagramma di Gaussen)</h3>
+                            <p><strong>Descrizione:</strong> Il Diagramma di Gaussen sovrappone le curve di temperatura e precipitazione per identificare i periodi di siccità. Un periodo è considerato secco quando la temperatura media (in °C) è più del doppio della precipitazione (in mm).</p>
+                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Evidenzia un periodo di aridità estiva, tipicamente tra Luglio e Agosto, quando le temperature elevate superano di molto le scarse precipitazioni, indicando uno stress idrico per la vegetazione.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per la Curva Ombrotermica</div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-right">
+                            <h3><i class="fas fa-calendar-alt"></i> Termogramma: Andamento T° Min & Max</h3>
+                            <p><strong>Descrizione:</strong> Il termogramma visualizza l'andamento annuale delle temperature minime e massime giornaliere, spesso mettendo in risalto le escursioni termiche e la frequenza di eventi estremi come le gelate o le ondate di calore. Permette di osservare le anomalie annuali.</p>
+                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Mostra chiaramente l'aumento delle temperature, con inverni meno rigidi e estati con massime più elevate e minime notturne sempre meno fresche, soprattutto negli ultimi anni del periodo di analisi.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-temperature-arrow-up"></i> Spazio per il Termogramma</div>
+                                </div>
+                        </div>
+                    </div>
                     <div class="content-slide">
                         <div class="indice-card fade-in slide-left">
                             <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
@@ -1765,12 +1807,12 @@
                         } else {
                             slide.classList.remove('active');
                             // Rimuovi animazioni quando lo slide non è attivo
-                            slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
-                                child.classList.remove('active');
-                            });
-                             slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
-                                graph.classList.remove('active');
-                            });
+                            // slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
+                            //     child.classList.remove('active');
+                            // });
+                            //  slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
+                            //     graph.classList.remove('active');
+                            // });
                         }
                     });
 
