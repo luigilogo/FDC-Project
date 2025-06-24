@@ -745,28 +745,29 @@
             flex-direction: column;
             justify-content: center;
         }
-
+        /* Hide all slides by default */
         .content-slide {
             opacity: 0;
             transform: translateY(40px);
             transition: opacity 0.9s var(--transition-ease), transform 0.9s var(--transition-ease);
-            position: absolute; 
+            position: absolute; /* Position absolute to overlap slides */
             width: 100%;
             top: 0;
             left: 0;
-            padding-bottom: 90px; /* Spazio per i controlli */
+            padding-bottom: 90px; /* Space for controls */
             height: auto;
-            min-height: 350px;
+            min-height: 350px; /* Minimum height for a slide content */
+            pointer-events: none; /* Disable interaction when not active */
+            visibility: hidden; /* Hide completely when not active */
         }
 
+        /* Only active slide is visible and interactive */
         .content-slide.active {
             opacity: 1;
             transform: translateY(0);
-            position: static; 
-        }
-
-        .content-slide.hidden {
-            display: none; 
+            position: static; /* Position static to take up space and dictate container height */
+            pointer-events: auto; /* Enable interaction for active slide */
+            visibility: visible; /* Make visible */
         }
 
         .content-controls {
@@ -776,13 +777,27 @@
             margin-top: 40px;
             border-top: 1px solid var(--color-border);
             padding-top: 30px;
-            position: absolute;
+            position: absolute; /* Keep controls at the bottom of the card */
             bottom: 0;
             left: 0;
             width: 100%;
             background-color: var(--color-white); 
             z-index: 10;
+            padding-left: 70px; /* Match card padding */
+            padding-right: 70px;
+            padding-bottom: 20px; /* Add some padding bottom for the controls */
         }
+
+        .card.content-swiper-container .content-controls {
+            /* For the cards that contain the swiper, adjust the absolute positioning */
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            /* Make sure this padding respects the original card padding */
+            padding-left: 70px;
+            padding-right: 70px;
+        }
+
 
         .content-controls button {
             background-color: var(--color-accent-blue);
@@ -920,7 +935,7 @@
 
             .content-swiper-container { min-height: 400px; }
             .content-slide { padding-bottom: 80px; min-height: 320px;}
-            .content-controls { padding-top: 25px; }
+            .content-controls { padding-top: 25px; padding-left: 50px; padding-right: 50px;}
             .content-controls button { padding: 12px 25px; font-size: 1rem; }
             .content-controls span { font-size: 0.95rem; }
             .simulated-graph-container { height: 300px; }
@@ -966,12 +981,12 @@
 
             #map { height: 450px; margin-top: 30px; }
 
-            #back-to-top { width: 60px; height: 60px; font-size: 1.8rem; bottom: 30px; left: 30px; }
+            #back-to-top { width: 60px; height: 60px; font-size: 1.8rem; bottom: 35px; left: 35px; }
             footer { padding: 40px 0; font-size: 0.95rem; }
 
             .content-swiper-container { min-height: 350px; }
             .content-slide { padding-bottom: 70px; min-height: 280px;}
-            .content-controls { flex-direction: column; gap: 10px; padding-top: 20px; }
+            .content-controls { flex-direction: column; gap: 10px; padding-top: 20px; padding-left: 35px; padding-right: 35px;}
             .content-controls button { width: 100%; margin: 0; }
             .content-controls span { margin-top: 8px; font-size: 0.9rem; }
             .simulated-graph-container { height: 250px; }
@@ -1037,11 +1052,18 @@
         </nav>
     </header>
 
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Vercelli: Mappa Interattiva dei Rischi Climatici</h1>
+            <p>Esplora le aree chiave del territorio di Vercelli e scopri i rischi climatici specifici a cui sono esposte, con un focus sui settori socio-economici. Clicca sui marker per visualizzare i dettagli.</p>
+        </div>
+    </div>
+
     <main>
         <section id="mappa-rischi" class="bg-light-section content-reveal">
             <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Vercelli: Mappa Interattiva dei Rischi Climatici</h2>
-                <p class="section-description content-reveal">Esplora le aree chiave del territorio di Vercelli e scopri i rischi climatici specifici a cui sono esposte, con un focus sui settori socio-economici. Clicca sui marker per visualizzare i dettagli.</p>
+                <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Analisi Spaziale dei Rischi a Vercelli</h2>
+                <p class="section-description content-reveal">L'interazione tra i dati climatici e la geografia locale rivela i punti critici. Esplora le aree più vulnerabili e i settori colpiti.</p>
                 
                 <div class="map-results fade-in delay-1" style="margin-top: 60px; text-align: center;">
                     <h3 style="font-size: clamp(1.8rem, 3.8vw, 2.5rem); margin-bottom: 25px;"><i class="fas fa-chart-area"></i> Risultati Chiave dalla Mappa</h3>
@@ -1170,66 +1192,79 @@
                 <h2 class="section-title-animated"><i class="fas fa-chart-line"></i> Indici Climatici: Dettaglio e Trend</h2>
                 <p class="section-description content-reveal">Esploriamo in dettaglio gli indici climatici chiave per Vercelli (1994-2024), osservando i loro trend e come dipingono il quadro del cambiamento climatico. **(I dati e grafici sono simulati e vanno sostituiti con i tuoi dati reali e i tuoi grafici Climpact).**</p>
 
-                <div class="indice-card fade-in slide-left">
-                    <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
-                    <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Un indicatore della risorsa idrica complessiva.</p>
-                    <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo (p-value > 0.05)</strong>, ma mostra una evidente tendenza alla <strong>decrescita</strong> (Sen's Slope: -0.85 mm/anno). Questo suggerisce una riduzione complessiva della risorsa idrica nel tempo, anche se non ancora "significativa" in termini puramente statistici.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **~290 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **~975 mm**).</em></p>
-                    <div class="simulated-graph-container active delay-1">
-                        <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per il Grafico PRCPTOT</div>
+                <div class="card slide-up content-swiper-container" data-slide-id="indici">
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-left">
+                            <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
+                            <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Un indicatore della risorsa idrica complessiva.</p>
+                            <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo (p-value > 0.05)</strong>, ma mostra una evidente tendenza alla <strong>decrescita</strong> (Sen's Slope: -0.85 mm/anno). Questo suggerisce una riduzione complessiva della risorsa idrica nel tempo, anche se non ancora "significativa" in termini puramente statistici.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **~290 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **~975 mm**).</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-area"></i> Spazio per il Grafico PRCPTOT</div>
+                                </div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="indice-card fade-in slide-right delay-2">
-                    <h3><i class="fas fa-water-droplet"></i> SDII: Intensità Media Precipitazioni</h3>
-                    <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Misura l'intensità media di ogni evento di pioggia.</p>
-                    <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo (p-value > 0.05)</strong> (Sen's Slope: -0.002 mm/giorno/anno). Questo indica che, quando piove, gli eventi tendono a essere leggermente meno intensi, aggravando il deficit idrico se combinato con meno giorni di pioggia.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**~6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**~16.1 mm/day**).</em></p>
-                    <div class="simulated-graph-container active delay-3">
-                        <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico SDII</div>
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-right">
+                            <h3><i class="fas fa-water-droplet"></i> SDII: Intensità Media Precipitazioni</h3>
+                            <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Misura l'intensità media di ogni evento di pioggia.</p>
+                            <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo (p-value > 0.05)</strong> (Sen's Slope: -0.002 mm/giorno/anno). Questo indica che, quando piove, gli eventi tendono a essere leggermente meno intensi, aggravando il deficit idrico se combinato con meno giorni di pioggia.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**~6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**~16.1 mm/day**).</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-column"></i> Spazio per il Grafico SDII</div>
+                                </div>
                         </div>
-                </div>
-                
-                <div class="indice-card fade-in slide-left delay-4">
-                    <h3><i class="fas fa-sun-plant-wilt"></i> SPI_24_month: Indice di Siccità Standardizzato (24 Mesi)</h3>
-                    <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa. Ideale per siccità a lungo termine.</p>
-                    <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi, indicando una condizione di stress idrico cronico.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Aumento degli eventi siccitosi estremi, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di **-3.5** nel 2023).</em></p>
-                    <div class="simulated-graph-container active delay-5">
-                        <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPI_24_month</div>
+                    </div>
+                    
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-left">
+                            <h3><i class="fas fa-sun-plant-wilt"></i> SPI_24_month: Indice di Siccità Standardizzato (24 Mesi)</h3>
+                            <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa. Ideale per siccità a lungo termine.</p>
+                            <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi, indicando una condizione di stress idrico cronico.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Aumento degli eventi siccitosi estremi, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di **-3.5** nel 2023).</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPI_24_month</div>
+                                </div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="indice-card fade-in slide-right delay-6">
-                    <h3><i class="fas fa-wind"></i> SPEI_24_month: Indice di Siccità (P-ET)</h3>
-                    <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione. Fornisce una visione più completa della siccità, considerando l'impatto delle temperature sull'evaporazione dell'acqua.</p>
-                    <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore, rendendo la siccità più severa.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Picchi di siccità estrema (R &lt; -2 con picchi anche di **-4.4** nel 2023) soprattutto dal 2022 in poi.</em></p>
-                    <div class="simulated-graph-container active delay-7">
-                        <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPEI_24_month</div>
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-right">
+                            <h3><i class="fas fa-wind"></i> SPEI_24_month: Indice di Siccità (P-ET)</h3>
+                            <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione. Fornisce una visione più completa della siccità, considerando l'impatto delle temperature sull'evaporazione dell'acqua.</p>
+                            <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore, rendendo la siccità più severa.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Picchi di siccità estrema (R &lt; -2 con picchi anche di **-4.4** nel 2023) soprattutto dal 2022 in poi.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico SPEI_24_month</div>
+                                </div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="indice-card fade-in slide-left delay-8">
-                    <h3><i class="fas fa-temperature-three-quarters"></i> TX90p: Giorni con T° Massima Estremamente Calda</h3>
-                    <p><strong>Descrizione:</strong> Misura la percentuale di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Un indicatore chiave delle ondate di calore.</p>
-                    <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.409, p-value = 0). Ciò indica che Vercelli sta vivendo ondate di calore più intense, lunghe e frequenti.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1988 (**2.46%**) e 1996. Massimi nel 2022 (**40.54%**) e 2023.</em></p>
-                    <div class="simulated-graph-container active delay-9">
-                        <div class="graph-placeholder"><i class="fas fa-chart-bar"></i> Spazio per il Grafico TX90p</div>
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-left">
+                            <h3><i class="fas fa-temperature-three-quarters"></i> TX90p: Giorni con T° Massima Estremamente Calda</h3>
+                            <p><strong>Descrizione:</strong> Misura la percentuale di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Un indicatore chiave delle ondate di calore.</p>
+                            <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.409, p-value = 0). Ciò indica che Vercelli sta vivendo ondate di calore più intense, lunghe e frequenti.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1988 (**2.46%**) e 1996. Massimi nel 2022 (**40.54%**) e 2023.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-bar"></i> Spazio per il Grafico TX90p</div>
+                                </div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="indice-card fade-in slide-right delay-10">
-                    <h3><i class="fas fa-moon-cloud"></i> TN90p: Giorni con T° Minima Estremamente Calda</h3>
-                    <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali", con scarso raffreddamento notturno.</p>
-                    <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.309, p-value = 0). Questo significa minor recupero termico notturno, con impatti sulla salute, agricoltura e consumo energetico.</p>
-                    <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1992, 1993 (**2.70%**), 1996, 1999 e 2010. Massimi nel 2022 (**29.04%**) e 2023.</em></p>
-                    <div class="simulated-graph-container active delay-11">
-                        <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico TN90p</div>
+                    <div class="content-slide">
+                        <div class="indice-card fade-in slide-right">
+                            <h3><i class="fas fa-moon-cloud"></i> TN90p: Giorni con T° Minima Estremamente Calda</h3>
+                            <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali", con scarso raffreddamento notturno.</p>
+                            <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.309, p-value = 0). Questo significa minor recupero termico notturno, con impatti sulla salute, agricoltura e consumo energetico.</p>
+                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1992, 1993 (**2.70%**), 1996, 1999 e 2010. Massimi nel 2022 (**29.04%**) e 2023.</em></p>
+                            <div class="simulated-graph-container delay-1">
+                                <div class="graph-placeholder"><i class="fas fa-chart-line"></i> Spazio per il Grafico TN90p</div>
+                                </div>
                         </div>
-                </div>
-            </div>
+                    </div>
+                </div> </div>
         </section>
 
         <section id="impatti" class="bg-light-section content-reveal">
@@ -1534,10 +1569,17 @@
                     slides.forEach((slide, i) => {
                         if (i === index) {
                             slide.classList.add('active');
-                            slide.classList.remove('hidden');
+                            slide.classList.remove('hidden'); // Ensure hidden class is removed
+                            // Re-trigger animations for elements inside the active slide
+                            const elementsInsideSlide = slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm, .simulated-graph-container');
+                            elementsInsideSlide.forEach(el => {
+                                el.classList.remove('active'); // Remove to re-trigger
+                                void el.offsetWidth; // Trigger reflow
+                                el.classList.add('active');
+                            });
                         } else {
                             slide.classList.remove('active');
-                            slide.classList.add('hidden');
+                            slide.classList.add('hidden'); // Hide non-active slides
                         }
                     });
 
@@ -1550,16 +1592,14 @@
                         let activeSlideHeight = 0;
                         const activeSlide = slides[index];
                         if (activeSlide) {
-                            // Get actual content height, considering its padding and inner elements
                             activeSlideHeight = activeSlide.scrollHeight; 
-                            // Add any specific padding-bottom from .content-slide CSS if it's external to scrollHeight
                             const computedStyle = window.getComputedStyle(activeSlide);
                             const slidePaddingBottom = parseFloat(computedStyle.paddingBottom);
                             activeSlideHeight += slidePaddingBottom;
                         }
                         
                         const controlsHeight = controlsDiv.offsetHeight;
-                        container.style.minHeight = `${activeSlideHeight + controlsHeight + 60}px`; // Extra padding for visual comfort
+                        container.style.minHeight = `${activeSlideHeight + controlsHeight + 60}px`; 
                     });
                 };
 
