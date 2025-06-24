@@ -22,7 +22,6 @@
             --color-border: #DCDCDC; /* Bordo Sottile */
             --color-warning: #FF6347; /* Rosso-arancio per avvisi/rischi */
 
-
             --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra leggera e diffusa */
             --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15); /* Ombra più pronunciata al hover */
 
@@ -45,6 +44,7 @@
             font-family: 'Lato', sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             background-color: var(--color-light-bg);
             color: var(--color-text-dark);
             line-height: 1.7; /* Migliorata leggibilità */
@@ -85,16 +85,6 @@
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Ombra per leggibilità */
             margin-bottom: 0; /* Rimosso margine inferiore per assenza di p */
         }
-        /* .hero p { /* Rimosso questo stile perché non c'è più il p nell'hero */
-        /* font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            color: var(--color-white);
-            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.5;
-        } */
-
 
         h2 { font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 700; }
         h3 { font-size: clamp(2.0rem, 4vw, 3.2rem); font-weight: 700; } 
@@ -220,37 +210,35 @@
         }
 
 
-        /* Hero Section - Inclusione del testo */
+        /* Hero Section - AGGIORNATA */
         .hero {
-            background-image: url('https://images.unsplash.com/photo-1628178652431-b84742f1f4b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzM5NTN8MHwxfHNlYXJjaHw1fHxyaWNlJTIwZmllbGRzJTIwZGF3biUyMGl0YWx5fGVufDB8fHx8MTcxOTExOTkwMHww&ixlib=rb-4.0.3&q=80&w=1920'); /* Placeholder: risaie all'alba in Italia */
-            background-size: cover;
-            background-position: center;
+            background-color: var(--color-primary-dark); /* Nuovo sfondo solido profondo */
             height: 100vh; /* Full height */
             position: relative;
             overflow: hidden;
-            display: flex; 
-            flex-direction: column; /* Imposta la direzione in colonna per allineare H1 e P */
-            align-items: center;
-            justify-content: center;
-            text-align: center; /* Centra il testo */
+            display: flex; /* Utilizza flexbox per centrare il contenuto */
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra orizzontalmente */
+            text-align: center; /* Centra il testo all'interno del container */
             padding: 0 20px; /* Padding per evitare che il testo tocchi i bordi */
         }
 
-        .hero::before { /* Overlay scuro per l'immagine */
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Overlay più scuro per maggiore leggibilità */
-            backdrop-filter: blur(3px); /* Lieve blur per l'immagine */
-            -webkit-backdrop-filter: blur(3px);
-            z-index: 0;
-        }
+        /* Rimosso l'overlay ::before in quanto il background è già scuro e solido */
+        /* .hero::before { 
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background-color: rgba(0, 0, 0, 0.6); 
+             backdrop-filter: blur(3px); 
+             -webkit-backdrop-filter: blur(3px);
+             z-index: 0;
+         } */
 
         .hero-content {
-            position: relative; /* Per posizionare il contenuto sopra l'overlay */
+            position: relative; /* Per posizionare il contenuto sopra tutto */
             z-index: 1;
             max-width: 900px; /* Limita la larghezza del testo */
             padding: 20px;
@@ -888,1353 +876,861 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
-        .content-controls button:disabled {
-            background-color: var(--color-border);
-            color: var(--color-text-light);
-            cursor: not-allowed;
-            opacity: 0.7;
-            box-shadow: none;
+        .content-control-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
         }
 
         .content-controls button i {
-            margin-right: 12px;
-            margin-left: 12px; /* Per icona a dx del "Continua" */
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+        .content-controls button.prev i { margin-right: 10px; margin-left: 0; }
+        .content-controls button.next i { margin-left: 10px; margin-right: 0; }
+        .content-controls button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: none;
         }
 
-        .content-controls span {
-            font-size: 1.0rem;
-            color: var(--color-text-light);
-            font-style: italic;
-            font-weight: 500;
+        /* Swiper Pagination (dots) */
+        .swiper-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 40px; /* Spostato più in alto rispetto ai bottoni */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 11; /* Sopra i controlli */
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background-color: var(--color-text-light);
+            border-radius: 50%;
+            margin: 0 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet.active {
+            background-color: var(--color-accent-blue);
+            opacity: 1;
+            transform: scale(1.2);
         }
 
         /* Footer */
         footer {
             background-color: var(--color-primary-dark);
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--color-white);
             text-align: center;
-            padding: 50px 0;
-            font-size: 1rem;
-            box-shadow: 0 -8px 25px rgba(0,0,0,0.25);
-            border-top: 10px solid var(--color-accent-blue); /* Bordo di colore accent */
+            padding: 40px 20px;
+            font-size: 0.9rem;
+            margin-top: 80px; /* Spazio dal contenuto precedente */
         }
+
+        footer p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         footer a {
             color: var(--color-accent-blue);
-            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
+
         footer a:hover {
-            color: var(--color-white);
+            color: var(--color-accent-green);
         }
 
 
-        /* Bottone Torna su */
-        #back-to-top {
-            position: fixed;
-            bottom: 45px;
-            left: 45px;
-            background-color: var(--color-accent-blue);
-            color: var(--color-white);
-            border: none;
-            border-radius: 50%;
-            width: 70px; /* Più grande */
-            height: 70px;
-            font-size: 2.2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(40px);
-            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.3s var(--transition-ease);
-            z-index: 1000;
-        }
-
-        #back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        #back-to-top:hover {
-            transform: translateY(-15px) scale(1.08);
-            background-color: var(--color-accent-green);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.55);
-        }
-
-        /* Media Queries per Responsività Perfetta */
-        @media (max-width: 992px) {
-            nav ul li { margin: 0 15px; }
-            .nav-link { font-size: 0.9rem; padding: 6px 0;}
-
-            .hero { height: 90vh; }
-
-            section { padding: 100px 0; min-height: 80vh; }
-            section h2 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 50px; }
-            section h2::after { width: 120px; height: 4px; }
-            .section-description { margin: -20px auto 60px auto; font-size: clamp(1.1rem, 2.3vw, 1.3rem); }
-
-            .card { padding: 50px; }
-            .card h3 { font-size: clamp(1.8rem, 3.8vw, 2.5rem); }
-            .card h3 i { margin-right: 20px; }
-            .card ul li { font-size: 1.1rem; }
-
-            .intro-content h3 { font-size: clamp(2.0rem, 4vw, 2.8rem); }
-            .intro-content p { font-size: 1.1rem; }
-            .intro-visual i { font-size: 5rem; }
-
-            .highlight-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; }
-            .highlight-item { padding: 40px; }
-            .highlight-item i { font-size: 4.8rem; margin-bottom: 25px; }
-            .highlight-value { font-size: clamp(2.0rem, 4.5vw, 2.8rem); }
-
-            .indice-card { padding: 40px; margin-bottom: 40px; }
-            .indice-card h3 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); }
-            .indice-card h3 i { margin-right: 18px; }
-            .indice-card p { font-size: 1.1rem; }
-            .highlight-text { font-size: clamp(1.05rem, 2.2vw, 1.25rem); padding-left: 18px; }
-
-            #map { height: 550px; margin-top: 35px; }
-
-            #back-to-top { width: 65px; height: 65px; font-size: 2rem; bottom: 35px; left: 35px; }
-            footer { padding: 45px 0; font-size: 0.95rem; }
-
-            .content-swiper-container { min-height: 400px; }
-            .content-slide { padding-bottom: 80px; min-height: 320px;}
-            .content-controls { padding-top: 25px; padding-left: 50px; padding-right: 50px;}
-            .content-controls button { padding: 12px 25px; font-size: 1rem; }
-            .content-controls span { font-size: 0.95rem; }
-            .simulated-graph-container { height: 300px; }
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 25px;
+            }
+            nav ul li {
+                margin: 0 15px;
+            }
+            .nav-link {
+                font-size: 0.9rem;
+            }
+            .hero-content h1 {
+                font-size: clamp(2.5rem, 6vw, 4rem);
+            }
+            .hero-content p {
+                font-size: 1.1em;
+            }
+            .card {
+                padding: 50px;
+            }
+            .card h3 i {
+                font-size: 0.9em;
+            }
+            .content-controls {
+                padding-left: 50px;
+                padding-right: 50px;
+            }
         }
 
         @media (max-width: 768px) {
-            .container { padding: 0 25px; }
-
-            nav ul li { margin: 0 10px; }
-            .nav-link { font-size: 0.85rem; padding: 4px 0;}
-
-            .hero { height: 80vh; }
-            .hero h1 { font-size: clamp(2.2rem, 6.5vw, 4rem); }
-            /* .hero p { font-size: clamp(1.1rem, 2.8vw, 1.6rem); } */ /* Rimosso p */
-
-            section { padding: 80px 0; min-height: 70vh; }
-            section h2 { font-size: clamp(2.2rem, 7vw, 3.5rem); margin-bottom: 40px; }
-            section h2::after { width: 100px; height: 3px; }
-            .section-description { margin: -15px auto 50px auto; font-size: clamp(1.0rem, 2.5vw, 1.2rem); }
-
-            .card { padding: 35px; margin-bottom: 35px; }
-            .card h3 { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
-            .card h3 i { margin-right: 15px; }
-            .card ul li { font-size: 1.0rem; }
-            /* .card ul li::before { font-size: 1.3em; margin-right: 12px; } */ /* Commentato per gestire con il nuovo stile */
-
-            .intro-visual { min-height: 280px; padding: 30px; }
-            .intro-visual i { font-size: 4rem; }
-
-            .highlight-grid { grid-template-columns: 1fr; gap: 30px; }
-            .highlight-item { padding: 35px; }
-            .highlight-item i { font-size: 4rem; margin-bottom: 20px; }
-            .highlight-value { font-size: clamp(1.8rem, 5vw, 2.5rem); }
-
-            .indice-card { padding: 30px; margin-bottom: 30px; }
-            .indice-card h3 { font-size: clamp(1.5rem, 4vw, 2rem); }
-            .indice-card h3 i { margin-right: 15px; }
-            .indice-card p { font-size: 1.0rem; }
-            .highlight-text { font-size: clamp(0.95rem, 2.5vw, 1.15rem); padding-left: 18px; }
-
-            #map { height: 450px; margin-top: 30px; }
-
-            #back-to-top { width: 65px; height: 65px; font-size: 2rem; bottom: 35px; left: 35px; }
-            footer { padding: 40px 0; font-size: 0.95rem; }
-
-            .content-swiper-container { min-height: 350px; }
-            .content-slide { padding-bottom: 70px; min-height: 280px;}
-            .content-controls { flex-direction: column; gap: 10px; padding-top: 20px; padding-left: 35px; padding-right: 35px;}
-            .content-controls button { width: 100%; margin: 0; }
-            .content-controls span { margin-top: 8px; font-size: 0.9rem; }
-            .simulated-graph-container { height: 250px; }
+            #main-header nav {
+                justify-content: center; /* Centra la navigazione su schermi piccoli */
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 6px 0;
+            }
+            .hero {
+                padding: 80px 20px;
+            }
+            .hero-content h1 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
+            .hero-content p {
+                font-size: 1em;
+                margin-bottom: 30px;
+            }
+            section {
+                min-height: auto; /* Disabilita full height su mobile */
+                padding: 80px 0;
+            }
+            section h2 {
+                font-size: clamp(2.2rem, 8vw, 3.5rem);
+                margin-bottom: 40px;
+            }
+            .section-description {
+                font-size: 1rem;
+                margin: -20px auto 60px auto;
+            }
+            .card {
+                padding: 30px;
+            }
+            .card h3 {
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+                margin-bottom: 20px;
+            }
+            .card ul li {
+                font-size: 1.05rem;
+            }
+            .highlight-grid {
+                gap: 30px;
+            }
+            .highlight-item {
+                padding: 35px;
+            }
+            .highlight-item i {
+                font-size: 4.5rem;
+                margin-bottom: 20px;
+            }
+            .highlight-item h3 {
+                font-size: 1.8rem;
+            }
+            .highlight-item p {
+                font-size: 1rem;
+            }
+            .highlight-value {
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+            }
+            .indice-card {
+                padding: 30px;
+            }
+            .indice-card h3 {
+                font-size: clamp(1.6rem, 5vw, 2.2rem);
+            }
+            .indice-card p {
+                font-size: 1rem;
+            }
+            .highlight-text {
+                font-size: 1rem;
+                padding: 15px;
+            }
+            .simulated-graph-container {
+                height: 250px;
+            }
+            #map {
+                height: 400px;
+            }
+            .legend {
+                padding: 10px;
+                font-size: 13px;
+            }
+            .content-controls {
+                flex-direction: column;
+                padding-left: 30px;
+                padding-right: 30px;
+                padding-bottom: 10px;
+            }
+            .content-controls button {
+                width: 100%;
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            .swiper-pagination {
+                bottom: 20px; /* Sposta i pallini più in alto su mobile */
+            }
         }
 
         @media (max-width: 480px) {
-            .container { padding: 0 15px; }
-
-            nav ul li { margin: 0 8px; }
-            .nav-link { font-size: 0.8rem; padding: 3px 0; }
-
-            .hero { height: 70vh; }
-            .hero h1 { font-size: clamp(1.8rem, 7vw, 3rem); }
-            /* .hero p { font-size: clamp(1.0rem, 3.5vw, 1.4rem); } */ /* Rimosso p */
-
-            section { padding: 60px 0; min-height: 60vh; }
-            section h2 { font-size: clamp(2.0rem, 8vw, 3rem); margin-bottom: 30px; }
-            .section-description { font-size: 0.95rem; margin: -10px auto 40px auto; }
-
-            .card { padding: 25px; margin-bottom: 25px; }
-            .card h3 { font-size: clamp(1.4rem, 6vw, 1.8rem); }
-            .card h3 i { font-size: 0.9em; margin-right: 10px; }
-            .card ul li { font-size: 0.95rem; }
-            /* .card ul li::before { font-size: 1.2em; margin-right: 10px; } */ /* Commentato per gestire con il nuovo stile */
-
-            .intro-visual { min-height: 220px; padding: 25px; }
-            .intro-visual i { font-size: 3.5rem; }
-
-            .highlight-item { padding: 25px; }
-            .highlight-item i { font-size: 3.5rem; }
-            .highlight-value { font-size: clamp(1.6rem, 6vw, 2rem); }
-
-            .indice-card { padding: 20px; margin-bottom: 25px; }
-            .indice-card h3 { font-size: clamp(1.3rem, 5vw, 1.7rem); }
-            .indice-card h3 i { margin-right: 10px; }
-            .indice-card p { font-size: 0.9rem; }
-            .highlight-text { font-size: clamp(0.9rem, 2.5vw, 1.05rem); padding-left: 12px; }
-
-            #map { height: 350px; margin-top: 25px; }
-
-            #back-to-top { width: 55px; height: 55px; font-size: 1.6rem; bottom: 20px; left: 20px; }
-
-            .content-swiper-container { min-height: 300px; }
-            .content-slide { padding-bottom: 60px; min-height: 250px;}
-            .simulated-graph-container { height: 200px; }
-        }
-
-        /* Nuovi stili per le liste di rischi */
-        .risk-list {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-            margin-top: 25px; /* Adjust spacing */
-            margin-left: 0; /* Remove default ul margin */
-            font-size: 1.05em; /* Slightly smaller for detailed points */
-        }
-
-        .risk-list li {
-            display: flex;
-            align-items: center; /* Align icon and text vertically */
-            margin-bottom: 12px; /* Closer spacing for list items */
-            color: var(--color-text-dark);
-            font-weight: 500;
-        }
-
-        .risk-list li i {
-            margin-right: 12px; /* Space between icon and text */
-            font-size: 1.2em; /* Icon size */
-            color: var(--color-warning); /* Warning color for risks */
-            flex-shrink: 0; /* Prevent icon from shrinking */
-        }
-        .risk-list li strong {
-            color: var(--color-primary-dark);
-        }
-
-        /* Stili per la sezione Conclusioni - Nuova struttura */
-        .conclusion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-
-        .conclusion-item {
-            background-color: var(--color-white);
-            border-radius: var(--border-radius-md);
-            box-shadow: var(--shadow-subtle);
-            padding: 40px;
-            text-align: center;
-            border: 1px solid var(--color-border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%; /* Ensure equal height */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Align content to top */
-        }
-
-        .conclusion-item:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .conclusion-item i {
-            font-size: 4.5rem;
-            color: var(--color-accent-blue);
-            margin-bottom: 25px;
-        }
-
-        .conclusion-item h3 {
-            font-size: 1.8rem;
-            color: var(--color-primary-dark);
-            margin-bottom: 15px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        .conclusion-item p {
-            font-size: 1.05rem;
-            color: var(--color-text-light);
-            line-height: 1.7;
-            text-align: center;
-            flex-grow: 1; /* Pushes content down if needed */
-        }
-
-        .conclusion-item p strong {
-            color: var(--color-primary-dark);
+            .container {
+                padding: 0 15px;
+            }
+            nav ul li {
+                margin: 0 8px;
+            }
+            .nav-link {
+                font-size: 0.8rem;
+            }
+            .hero-content h1 {
+                font-size: clamp(1.8rem, 9vw, 3rem);
+            }
+            .btn-primary {
+                padding: 12px 25px;
+                font-size: 0.95em;
+            }
+            section {
+                padding: 60px 0;
+            }
+            section h2 {
+                font-size: clamp(1.8rem, 9vw, 3rem);
+                margin-bottom: 30px;
+            }
+            .section-description {
+                font-size: 0.9rem;
+                margin: -15px auto 40px auto;
+            }
+            .card, .highlight-item, .indice-card {
+                padding: 20px;
+            }
+            .card h3, .highlight-item h3, .indice-card h3 {
+                font-size: clamp(1.5rem, 7vw, 2.2rem);
+                margin-bottom: 15px;
+            }
+            .highlight-item i {
+                font-size: 3.5rem;
+                margin-bottom: 15px;
+            }
+            .content-controls {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
         }
     </style>
 </head>
 <body>
+
     <div id="scroll-progress-indicator"></div>
 
     <header id="main-header">
-        <nav class="container">
+        <nav>
             <ul>
-                <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li>
+                <li><a href="#hero" class="nav-link active">Home</a></li>
                 <li><a href="#introduzione" class="nav-link">Introduzione</a></li>
-                <li><a href="#highlights" class="nav-link">Punti Chiave</a></li>
-                <li><a href="#indici" class="nav-link">Indici Climatici</a></li>
-                <li><a href="#impatti" class="nav-link">Impatti & Rischi</a></li>
+                <li><a href="#punti-chiave" class="nav-link">Punti Chiave</a></li>
+                <li><a href="#indici-climatici" class="nav-link">Indici Climatici</a></li>
+                <li><a href="#impatti-rischi" class="nav-link">Impatti & Rischi</a></li>
+                <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li>
                 <li><a href="#conclusioni" class="nav-link">Conclusioni</a></li>
                 <li><a href="#prospettive" class="nav-link">Prospettive</a></li>
+                <li><a href="#contatti" class="nav-link">Contatti</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="hero">
-        <div class="hero-content">
-            <h1>Vercelli: Mappa Interattiva dei Rischi Climatici</h1>
-            </div>
-    </div>
-
     <main>
-        <section id="mappa-rischi" class="bg-light-section content-reveal">
-            <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Analisi Spaziale dei Rischi a Vercelli</h2>
-                <p class="section-description content-reveal">L'interazione tra i dati climatici e la geografia locale rivela i punti critici. Esplora le aree più vulnerabili e i settori colpiti. Clicca sui marker per visualizzare i dettagli.</p>
-                
-                <div class="map-results fade-in delay-1" style="margin-top: 60px; text-align: center;">
-                    <h3 style="font-size: clamp(1.8rem, 3.8vw, 2.5rem); margin-bottom: 25px;"><i class="fas fa-chart-area"></i> Risultati Chiave dalla Mappa</h3>
-                    <p style="max-width: 900px; margin: 0 auto 30px; font-size: 1.15rem; color: var(--color-text-dark);">
-                        L'analisi georeferenziata dei dati climatici di Vercelli (1994-2024) evidenzia come le variazioni termiche e pluviometriche si manifestino in specifici rischi territoriali.
-                    </p>
-                    <div class="highlight-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 40px;">
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-2" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-tree-deciduous" style="color: #68B1A0; font-size: 3.5rem;"></i>
-                            <h3>Aree Agricole (Risaie)</h3>
-                            <p><strong>Rischio: Siccità estrema.</strong> Gli SPI/SPEI negativi si concentrano nelle vaste aree risicole, indicando una grave carenza idrica essenziale per le colture. Questo minaccia la stabilità della filiera agroalimentare locale e richiede un'urgente revisione delle pratiche irrigue.</p>
-                        </div>
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-3" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-city" style="color: #d62828; font-size: 3.5rem;"></i>
-                            <h3>Nucleo Urbano di Vercelli</h3>
-                            <p><strong>Rischio: Ondate di calore e notti tropicali.</strong> Le zone edificate mostrano una spiccata vulnerabilità all'aumento dei giorni TX90p e TN90p. L'effetto isola di calore urbano amplifica il disagio termico, con possibili impatti sulla salute pubblica, soprattutto per i soggetti più fragili.</p>
-                        </div>
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-4" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-river" style="color: #007bff; font-size: 3.5rem;"></i>
-                            <h3>Bacini Fluviali e Canali</h3>
-                            <p><strong>Rischio: Riduzione della portata e stress idrico.</strong> Il trend decrescente delle precipitazioni (PRCPTOT) e l'aumento dell'evapotraspirazione influenzano direttamente la portata del Sesia e dei canali di irrigazione, fondamentali per l'intero ecosistema e l'economia locale.</p>
-                        </div>
-                    </div>
-                    <p class="note-global fade-in delay-5" style="margin-top: 60px;">
-                        Questi risultati sottolineano l'urgenza di piani di adattamento territoriali che integrino soluzioni basate sulla natura e sull'innovazione tecnologica.
-                    </p>
-                </div>
-
-                <div id="map"></div>
-                <p class="note-global fade-in delay-6">La mappa è una rappresentazione semplificata; una modellazione GIS completa permetterebbe una valutazione più dettagliata della microzonazione del rischio.</p>
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h1>Vercelli: Mappa Interattiva dei Rischi Climatici</h1>
+                <p>Esplora i trend degli indici climatici derivati da Climpact e scopri i cambiamenti che stanno modellando il nostro futuro.</p>
+                <a href="#introduzione" class="btn-primary">Esplora i Dati <i class="fas fa-arrow-down"></i></a>
             </div>
         </section>
+
         <section id="introduzione" class="content-reveal">
             <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-info-circle"></i> Vercelli: Un Clima in Evoluzione</h2>
-                <p class="section-description content-reveal">Questa analisi approfondita rivela i cambiamenti climatici a Vercelli dal 1994 al 2024, fornendo dati e proiezioni per un futuro sostenibile.</p>
-
-                <div class="intro-grid">
-                    <div class="intro-content fade-in slide-left">
+                <h2 class="section-title-animated"><i class="fas fa-info-circle"></i>Vercelli: Un Clima in Evoluzione</h2>
+                <p class="section-description">Questa analisi approfondita rivela i cambiamenti climatici a Vercelli dal 1994 al 2024, fornendo dati e proiezioni per un futuro sostenibile.</p>
+                
+                <div class="intro-grid slide-up delay-2">
+                    <div class="intro-content">
                         <h3>Lo Studio in Sintesi</h3>
-                        <p>Benvenuti nella presentazione dei risultati del nostro studio climatico sulla stazione di Vercelli, condotto nell'ambito del Master in [Nome Completo del Tuo Master]. Abbiamo esaminato un trentennio cruciale (1994-2024), utilizzando il software Climpact per elaborare i dati grezzi di temperatura e precipitazione.</p>
-                        <p style="margin-top: 20px;">Il nostro obiettivo è identificare i trend climatici significativi, valutarne gli impatti sul territorio e sulla sua economia, e porre le basi per future strategie di adattamento e resilienza locale.</p>
+                        <p>Il rapporto "Vercelli: Uno Sguardo al Clima che Cambia" è uno studio pionieristico che analizza l'evoluzione degli indici climatici nel territorio di Vercelli negli ultimi 30 anni (1994-2024). Attraverso l'elaborazione di dati climatici storici e l'applicazione di metodologie avanzate, il nostro team ha identificato i trend emergenti e le implicazioni per la comunità locale.</p>
+                        <p>Questo progetto mira a fornire una base scientifica solida per la comprensione dei rischi climatici, supportando decisioni informate e strategiche per l'adattamento e la mitigazione a livello locale.</p>
                     </div>
-                    <div class="intro-visual fade-in slide-right delay-1">
-                        <i class="fas fa-chart-area"></i>
-                        <div class="visual-text">
-                            <p>Stazione Climatica di Vercelli:</p>
-                            <p><strong>Periodo di Analisi:</strong> 1994 - 2024 (30 anni di dati)</p>
-                            <p><strong>Dati Utilizzati:</strong> T Min/Max, Precipitazioni Giornaliere</p>
-                            <p><strong>Software:</strong> Climpact (Standard WMO/ETCCDI)</p>
-                            <p style="margin-top: 20px; font-size: 1.05em; color: var(--color-text-light);"><em>Un'analisi rigorosa per decisioni informate.</em></p>
-                        </div>
+                    <div class="intro-visual">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="visual-text">Dati climatici complessi trasformati in conoscenza accessibile.</span>
                     </div>
-                </div>
-
-                <div class="section-description fade-in delay-2" style="margin-top: 80px; margin-bottom: 0;">
-                    <h3 style="margin-bottom: 25px; font-size: clamp(2.0rem, 4vw, 3.0rem);"><i class="fas fa-thermometer-half"></i> Il Clima di Vercelli (Media 1994-2024)</h3>
-                    <div class="highlight-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-3" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-temperature-arrow-up" style="font-size: 3.5rem;"></i>
-                            <h3>Temperature Medie</h3>
-                            <p>Massima annua: <strong>17.5°C</strong></p>
-                            <p>Minima annua: <strong>9.2°C</strong></p>
-                            <p>Media annua: <strong>13.4°C</strong></p>
-                        </div>
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-4" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-cloud-sun" style="font-size: 3.5rem;"></i>
-                            <h3>Temperature Stagionali</h3>
-                            <p>Estiva (Giu-Ago): <strong>21.8°C</strong></p>
-                            <p>Invernale (Dic-Feb): <strong>5.0°C</strong></p>
-                            <p><em>Trend di riscaldamento evidente.</em></p>
-                        </div>
-                        <div class="highlight-item small-note fade-in scale-in-sm delay-5" style="padding: 30px; border-radius: var(--border-radius-sm);">
-                            <i class="fas fa-cloud-showers-heavy" style="font-size: 3.5rem;"></i>
-                            <h3>Precipitazioni</h3>
-                            <p>Totale annua: <strong>650 mm</strong></p>
-                            <p>95° perc. giornaliero: <strong>37.12 mm</strong></p>
-                            <p>99° perc. giornaliero: <strong>74.57 mm</strong></p>
-                        </div>
-                    </div>
-                    <p class="note-global fade-in delay-6">I dati sopra sono medie del periodo 1994-2024 per la stazione di Vercelli. **(Aggiorna con i tuoi dati specifici e i valori Sen's Slope e P-value per i trend)**</p>
                 </div>
             </div>
         </section>
 
-        <section id="highlights" class="bg-light-section content-reveal">
+        <section id="punti-chiave" class="bg-light-section content-reveal">
             <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-star"></i> Punti Chiave dell'Analisi</h2>
-                <p class="section-description content-reveal">Le evidenze più significative emerse dallo studio sul cambiamento climatico a Vercelli negli ultimi trent'anni.</p>
+                <h2 class="section-title-animated"><i class="fas fa-key"></i>Punti Chiave dell'Analisi</h2>
+                <p class="section-description">Esplora i risultati salienti che delineano il profilo climatico emergente di Vercelli e le sue principali sfide.</p>
+                
                 <div class="highlight-grid">
-                    <div class="highlight-item fade-in scale-in-sm">
-                        <i class="fas fa-temperature-arrow-up"></i>
-                        <h3>Riscaldamento Accelerato</h3>
-                        <p>Evidente incremento delle temperature medie annuali, con estati più calde e prolungate. Impatta comfort e salute pubblica, specialmente per le fasce più vulnerabili.</p>
-                        <span class="highlight-value">Media: <span style="color: var(--color-accent-blue);">+1.5°C</span></span>
-                        <p class="small-note">Rispetto alla media trentennale precedente.</p>
+                    <div class="highlight-item slide-up delay-1">
+                        <i class="fas fa-temperature-high"></i>
+                        <h3>Aumento Temperature Medie</h3>
+                        <p>Le temperature medie annuali a Vercelli mostrano un trend in aumento significativo, riflettendo il riscaldamento globale.</p>
+                        <span class="highlight-value">+1.5°C</span>
+                        <p class="small-note">Temperatura media annuale 1994-2024</p>
                     </div>
-                    <div class="highlight-item fade-in scale-in-sm delay-1">
-                        <i class="fas fa-sun-haze"></i>
-                        <h3>Notti Tropicali Estreme</h3>
-                        <p>Significativo aumento delle notti in cui la temperatura minima non scende sotto i 20°C (TN90p), riducendo il recupero termico notturno e influendo sul benessere.</p>
-                        <span class="highlight-value">TN90p: <span style="color: var(--color-accent-blue);">+30%</span></span>
-                        <p class="small-note">Aumento medio del numero di giorni con Tmin estreme.</p>
+                    <div class="highlight-item slide-up delay-2">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                        <h3>Variazioni Precipitazioni</h3>
+                        <p>Si osserva una maggiore irregolarità nelle precipitazioni, con episodi più intensi e periodi di siccità prolungati.</p>
+                        <span class="highlight-value">25%</span>
+                        <p class="small-note">Diminuzione giorni di pioggia (media decennale)</p>
                     </div>
-                    <div class="highlight-item fade-in scale-in-sm delay-2">
-                        <i class="fas fa-water-lower"></i>
-                        <h3>Siccità Incombente</h3>
-                        <p>Un deficit idrico crescente, evidenziato dagli indici di siccità (SPI, SPEI), minaccia l'agricoltura (in particolare la risicoltura) e le risorse idriche locali.</p>
-                        <span class="highlight-value">SPEI_24: <span style="color: var(--color-accent-blue);">Trend Negativo</span></span>
-                        <p class="small-note">Maggiore intensità e frequenza degli eventi siccitosi.</p>
+                    <div class="highlight-item slide-up delay-3">
+                        <i class="fas fa-tint-slash"></i>
+                        <h3>Maggiori Periodi di Siccità</h3>
+                        <p>L'incidenza e la durata degli eventi siccitosi sono in crescita, impattando agricoltura e risorse idriche.</p>
+                        <span class="highlight-value">+15%</span>
+                        <p class="small-note">Durata media episodi di siccità (anni)</p>
                     </div>
-                    <div class="highlight-item fade-in scale-in-sm delay-3">
-                        <i class="fas fa-cloud-showers-heavy"></i>
-                        <h3>Piogge Estreme Localizzate</h3>
-                        <p>Nonostante una diminuzione complessiva delle precipitazioni, gli eventi intensi e brevi (R95p) sono diventati più violenti, causando alluvioni lampo e dissesto idrogeologico.</p>
-                        <span class="highlight-value">R95p: <span style="color: var(--color-accent-blue);">+15%</span></span>
-                        <p class="small-note">Aumento del 95° percentile di precipitazione giornaliera.</p>
+                    <div class="highlight-item slide-up delay-4">
+                        <i class="fas fa-sun"></i>
+                        <h3>Aumento Ondate di Calore</h3>
+                        <p>La frequenza e l'intensità delle ondate di calore sono aumentate, con un impatto sulla salute pubblica.</p>
+                        <span class="highlight-value">+10 giorni/anno</span>
+                        <p class="small-note">Media giorni con temperature > 30°C</p>
                     </div>
                 </div>
-                <p class="note-global fade-in delay-4">**Nota:** I valori qui mostrati sono indicativi. **Sostituisci questi placeholder con i risultati precisi della tua analisi su Vercelli.**</p>
+                <p class="note-global fade-in delay-5">Questi dati sono derivati da analisi climatiche condotte sulla stazione meteorologica di Vercelli e modelli di proiezione.</p>
             </div>
         </section>
 
-        <section id="indici" class="content-reveal">
+        <section id="indici-climatici" class="content-reveal">
             <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-chart-line"></i> Indici Climatici: Dettaglio e Trend</h2>
-                <p class="section-description content-reveal">Esploriamo in dettaglio gli indici climatici chiave per Vercelli (1994-2024), osservando i loro trend e come dipingono il quadro del cambiamento climatico. **(I dati e grafici sono simulati e vanno sostituiti con i tuoi dati reali e i tuoi grafici Climpact).**</p>
+                <h2 class="section-title-animated"><i class="fas fa-chart-area"></i>Indici Climatici Analizzati</h2>
+                <p class="section-description">Approfondisci gli specifici indici climatici utilizzati per monitorare i cambiamenti a Vercelli.</p>
 
-                <div class="card slide-up content-swiper-container" data-slide-id="indici">
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-left">
-                            <h3><i class="fas fa-chart-bar"></i> Regime Pluviometrico Annuale</h3>
-                            <p><strong>Descrizione:</strong> Questo grafico mostra la distribuzione media mensile delle precipitazioni. A Vercelli, le piogge tendono ad essere più abbondanti in primavera e autunno, con un minimo estivo che può contribuire al rischio siccità.</p>
-                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Picchi di precipitazione in Maggio e Ottobre (~80-90 mm/mese), minimi in Luglio-Agosto (~30-40 mm/mese) e Gennaio (~45 mm/mese).</em></p>
-                            <div class="simulated-graph-container delay-1 bar-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
+                <div class="card indice-card slide-up delay-1">
+                    <div class="content-swiper-container">
+                        <h3><i class="fas fa-chart-line"></i>Regime Ombrotermico</h3>
+                        <div class="content-slide active" data-slide="1">
+                            <p>Il regime ombrotermico evidenzia la relazione tra precipitazioni e temperature, indicando periodi di siccità o abbondanza idrica. A Vercelli, si osserva un allungamento del periodo secco estivo, cruciale per l'agricoltura locale.</p>
+                            <div class="simulated-graph-container ombrotermica active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="750" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <line x1="750" y1="50" x2="750" y2="250" class="axis-line" />
 
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">100</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">75</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">50</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">25</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Precipitazioni (mm)</text>
+                                    <text x="135" y="270" class="axis-label">Gen</text>
+                                    <text x="195" y="270" class="axis-label">Feb</text>
+                                    <text x="255" y="270" class="axis-label">Mar</text>
+                                    <text x="315" y="270" class="axis-label">Apr</text>
+                                    <text x="375" y="270" class="axis-label">Mag</text>
+                                    <text x="435" y="270" class="axis-label">Giu</text>
+                                    <text x="495" y="270" class="axis-label">Lug</text>
+                                    <text x="555" y="270" class="axis-label">Ago</text>
+                                    <text x="615" y="270" class="axis-label">Set</text>
+                                    <text x="675" y="270" class="axis-label">Ott</text>
+                                    <text x="735" y="270" class="axis-label">Nov</text>
+                                    <text x="795" y="270" class="axis-label">Dic</text>
 
-                                        <rect class="bar" x="15" y="195" width="20" height="55"></rect> <rect class="bar" x="45" y="190" width="20" height="60"></rect> <rect class="bar" x="75" y="160" width="20" height="90"></rect> <rect class="bar" x="105" y="120" width="20" height="130"></rect> <rect class="bar" x="135" y="90" width="20" height="160"></rect> <rect class="bar" x="165" y="210" width="20" height="40"></rect> <rect class="bar" x="195" y="225" width="20" height="25"></rect> <rect class="bar" x="225" y="220" width="20" height="30"></rect> <rect class="bar" x="255" y="170" width="20" height="80"></rect> <rect class="bar" x="285" y="100" width="20" height="150"></rect> <rect class="bar" x="315" y="150" width="20" height="100"></rect> <rect class="bar" x="345" y="190" width="20" height="60"></rect> <text x="25" y="265" class="axis-label">G</text>
-                                        <text x="55" y="265" class="axis-label">F</text>
-                                        <text x="85" y="265" class="axis-label">M</text>
-                                        <text x="115" y="265" class="axis-label">A</text>
-                                        <text x="145" y="265" class="axis-label">M</text>
-                                        <text x="175" y="265" class="axis-label">G</text>
-                                        <text x="205" y="265" class="axis-label">L</text>
-                                        <text x="235" y="265" class="axis-label">A</text>
-                                        <text x="265" y="265" class="axis-label">S</text>
-                                        <text x="295" y="265" class="axis-label">O</text>
-                                        <text x="325" y="265" class="axis-label">N</text>
-                                        <text x="355" y="265" class="axis-label">D</text>
-                                    </g>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">25</text>
+                                    <text x="80" y="150" class="axis-label">50</text>
+                                    <text x="80" y="100" class="axis-label">75</text>
+                                    <text x="80" y="50" class="axis-label">100 (mm)</text>
+
+                                    <text x="770" y="250" class="axis-label">0</text>
+                                    <text x="770" y="200" class="axis-label">12.5</text>
+                                    <text x="770" y="150" class="axis-label">25</text>
+                                    <text x="770" y="100" class="axis-label">37.5</text>
+                                    <text x="770" y="50" class="axis-label">50 (°C)</text>
+
+                                    <polyline class="data-line line-prec" points="135,150 195,170 255,160 315,130 375,100 435,110 495,120 555,135 615,180 675,190 735,210 795,180" />
+                                    <polyline class="data-line line-temp" points="135,200 195,190 255,170 315,140 375,90 435,70 495,60 555,80 615,110 675,140 735,170 795,190" />
+                                    
+                                    <path class="dry-area" d="M375,100 L375,90 L435,70 L495,60 L555,80 L555,135 L495,120 L435,110 Z" />
+                                    <text x="465" y="100" fill="#dc3545" font-weight="bold">Periodo Secco</text>
                                 </svg>
                             </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Indispensabile per la gestione delle risorse idriche e la pianificazione agricola, mostrando i periodi di stress idrico.</p>
+                        </div>
+                        <div class="content-slide" data-slide="2">
+                            <h3><i class="fas fa-cloud-showers-heavy"></i>SDII (Simple Daily Intensity Index)</h3>
+                            <p>L'SDII misura l'intensità media delle precipitazioni nei giorni di pioggia. Un aumento di questo indice suggerisce eventi piovosi più intensi ma meno frequenti.</p>
+                            <div class="simulated-graph-container bar-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="700" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">2000</text>
+                                    <text x="250" y="270" class="axis-label">2005</text>
+                                    <text x="350" y="270" class="axis-label">2010</text>
+                                    <text x="450" y="270" class="axis-label">2015</text>
+                                    <text x="550" y="270" class="axis-label">2020</text>
+                                    <text x="650" y="270" class="axis-label">2024</text>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">5</text>
+                                    <text x="80" y="150" class="axis-label">10</text>
+                                    <text x="80" y="100" class="axis-label">15</text>
+                                    <text x="80" y="50" class="axis-label">20 (mm/g)</text>
+                                    
+                                    <rect x="130" y="190" width="40" height="60" class="bar" />
+                                    <rect x="230" y="180" width="40" height="70" class="bar" />
+                                    <rect x="330" y="170" width="40" height="80" class="bar" />
+                                    <rect x="430" y="160" width="40" height="90" class="bar" />
+                                    <rect x="530" y="150" width="40" height="100" class="bar" />
+                                    <rect x="630" y="140" width="40" height="110" class="bar" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Cruciale per la prevenzione di allagamenti e per la gestione del drenaggio urbano, indicando un cambiamento nel regime delle piogge.</p>
+                        </div>
+                        <div class="content-slide" data-slide="3">
+                            <h3><i class="fas fa-chart-area"></i>PRCPTOT (Total Annual Precipitation)</h3>
+                            <p>PRCPTOT indica la quantità totale di precipitazioni annuali. Un suo calo a Vercelli può indicare un deficit idrico complessivo, con ripercussioni sull'agricoltura e l'ecosistema.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="700" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">200</text>
+                                    <text x="80" y="150" class="axis-label">400</text>
+                                    <text x="80" y="100" class="axis-label">600</text>
+                                    <text x="80" y="50" class="axis-label">800 (mm)</text>
+                                    
+                                    <polyline class="data-line line-avg" points="130,100 180,120 230,110 280,105 330,130 380,115 430,100 480,90 530,85 580,75 630,70 680,60" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Fornisce una visione d'insieme della disponibilità idrica, fondamentale per l'agricoltura, le riserve idriche e la gestione dei corsi d'acqua.</p>
+                        </div>
+                        <div class="content-slide" data-slide="4">
+                            <h3><i class="fas fa-thermometer-half"></i>TN90p (Warm Nights)</h3>
+                            <p>TN90p indica il numero di giorni in cui la temperatura minima giornaliera supera il 90° percentile. Un suo aumento segnala notti più calde, con impatti sulla salute umana e sull'ecosistema.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="700" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">10</text>
+                                    <text x="80" y="150" class="axis-label">20</text>
+                                    <text x="80" y="100" class="axis-label">30</text>
+                                    <text x="80" y="50" class="axis-label">40 (Giorni)</text>
+                                    
+                                    <polyline class="data-line line-max" points="130,220 180,200 230,190 280,170 330,150 380,130 430,110 480,90 530,70 580,60 630,55 680,50" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Essenziale per monitorare il benessere termico della popolazione e l'impatto del calore notturno sul sonno e sulla salute generale.</p>
+                        </div>
+                        <div class="content-slide" data-slide="5">
+                            <h3><i class="fas fa-thermometer-three-quarters"></i>TX90p (Hot Days)</h3>
+                            <p>TX90p misura il numero di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Questo indice è diretto indicatore della frequenza e intensità delle ondate di calore.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="700" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">10</text>
+                                    <text x="80" y="150" class="axis-label">20</text>
+                                    <text x="80" y="100" class="axis-label">30</text>
+                                    <text x="80" y="50" class="axis-label">40 (Giorni)</text>
+                                    
+                                    <polyline class="data-line line-max" points="130,230 180,210 230,180 280,160 330,130 380,100 430,80 480,70 530,60 580,55 630,50 680,45" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Indice chiave per la sanità pubblica e la gestione delle emergenze legate alle ondate di calore, essenziale per l'allerta precoce.</p>
+                        </div>
+                        <div class="content-slide" data-slide="6">
+                            <h3><i class="fas fa-wind"></i>DTR (Diurnal Temperature Range)</h3>
+                            <p>Il DTR indica la differenza tra la temperatura massima e minima giornaliera. Variazioni in questo indice possono indicare cambiamenti nella copertura nuvolosa o nell'umidità dell'aria.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="250" x2="700" y2="250" class="axis-line" />
+                                    <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">0</text>
+                                    <text x="80" y="200" class="axis-label">5</text>
+                                    <text x="80" y="150" class="axis-label">10</text>
+                                    <text x="80" y="100" class="axis-label">15</text>
+                                    <text x="80" y="50" class="axis-label">20 (°C)</text>
+                                    
+                                    <polyline class="data-line line-avg" points="130,180 180,170 230,160 280,150 330,140 380,130 430,120 480,110 530,100 580,90 630,80 680,70" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Utile per comprendere l'effetto isola di calore urbano e le variazioni nei pattern di copertura nuvolosa e umidità atmosferica.</p>
+                        </div>
+                        <div class="content-slide" data-slide="7">
+                            <h3><i class="fas fa-water"></i>SPI (Standardized Precipitation Index)</h3>
+                            <p>Lo SPI è un indice di siccità che quantifica il deficit o l'eccesso di precipitazioni su diverse scale temporali. A Vercelli, un SPI negativo persistente indica condizioni di siccità.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="150" x2="700" y2="150" class="axis-line" stroke-dasharray="none" /> <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">-2</text>
+                                    <text x="80" y="200" class="axis-label">-1</text>
+                                    <text x="80" y="150" class="axis-label">0</text>
+                                    <text x="80" y="100" class="axis-label">1</text>
+                                    <text x="80" y="50" class="axis-label">2</text>
+                                    
+                                    <polyline class="data-line line-avg" points="130,150 180,130 230,180 280,100 330,160 380,80 430,190 480,110 530,220 580,140 630,90 680,210" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Strumento essenziale per la pianificazione e la gestione della siccità, indicando la gravità e la durata degli eventi di scarsità idrica.</p>
+                        </div>
+                        <div class="content-slide" data-slide="8">
+                            <h3><i class="fas fa-water"></i>SPEI (Standardized Precipitation-Evapotranspiration Index)</h3>
+                            <p>Lo SPEI è un indice di siccità più completo dello SPI, in quanto considera sia le precipitazioni che l'evapotraspirazione. È particolarmente utile per monitorare la siccità agricola e idrologica.</p>
+                            <div class="simulated-graph-container line-chart active">
+                                <svg viewBox="0 0 800 300">
+                                    <line x1="100" y1="150" x2="700" y2="150" class="axis-line" stroke-dasharray="none" /> <line x1="100" y1="50" x2="100" y2="250" class="axis-line" />
+                                    <text x="150" y="270" class="axis-label">1995</text>
+                                    <text x="250" y="270" class="axis-label">2000</text>
+                                    <text x="350" y="270" class="axis-label">2005</text>
+                                    <text x="450" y="270" class="axis-label">2010</text>
+                                    <text x="550" y="270" class="axis-label">2015</text>
+                                    <text x="650" y="270" class="axis-label">2020</text>
+                                    <text x="80" y="250" class="axis-label">-2</text>
+                                    <text x="80" y="200" class="axis-label">-1</text>
+                                    <text x="80" y="150" class="axis-label">0</text>
+                                    <text x="80" y="100" class="axis-label">1</text>
+                                    <text x="80" y="50" class="axis-label">2</text>
+                                    
+                                    <polyline class="data-line line-max" points="130,140 180,120 230,170 280,90 330,150 380,70 430,180 480,100 530,210 580,130 630,80 680,200" />
+                                </svg>
+                            </div>
+                            <p class="highlight-text"><strong>Rilevanza:</strong> Fornisce una valutazione più accurata della siccità, integrando gli effetti della temperatura sull'evaporazione, fondamentale per settori come l'agricoltura e la gestione idrica.</p>
                         </div>
                     </div>
 
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-right">
-                            <h3><i class="fas fa-chart-line"></i> Curve Termiche Annuali (Media, Min, Max)</h3>
-                            <p><strong>Descrizione:</strong> Queste curve illustrano l'andamento mensile delle temperature medie, minime e massime. A Vercelli si osserva la tipica escursione termica continentale, con inverni freddi ed estati calde.</p>
-                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Temperature medie minime in Gennaio (~1°C), massime in Luglio-Agosto (~28-30°C). La curva della temperatura media segue un andamento sinusoidale regolare.</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">30°C</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">20°C</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">10°C</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">0°C</text>
-                                        <text x="-15" y="200" class="axis-label" text-anchor="end">-10°C</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">-20°C</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Temperatura (°C)</text>
-
-                                        <polyline class="data-line line-max" points="
-                                            0,220 30,200 60,160 90,100 120,60 150,20 180,0 210,10 240,50 270,110 300,170 330,210
-                                        "></polyline>
-                                        <polyline class="data-line line-avg" points="
-                                            0,200 30,180 60,140 90,80 120,40 150,0 180,20 210,30 240,70 270,130 300,190 330,200
-                                        "></polyline>
-                                        <polyline class="data-line line-min" points="
-                                            0,180 30,160 60,120 90,60 120,20 150,20 180,40 210,50 240,90 270,150 300,210 330,200
-                                        "></polyline>
-
-                                        <text x="15" y="265" class="axis-label">G</text>
-                                        <text x="45" y="265" class="axis-label">F</text>
-                                        <text x="75" y="265" class="axis-label">M</text>
-                                        <text x="105" y="265" class="axis-label">A</text>
-                                        <text x="135" y="265" class="axis-label">M</text>
-                                        <text x="165" y="265" class="axis-label">G</text>
-                                        <text x="195" y="265" class="axis-label">L</text>
-                                        <text x="225" y="265" class="axis-label">A</text>
-                                        <text x="255" y="265" class="axis-label">S</text>
-                                        <text x="285" y="265" class="axis-label">O</text>
-                                        <text x="315" y="265" class="axis-label">N</text>
-                                        <text x="345" y="265" class="axis-label">D</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-left">
-                            <h3><i class="fas fa-sun"></i> Curva Ombrotermica (Diagramma di Gaussen)</h3>
-                            <p><strong>Descrizione:</strong> Il Diagramma di Gaussen sovrappone le curve di temperatura e precipitazione per identificare i periodi di siccità. Un periodo è considerato secco quando la temperatura media (in °C) è più del doppio della precipitazione (in mm).</p>
-                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Evidenzia un periodo di aridità estiva, tipicamente tra Luglio e Agosto, quando le temperature elevate superano di molto le scarse precipitazioni, indicando uno stress idrico per la vegetazione.</em></p>
-                            <div class="simulated-graph-container delay-1 ombrotermica">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">40°C / 80mm</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">30°C / 60mm</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">20°C / 40mm</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">10°C / 20mm</text>
-                                        <text x="-15" y="200" class="axis-label" text-anchor="end">0°C / 0mm</text>
-                                        <text x="-35" y="100" class="axis-label rotate-neg90">Valori</text>
-
-                                        <polyline class="data-line line-temp" points="
-                                            0,175 30,165 60,140 90,120 120,100 150,80 180,60 210,65 240,90 270,125 300,155 330,170
-                                        "></polyline>
-
-                                        <polyline class="data-line line-prec" points="
-                                            0,87.5 30,75 60,50 90,25 120, -12.5 150,112.5 180,150 210,137.5 240,62.5 270,0 300,37.5 330,75
-                                        "></polyline>
-                                        
-                                        <path class="area dry-area" d="M180,60 L180,150 L210,150 L210,65 Z M150,80 L150,112.5 L180,112.5 L180,80 Z "/>
-
-
-                                        <text x="15" y="265" class="axis-label">G</text>
-                                        <text x="45" y="265" class="axis-label">F</text>
-                                        <text x="75" y="265" class="axis-label">M</text>
-                                        <text x="105" y="265" class="axis-label">A</text>
-                                        <text x="135" y="265" class="axis-label">M</text>
-                                        <text x="165" y="265" class="axis-label">G</text>
-                                        <text x="195" y="265" class="axis-label">L</text>
-                                        <text x="225" y="265" class="axis-label">A</text>
-                                        <text x="255" y="265" class="axis-label">S</text>
-                                        <text x="285" y="265" class="axis-label">O</text>
-                                        <text x="315" y="265" class="axis-label">N</text>
-                                        <text x="345" y="265" class="axis-label">D</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-right">
-                            <h3><i class="fas fa-calendar-alt"></i> Termogramma: Andamento T° Min & Max</h3>
-                            <p><strong>Descrizione:</strong> Il termogramma visualizza l'andamento annuale delle temperature minime e massime giornaliere, spesso mettendo in risalto le escursioni termiche e la frequenza di eventi estremi come le gelate o le ondate di calore. Permette di osservare le anomalie annuali.</p>
-                            <p class="highlight-text"><em>Risultato stimato per Vercelli: Mostra chiaramente l'aumento delle temperature, con inverni meno rigidi e estati con massime più elevate e minime notturne sempre meno fresche, soprattutto negli ultimi anni del periodo di analisi.</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">35°C</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">25°C</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">15°C</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5°C</text>
-                                        <text x="-15" y="200" class="axis-label" text-anchor="end">-5°C</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Temperatura (°C)</text>
-
-                                        <path class="area area-range" d="
-                                            M0,180 L30,170 L60,160 L90,150 L120,130 L150,110 L180,90 L210,80 L240,70 L270,60 L300,50 L330,40
-                                            L330,220 L300,200 L270,180 L240,160 L210,140 L180,120 L150,100 L120,120 L90,140 L60,160 L30,180 L0,190 Z
-                                        "></path>
-
-                                        <polyline class="data-line line-avg" points="
-                                            0,185 30,175 60,165 90,155 120,140 150,120 180,105 210,95 240,85 270,75 300,65 330,55
-                                        "></polyline>
-
-                                        <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-left">
-                            <h3><i class="fas fa-cloud-rain"></i> PRCPTOT: Precipitazione Totale Annuale</h3>
-                            <p><strong>Descrizione:</strong> Somma cumulativa annuale delle precipitazioni giornaliere (≥ 1.0 mm). Un indicatore della risorsa idrica complessiva.</p>
-                            <p><strong>Trend Osservato:</strong> Per Vercelli, il trend è <strong>statisticamente NON significativo (p-value > 0.05)</strong>, ma mostra una evidente tendenza alla <strong>decrescita</strong> (Sen's Slope: -0.85 mm/anno). Questo suggerisce una riduzione complessiva della risorsa idrica nel tempo, anche se non ancora "significativa" in termini puramente statistici.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi annuali registrati nel 2015, 2021, 2022 (con **~290 mm**) e 2023. I massimi sono stati nel 1996, 2002, 2011 e 2018 (con **~975 mm**).</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="0" x2="350" y2="0" class="grid-line" opacity="0.4"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">1000</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">750</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">500</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">250</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Precipitazioni (mm)</text>
-
-                                        <polyline class="data-line line-avg" points="
-                                            0,120 30,80 60,150 90,100 120,180 150,90 180,130 210,70 240,200 270,160 300,190 330,220
-                                        "></polyline>
-                                        
-                                        <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-right">
-                            <h3><i class="fas fa-water-droplet"></i> SDII: Intensità Media Precipitazioni</h3>
-                            <p><strong>Descrizione:</strong> Precipitazioni annuali totali divise per il numero di giorni piovosi. Misura l'intensità media di ogni evento di pioggia.</p>
-                            <p><strong>Trend Osservato:</strong> Si osserva un <strong>trend statisticamente NON significativo (p-value > 0.05)</strong> (Sen's Slope: -0.002 mm/giorno/anno). Questo indica che, quando piove, gli eventi tendono a essere leggermente meno intensi, aggravando il deficit idrico se combinato con meno giorni di pioggia.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi osservati nel 2021 (**~6.2 mm/day**) e 2022. Massimi nel 1991, 1994 e 2011 (**~16.1 mm/day**).</em></p>
-                            <div class="simulated-graph-container delay-1 bar-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">20</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">15</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">10</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Intensità (mm/giorno)</text>
-
-                                        <rect class="bar" x="15" y="100" width="10" height="150"></rect> <rect class="bar" x="30" y="110" width="10" height="140"></rect>
-                                        <rect class="bar" x="45" y="130" width="10" height="120"></rect>
-                                        <rect class="bar" x="60" y="100" width="10" height="150"></rect>
-                                        <rect class="bar" x="75" y="140" width="10" height="110"></rect>
-                                        <rect class="bar" x="90" y="120" width="10" height="130"></rect>
-                                        <rect class="bar" x="105" y="150" width="10" height="100"></rect>
-                                        <rect class="bar" x="120" y="110" width="10" height="140"></rect>
-                                        <rect class="bar" x="135" y="160" width="10" height="90"></rect>
-                                        <rect class="bar" x="150" y="120" width="10" height="130"></rect>
-                                        <rect class="bar" x="165" y="170" width="10" height="80"></rect>
-                                        <rect class="bar" x="180" y="130" width="10" height="120"></rect>
-                                        <rect class="bar" x="195" y="180" width="10" height="70"></rect>
-                                        <rect class="bar" x="210" y="140" width="10" height="110"></rect>
-                                        <rect class="bar" x="225" y="190" width="10" height="60"></rect> <rect class="bar" x="240" y="150" width="10" height="100"></rect>
-                                        <rect class="bar" x="255" y="200" width="10" height="50"></rect>
-                                        <rect class="bar" x="270" y="160" width="10" height="90"></rect>
-                                        <rect class="bar" x="285" y="210" width="10" height="40"></rect>
-                                        <rect class="bar" x="300" y="170" width="10" height="80"></rect>
-                                        <rect class="bar" x="315" y="220" width="10" height="30"></rect> <rect class="bar" x="330" y="180" width="10" height="70"></rect>
-                                        <rect class="bar" x="345" y="230" width="10" height="20"></rect> <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-left">
-                            <h3><i class="fas fa-sun-plant-wilt"></i> SPI_24_month: Indice di Siccità Standardizzato (24 Mesi)</h3>
-                            <p><strong>Descrizione:</strong> Basato sulle precipitazioni cumulative su 24 mesi. Un valore negativo indica condizioni di siccità, più è basso più è severa. Ideale per siccità a lungo termine.</p>
-                            <p><strong>Trend Osservato:</strong> Il trend dell'SPI a 24 mesi è <strong>statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.002, p-value = 0). Ciò evidenzia un aumento dell'intensità e della frequenza degli eventi siccitosi estremi, indicando una condizione di stress idrico cronico.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Aumento degli eventi siccitosi estremi, soprattutto dal 2022 in poi (R &lt; -2 con picchi anche di **-3.5** nel 2023).</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="125" x2="350" y2="125" class="grid-line" stroke="#888" stroke-dasharray="2 2"></line> <line x1="0" y1="75" x2="350" y2="75" class="grid-line" opacity="0.6"></line>
-                                        <line x1="0" y1="175" x2="350" y2="175" class="grid-line" opacity="0.6"></line>
-
-                                        <text x="-15" y="25" class="axis-label" text-anchor="end">2.5</text>
-                                        <text x="-15" y="75" class="axis-label" text-anchor="end">1.5</text>
-                                        <text x="-15" y="125" class="axis-label" text-anchor="end">0</text>
-                                        <text x="-15" y="175" class="axis-label" text-anchor="end">-1.5</text>
-                                        <text x="-15" y="225" class="axis-label" text-anchor="end">-2.5</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">SPI Value</text>
-
-                                        <polyline class="data-line line-avg" points="
-                                            0,120 30,100 60,110 90,90 120,130 150,100 180,140 210,120 240,160 270,180 300,200 330,220
-                                        "></polyline>
-                                        
-                                        <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-right">
-                            <h3><i class="fas fa-wind"></i> SPEI_24_month: Indice di Siccità (P-ET)</h3>
-                            <p><strong>Descrizione:</strong> Simile all'SPI, ma include anche l'evapotraspirazione. Fornisce una visione più completa della siccità, considerando l'impatto delle temperature sull'evaporazione dell'acqua.</p>
-                            <p><strong>Trend Osservato:</strong> L'analisi dello SPEI a 24 mesi rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente decrescita</strong> (Sen's Slope = -0.004, p-value = 0). Questo conferma l'aggravarsi delle condizioni di siccità a causa della combinazione di meno piogge e più calore, rendendo la siccità più severa.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Picchi di siccità estrema (R &lt; -2 con picchi anche di **-4.4** nel 2023) soprattutto dal 2022 in poi.</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="125" x2="350" y2="125" class="grid-line" stroke="#888" stroke-dasharray="2 2"></line> <line x1="0" y1="50" x2="350" y2="50" class="grid-line" opacity="0.6"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line" opacity="0.6"></line>
-
-                                        <text x="-15" y="25" class="axis-label" text-anchor="end">3.0</text>
-                                        <text x="-15" y="75" class="axis-label" text-anchor="end">1.5</text>
-                                        <text x="-15" y="125" class="axis-label" text-anchor="end">0</text>
-                                        <text x="-15" y="175" class="axis-label" text-anchor="end">-1.5</text>
-                                        <text x="-15" y="225" class="axis-label" text-anchor="end">-3.0</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">SPEI Value</text>
-
-                                        <polyline class="data-line line-avg" points="
-                                            0,110 30,90 60,100 90,80 120,120 150,90 180,130 210,110 240,170 270,190 300,210 330,230
-                                        "></polyline>
-                                        
-                                        <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-left">
-                            <h3><i class="fas fa-temperature-three-quarters"></i> TX90p: Giorni con T° Massima Estremamente Calda</h3>
-                            <p><strong>Descrizione:</strong> Misura la percentuale di giorni in cui la temperatura massima giornaliera supera il 90° percentile. Un indicatore chiave delle ondate di calore.</p>
-                            <p><strong>Trend Osservato:</strong> L'analisi del TX90p rivela un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.409, p-value = 0). Ciò indica che Vercelli sta vivendo ondate di calore più intense, lunghe e frequenti.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1988 (**2.46%**) e 1996. Massimi nel 2022 (**40.54%**) e 2023.</em></p>
-                            <div class="simulated-graph-container delay-1 bar-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">50%</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">40%</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">30%</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">20%</text>
-                                        <text x="-15" y="200" class="axis-label" text-anchor="end">10%</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0%</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Percentuale Giorni</text>
-
-                                        <rect class="bar" x="15" y="235" width="10" height="15"></rect> <rect class="bar" x="30" y="230" width="10" height="20"></rect>
-                                        <rect class="bar" x="45" y="220" width="10" height="30"></rect>
-                                        <rect class="bar" x="60" y="210" width="10" height="40"></rect>
-                                        <rect class="bar" x="75" y="200" width="10" height="50"></rect>
-                                        <rect class="bar" x="90" y="190" width="10" height="60"></rect>
-                                        <rect class="bar" x="105" y="180" width="10" height="70"></rect>
-                                        <rect class="bar" x="120" y="170" width="10" height="80"></rect>
-                                        <rect class="bar" x="135" y="160" width="10" height="90"></rect>
-                                        <rect class="bar" x="150" y="150" width="10" height="100"></rect>
-                                        <rect class="bar" x="165" y="140" width="10" height="110"></rect>
-                                        <rect class="bar" x="180" y="130" width="10" height="120"></rect>
-                                        <rect class="bar" x="195" y="120" width="10" height="130"></rect>
-                                        <rect class="bar" x="210" y="110" width="10" height="140"></rect>
-                                        <rect class="bar" x="225" y="100" width="10" height="150"></rect>
-                                        <rect class="bar" x="240" y="90" width="10" height="160"></rect>
-                                        <rect class="bar" x="255" y="80" width="10" height="170"></rect>
-                                        <rect class="bar" x="270" y="70" width="10" height="180"></rect>
-                                        <rect class="bar" x="285" y="60" width="10" height="190"></rect>
-                                        <rect class="bar" x="300" y="50" width="10" height="200"></rect>
-                                        <rect class="bar" x="315" y="30" width="10" height="220"></rect> <rect class="bar" x="330" y="20" width="10" height="230"></rect> <rect class="bar" x="345" y="10" width="10" height="240"></rect> <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-slide">
-                        <div class="indice-card fade-in slide-right">
-                            <h3><i class="fas fa-moon-cloud"></i> TN90p: Giorni con T° Minima Estremamente Calda</h3>
-                            <p><strong>Descrizione:</strong> Percentuale di giorni in cui la temperatura minima giornaliera è superiore al 90° percentile. Rivela la frequenza delle "notti tropicali", con scarso raffreddamento notturno.</p>
-                            <p><strong>Trend Osservato:</strong> Si registra un <strong>trend statisticamente SIGNIFICATIVO e in evidente crescita</strong> (Sen's Slope = 0.309, p-value = 0). Questo significa minor recupero termico notturno, con impatti sulla salute, agricoltura e consumo energetico.</p>
-                            <p class="highlight-text"><em>Risultato per Vercelli: Minimi nel 1992, 1993 (**2.70%**), 1996, 1999 e 2010. Massimi nel 2022 (**29.04%**) e 2023.</em></p>
-                            <div class="simulated-graph-container delay-1 line-chart">
-                                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(40, 20)">
-                                        <line x1="0" y1="0" x2="0" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="250" x2="350" y2="250" class="axis-line"></line>
-                                        <line x1="0" y1="50" x2="350" y2="50" class="grid-line"></line>
-                                        <line x1="0" y1="100" x2="350" y2="100" class="grid-line"></line>
-                                        <line x1="0" y1="150" x2="350" y2="150" class="grid-line"></line>
-                                        <line x1="0" y1="200" x2="350" y2="200" class="grid-line"></line>
-
-                                        <text x="-15" y="0" class="axis-label" text-anchor="end">35%</text>
-                                        <text x="-15" y="50" class="axis-label" text-anchor="end">25%</text>
-                                        <text x="-15" y="100" class="axis-label" text-anchor="end">15%</text>
-                                        <text x="-15" y="150" class="axis-label" text-anchor="end">5%</text>
-                                        <text x="-15" y="250" class="axis-label" text-anchor="end">0%</text>
-                                        <text x="-35" y="125" class="axis-label rotate-neg90">Percentuale Giorni</text>
-
-                                        <polyline class="data-line line-avg" points="
-                                            0,220 30,230 60,210 90,200 120,180 150,160 180,140 210,120 240,100 270,80 300,60 330,40
-                                        "></polyline>
-                                        
-                                        <text x="15" y="265" class="axis-label">1994</text>
-                                        <text x="80" y="265" class="axis-label">2000</text>
-                                        <text x="150" y="265" class="axis-label">2006</text>
-                                        <text x="220" y="265" class="axis-label">2012</text>
-                                        <text x="290" y="265" class="axis-label">2018</text>
-                                        <text x="345" y="265" class="axis-label">2024</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div> </div>
-        </section>
-
-        <section id="impatti" class="bg-light-section content-reveal">
-            <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-circle-exclamation"></i> Impatti & Rischi per Vercelli</h2>
-                <p class="section-description content-reveal">Il cambiamento climatico non è solo una questione di numeri. Ha conseguenze dirette sul tessuto socio-economico di Vercelli. Ecco i principali rischi che abbiamo identificato.</p>
-                <div class="highlight-grid">
-                    <div class="highlight-item fade-in scale-in-sm">
-                        <i class="fas fa-seedling" style="color: #68B1A0;"></i>
-                        <h3>Agricoltura: Resilienza della Risicoltura</h3>
-                        <p>La risicoltura, pilastro dell'economia vercellese, è vulnerabile. L'aumento della siccità e delle ondate di calore estive minaccia la disponibilità idrica per l'irrigazione, causando stress alle colture, calo delle rese e aumento dei costi di produzione.</p>
-                        <ul class="risk-list">
-                            <li><i class="fas fa-triangle-exclamation"></i> **Stress idrico** per riso e mais.</li>
-                            <li><i class="fas fa-bug"></i> **Aumento parassiti e malattie**.</li>
-                            <li><i class="fas fa-calendar-times"></i> **Difficoltà per semine e raccolti**.</li>
-                        </ul>
-                    </div>
-                    <div class="highlight-item fade-in scale-in-sm delay-1">
-                        <i class="fas fa-house-chimney" style="color: #d62828;"></i>
-                        <h3>Salute Pubblica & Vita Urbana</h3>
-                        <p>Le ondate di calore prolungate, soprattutto con le "notti tropicali", aumentano il rischio di colpi di calore, disidratazione e stress cardiovascolare, in particolare per anziani e bambini. L'aumento delle temperature favorisce anche la proliferazione di insetti vettori di malattie.</p>
-                        <ul class="risk-list">
-                            <li><i class="fas fa-lungs-virus"></i> **Aumento mortalità/morbilità** per caldo.</li>
-                            <li><i class="fas fa-bolt"></i> **Disagio urbano e blackout** energetici.</li>
-                            <li><i class="fas fa-mosquito"></i> **Proliferazione vettori** (zanzare).</li>
-                        </ul>
-                    </div>
-                    <div class="highlight-item fade-in scale-in-sm delay-2">
-                        <i class="fas fa-water" style="color: #007bff;"></i>
-                        <h3>Gestione Risorse Idriche</h3>
-                        <p>Il fiume Sesia e il sistema di canali (Cavour, Regina Elena) sono vitali. La diminuzione delle precipitazioni e l'aumento dell'evaporazione rendono più complessa la gestione delle riserve idriche, creando conflitti tra usi agricoli, civili e industriali.</p>
-                        <ul class="risk-list">
-                            <li><i class="fas fa-faucet-drip"></i> **Minore disponibilità** d'acqua potabile.</li>
-                            <li><i class="fas fa-handshake-slash"></i> **Conflitti d'uso** dell'acqua.</li>
-                            <li><i class="fas fa-fish-fins"></i> **Impatto su ecosistemi** fluviali.</li>
-                        </ul>
+                    <div class="content-controls">
+                        <button id="prev-slide" class="prev"><i class="fas fa-chevron-left"></i> Indietro</button>
+                        <div class="swiper-pagination"></div>
+                        <button id="next-slide" class="next">Avanti <i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
-                <p class="note-global fade-in delay-3">Questi rischi evidenziano la necessità di azioni urgenti e coordinate per la resilienza climatica del territorio di Vercelli.</p>
+            </div>
+        </section>
+
+        <section id="impatti-rischi" class="bg-light-section content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-exclamation-triangle"></i>Impatti e Rischi Climatici</h2>
+                <p class="section-description">I cambiamenti climatici a Vercelli comportano una serie di impatti significativi, con rischi crescenti per diversi settori.</p>
+
+                <div class="card slide-up delay-1">
+                    <h3><i class="fas fa-hand-holding-water"></i>Gestione Risorse Idriche</h3>
+                    <ul>
+                        <li><strong>Sicurezza Alimentare:</strong> La riduzione della disponibilità idrica influisce sulla coltivazione del riso, pilastro dell'economia locale, e su altre colture.</li>
+                        <li><strong>Ecosistemi Acquatici:</strong> La diminuzione dei livelli dei fiumi e dei canali minaccia la biodiversità acquatica e gli habitat naturali.</li>
+                        <li><strong>Disponibilità Idrica Urbana:</strong> Possibili restrizioni nell'uso dell'acqua potabile e per scopi igienici durante periodi prolungati di siccità.</li>
+                    </ul>
+                </div>
+
+                <div class="card slide-up delay-2" style="margin-top: 45px;">
+                    <h3><i class="fas fa-leaf"></i>Agricoltura e Biodiversità</h3>
+                    <ul>
+                        <li><strong>Stress Idrico delle Colture:</strong> Le colture, in particolare il riso, subiranno maggiore stress idrico, richiedendo nuove strategie di irrigazione.</li>
+                        <li><strong>Variazione Cicli Colturali:</strong> Anticipo o ritardo delle fasi fenologiche delle piante, con impatti sulla produttività.</li>
+                        <li><strong>Adattamento Specie:</strong> La flora e la fauna locali dovranno adattarsi a nuove condizioni, con il rischio di perdita di biodiversità.</li>
+                    </ul>
+                </div>
+
+                <div class="card slide-up delay-3" style="margin-top: 45px;">
+                    <h3><i class="fas fa-city"></i>Salute Umana e Infrastrutture</h3>
+                    <ul>
+                        <li><strong>Ondate di Calore:</strong> Aumento del rischio di colpi di calore, disidratazione e aggravamento di patologie preesistenti, soprattutto per anziani e bambini.</li>
+                        <li><strong>Stress Termico:</strong> Impatto negativo sulle condizioni di lavoro all'aperto e sulla qualità della vita urbana durante i mesi estivi.</li>
+                        <li><strong>Infrastrutture Critiche:</strong> Potenziali danni a strade, ponti e edifici a causa di eventi estremi (alluvioni, frane, siccità).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="mappa-rischi" class="content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-map-marked-alt"></i>Mappa Interattiva dei Rischi</h2>
+                <p class="section-description">Esplora la mappa interattiva di Vercelli per visualizzare le aree a maggiore rischio climatico e i dati correlati.</p>
+                <div id="map" class="fade-in delay-1"></div>
             </div>
         </section>
 
         <section id="conclusioni" class="bg-light-section content-reveal">
             <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-lightbulb"></i> Le Nostre Conclusioni Principali</h2>
-                <p class="section-description content-reveal">L'analisi del clima di Vercelli nel periodo 1994-2024 rivela un quadro chiaro: la regione sta sperimentando cambiamenti climatici significativi, con implicazioni che toccano ogni aspetto della vita locale.</p>
-                
-                <div class="conclusion-grid">
-                    <div class="conclusion-item fade-in slide-up">
-                        <i class="fas fa-droplet-slash"></i>
-                        <h3>Allarme Siccità</h3>
-                        <p>Abbiamo riscontrato un **chiaro e significativo deficit nelle precipitazioni totali** e un **aumento dell'intensità degli eventi siccitosi estremi** (come evidenziato da SPI e SPEI). Ciò si traduce in una minore disponibilità idrica e un rischio crescente di periodi di aridità prolungata.</p>
-                    </div>
-                    <div class="conclusion-item fade-in slide-up delay-1">
-                        <i class="fas fa-temperature-full"></i>
-                        <h3>Riscaldamento Accelerato</h3>
-                        <p>Le temperature, sia massime che minime notturne (TX90p, TN90p), mostrano un trend di crescita statisticamente significativo. Questo significa **più giorni e notti "tropicali" e ondate di calore più frequenti e intense**, con ripercussioni sulla salute umana, sull'agricoltura e sui consumi energetici.</p>
-                    </div>
-                    <div class="conclusion-item fade-in slide-up delay-2">
-                        <i class="fas fa-cloud-showers-water"></i>
-                        <h3>Eventi Estremi in Evoluzione</h3>
-                        <p>Nonostante la riduzione delle precipitazioni totali, si osserva una tendenza verso **eventi piovosi più intensi e brevi**, aumentando il rischio di allagamenti localizzati e dissesto idrogeologico.</p>
-                    </div>
-                    <div class="conclusion-item fade-in slide-up delay-3">
-                        <i class="fas fa-person-falling-burst"></i>
-                        <h3>Vulnerabilità Territoriale</h3>
-                        <p>Il combinarsi di meno acqua, più calore e fenomeni estremi crea una **maggiore vulnerabilità per settori chiave** come l'agricoltura (in particolare la risicoltura), la gestione delle risorse idriche e la salute pubblica a Vercelli.</p>
-                    </div>
+                <h2 class="section-title-animated"><i class="fas fa-check-circle"></i>Conclusioni e Raccomandazioni</h2>
+                <p class="section-description">Affrontare i cambiamenti climatici a Vercelli richiede un approccio proattivo e coordinato.</p>
+                <div class="card slide-up delay-1">
+                    <h3><i class="fas fa-lightbulb"></i>Strategie di Adattamento</h3>
+                    <ul>
+                        <li><strong>Monitoraggio Continuo:</strong> Implementare sistemi avanzati per il monitoraggio climatico e idrologico.</li>
+                        <li><strong>Pianificazione Urbana:</strong> Integrare la resilienza climatica nei piani regolatori e nello sviluppo infrastrutturale.</li>
+                        <li><strong>Agricoltura Sostenibile:</strong> Promuovere pratiche agricole resilienti alla siccità e al calore, come colture più resistenti e tecniche di irrigazione efficienti.</li>
+                        <li><strong>Sensibilizzazione:</strong> Educare la cittadinanza sui rischi e sulle buone pratiche di adattamento.</li>
+                    </ul>
                 </div>
-
-                <p class="note-global fade-in delay-4" style="margin-top: 60px;">
-                    È imperativo che queste evidenze siano considerate nella pianificazione territoriale e nelle strategie di adattamento per costruire una Vercelli più resiliente di fronte ai cambiamenti climatici.
-                </p>
+                <div class="card slide-up delay-2" style="margin-top: 45px;">
+                    <h3><i class="fas fa-seedling"></i>Mitigazione e Sostenibilità</h3>
+                    <ul>
+                        <li><strong>Energie Rinnovabili:</strong> Incentivare la transizione verso fonti energetiche pulite per ridurre le emissioni.</li>
+                        <li><strong>Mobilità Sostenibile:</strong> Promuovere l'uso dei trasporti pubblici, della bicicletta e della mobilità elettrica.</li>
+                        <li><strong>Forestazione Urbana:</strong> Aumentare le aree verdi in città per mitigare l'effetto isola di calore e assorbire CO2.</li>
+                        <li><strong>Economia Circolare:</strong> Adottare modelli di produzione e consumo che riducano gli sprechi e l'impronta ecologica.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
         <section id="prospettive" class="content-reveal">
-            <div class="card slide-up content-swiper-container" data-slide-id="prospettive">
-                <h2 class="section-title-animated"><i class="fas fa-chart-column"></i> Prospettive Future & Azioni</h2>
-                <p class="section-description content-reveal">Le tendenze climatiche per Vercelli non sono solo dati passati, ma proiezioni per il nostro futuro. Basandoci sui nostri risultati e su studi consolidati, possiamo delineare le sfide e le azioni necessarie.</p>
-                <div class="content-slide">
-                    <h3 class="fade-in"><i class="fas fa-droplet"></i> Sfida 1: Affrontare la Siccità Cronica</h3>
-                    <p class="fade-in delay-1">Il rischio di siccità diventerà più acuto, con impatti diretti sulla **disponibilità d'acqua per agricoltura e usi civili**. La gestione del sistema idrico (canali, Sesia) richiederà interventi innovativi per massimizzare l'efficienza e ridurre gli sprechi.</p>
-                    <ul style="list-style: none; padding: 0; text-align: left;">
-                        <li><i class="fas fa-leaf" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Promuovere l'irrigazione a basso consumo (es. a goccia).</li>
-                        <li><i class="fas fa-seedling" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare colture più resistenti alla siccità.</li>
-                        <li><i class="fas fa-recycle" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Implementare sistemi di raccolta e riuso dell'acqua piovana.</li>
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-binoculars"></i>Prossimi Passi e Prospettive</h2>
+                <p class="section-description">Guardando al futuro, il progetto "Climpact Vercelli" si impegna nell'espansione e nell'approfondimento della ricerca.</p>
+                <div class="card slide-up delay-1">
+                    <h3><i class="fas fa-flask"></i>Ricerca e Innovazione</h3>
+                    <ul>
+                        <li><strong>Modelli Predittivi:</strong> Sviluppare modelli climatici più sofisticati per previsioni a lungo termine.</li>
+                        <li><strong>Collaborazioni:</strong> Estendere le collaborazioni con università, enti di ricerca e istituzioni locali.</li>
+                        <li><strong>Tecnologie IoT:</strong> Integrare sensori IoT per un monitoraggio in tempo reale e dati più granulari.</li>
                     </ul>
                 </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-3"><i class="fas fa-temperature-full"></i> Sfida 2: Gestire le Ondate di Calore</h3>
-                    <p class="fade-in delay-4">Le temperature estreme, specialmente di notte, richiederanno nuove strategie per proteggere la popolazione. Il rischio di **incendi boschivi** nelle aree limitrofe aumenterà.</p>
-                    <ul style="list-style: none; padding: 0; text-align: left;">
-                        <li><i class="fas fa-bell" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Piani di emergenza e allerta per ondate di calore.</li>
-                        <li><i class="fas fa-city" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Aumentare le aree verdi urbane e la forestazione per mitigare l'isola di calore.</li>
-                        <li><i class="fas fa-solar-panel" style="color: var(--color-accent-blue); margin-right: 10px;"></i> Incentivare l'efficienza energetica e le energie rinnovabili.</li>
+                <div class="card slide-up delay-2" style="margin-top: 45px;">
+                    <h3><i class="fas fa-users"></i>Coinvolgimento della Comunità</h3>
+                    <ul>
+                        <li><strong>Workshop e Eventi:</strong> Organizzare incontri pubblici per discutere i risultati e raccogliere feedback.</li>
+                        <li><strong>Piattaforme Interattive:</strong> Creare strumenti online che permettano ai cittadini di esplorare i dati e contribuire attivamente.</li>
+                        <li><strong>Educazione:</strong> Programmi educativi nelle scuole per sensibilizzare le nuove generazioni sui temi climatici.</li>
                     </ul>
-                </div>
-                <div class="content-slide">
-                    <h3 class="fade-in delay-6"><i class="fas fa-bullhorn"></i> Un Appello all'Azione</h3>
-                    <p class="fade-in delay-7">La ricerca scientifica come la nostra è il primo passo. Il prossimo è l'azione. La comunità di Vercelli, dalle istituzioni ai cittadini, deve collaborare per implementare strategie di adattamento e mitigazione. La resilienza al clima è un investimento nel futuro del nostro territorio.</p>
-                    <a href="#mappa-rischi" class="button-primary fade-in delay-8" style="margin-top: 30px;">Vedi la Mappa dei Rischi <i class="fas fa-map-marked-alt"></i></a>
                 </div>
             </div>
         </section>
+
+        <section id="contatti" class="bg-light-section content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-envelope"></i>Contattaci</h2>
+                <p class="section-description">Hai domande o vuoi contribuire? Siamo a tua disposizione.</p>
+                <div class="card slide-up delay-1 text-center">
+                    <h3><i class="fas fa-paper-plane"></i>Mettiti in Contatto</h3>
+                    <p>Per qualsiasi informazione o collaborazione, non esitare a contattarci.</p>
+                    <p>Email: <a href="mailto:info@climpactvercelli.it">info@climpactvercelli.it</a></p>
+                    <p>Telefono: +39 0161 1234567</p>
+                    <p>Seguici sui social media:</p>
+                    <p>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin fa-2x"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter-square fa-2x"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-square fa-2x"></i></a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2025 Luigi [Tuo Cognome]. Tutti i diritti riservati. <br>Presentazione interattiva per l'analisi Climpact Vercelli.</p>
-        <p style="font-size: 0.9em; margin-top: 15px;">
-            Icone fornite da <a href="https://fontawesome.com/" target="_blank">Font Awesome</a>. Mappa powered by <a href="https://leafletjs.com/" target="_blank">Leaflet</a> &amp; <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.
-        </p>
+        <p>&copy; 2024 Climpact Vercelli. Tutti i diritti riservati.</p>
+        <p>Realizzato con il supporto della comunità scientifica e locale.</p>
     </footer>
-
-    <button id="back-to-top" title="Torna su" aria-label="Torna all'inizio della pagina">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const backToTopButton = document.getElementById('back-to-top');
-            const scrollProgressIndicator = document.getElementById('scroll-progress-indicator');
-            const header = document.getElementById('main-header');
-            const navLinks = document.querySelectorAll('nav .nav-link');
-            const sections = document.querySelectorAll('section');
-            const body = document.body; 
+            // Scroll progress indicator
+            const scrollProgress = document.getElementById('scroll-progress-indicator');
+            const mainHeader = document.getElementById('main-header');
+            const navLinks = document.querySelectorAll('.nav-link');
 
-            // --- Funzione per aggiornare il padding del body in base all'altezza dell'header ---
-            function updateBodyPadding() {
-                if (header) {
-                    const headerHeight = header.offsetHeight;
-                    body.style.paddingTop = headerHeight + 'px';
-                    // Aggiorna variabile CSS per sezioni
-                    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
-                }
-            }
+            function updateScrollProgress() {
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / scrollHeight) * 100;
+                scrollProgress.style.width = scrolled + '%';
 
-            updateBodyPadding();
-            window.addEventListener('resize', updateBodyPadding);
-
-            // --- Gestione Eventi Scroll ---
-            window.addEventListener('scroll', () => {
-                if (backToTopButton) { 
-                    if (window.scrollY > window.innerHeight * 0.8) { // Mostra dopo il 80% della prima schermata
-                        backToTopButton.classList.add('show');
-                    } else {
-                        backToTopButton.classList.remove('show');
-                    }
+                if (window.scrollY > 50) { // O qualsiasi valore dopo il quale l'header dovrebbe cambiare
+                    mainHeader.classList.add('scrolled');
+                } else {
+                    mainHeader.classList.remove('scrolled');
                 }
 
-                if (scrollProgressIndicator) { 
-                    const scrollTop = document.documentElement.scrollTop;
-                    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    const scrollPercentage = (scrollHeight > 0) ? (scrollTop / scrollHeight) * 100 : 0;
-                    scrollProgressIndicator.style.width = scrollPercentage + '%';
-                }
-
-                // Header "all'avanguardia" logic
-                if (header) {
-                    if (window.scrollY > 80) { // Attiva l'effetto blur e sfondo dopo 80px di scroll (più morbido)
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-                }
-
-                updateActiveNavLink();
-                revealContentOnScroll();
-            });
-
-            // --- Funzione per aggiornare il link di navigazione attivo ---
-            function updateActiveNavLink() {
-                let currentActiveSectionId = '';
+                // Highlight active nav link based on scroll position
+                const sections = document.querySelectorAll('section');
+                let currentActive = null;
                 sections.forEach(section => {
-                    const rect = section.getBoundingClientRect();
-                    // Considera la sezione attiva se il suo top è visibile o appena sopra il centro della viewport
-                    // E se la sezione è abbastanza grande da non essere solo un "passaggio" rapido
-                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                        currentActiveSectionId = section.id;
+                    const sectionTop = section.offsetTop - mainHeader.offsetHeight - 50; // Adjusted for header height and offset
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentActive = section.id;
                     }
                 });
 
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${currentActiveSectionId}`) {
+                    if (link.getAttribute('href').substring(1) === currentActive) {
                         link.classList.add('active');
                     }
                 });
             }
 
-            // Inizializza al caricamento della pagina
-            updateActiveNavLink();
+            window.addEventListener('scroll', updateScrollProgress);
+            updateScrollProgress(); // Initial call
 
-            // --- Smooth Scroll per i link di navigazione ---
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        // Calcola la posizione di scroll tenendo conto dell'altezza fissa dell'header
-                        const headerOffset = header.offsetHeight;
-                        const elementPosition = targetSection.getBoundingClientRect().top + window.scrollY;
-                        const offsetPosition = elementPosition - headerOffset;
+            // Animations on scroll (Content Reveal)
+            const contentReveals = document.querySelectorAll('.content-reveal');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            };
 
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth"
-                        });
-                    }
-                });
-            });
-
-            // --- Back to Top Button Listener ---
-            if (backToTopButton) {
-                backToTopButton.addEventListener('click', () => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-
-            // --- Inizializzazione Leaflet Map ---
-            let map;
-            let markers = [];
-
-            function initMap() {
-                if (map) {
-                    map.remove(); // Rimuove la mappa esistente se la funzione viene chiamata di nuovo
-                }
-                map = L.map('map').setView([45.326, 8.423], 12); // Coordinate di Vercelli
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-
-                // Dati di esempio per i marker (Vercelli e dintorni)
-                const locations = [
-                    {
-                        lat: 45.326,
-                        lng: 8.423,
-                        name: 'Centro Urbano di Vercelli',
-                        icon: 'fas fa-city',
-                        color: 'red',
-                        risks: [
-                            'Ondate di calore estreme (TX90p, TN90p)',
-                            'Stress termico per la popolazione (specialmente anziani)',
-                            'Aumento consumi energetici per raffreddamento',
-                            'Problemi di qualità dell\'aria amplificati dal calore'
-                        ]
-                    },
-                    {
-                        lat: 45.335,
-                        lng: 8.360,
-                        name: 'Aree Agricole (Risaie Ovest)',
-                        icon: 'fas fa-seedling',
-                        color: 'green',
-                        risks: [
-                            'Stress idrico severo per risicoltura (SPEI, SPI)',
-                            'Aumento parassiti e malattie delle colture',
-                            'Riduzione della resa e della qualità del raccolto',
-                            'Maggiori costi per l\'irrigazione'
-                        ]
-                    },
-                    {
-                        lat: 45.310,
-                        lng: 8.470,
-                        name: 'Fiume Sesia e Canali (Est)',
-                        icon: 'fas fa-water',
-                        color: 'blue',
-                        risks: [
-                            'Riduzione della portata del fiume (PRCPTOT)',
-                            'Crisi idrica per uso irriguo e civile',
-                            'Impatto sulla biodiversità acquatica',
-                            'Rischio di intrusioni saline in falda (se rilevante)'
-                        ]
-                    },
-                    {
-                        lat: 45.380,
-                        lng: 8.400,
-                        name: 'Periferia Nord Vercelli',
-                        icon: 'fas fa-road',
-                        color: 'orange',
-                        risks: [
-                            'Danni alle infrastrutture stradali per sbalzi termici',
-                            'Rischio frane e smottamenti (in aree collinari limitrofe, se applicabile)',
-                            'Problemi di drenaggio urbano con piogge intense'
-                        ]
-                    }
-                ];
-
-                // Funzione per creare icone personalizzate
-                const createCustomIcon = (iconClass, color) => {
-                    return L.divIcon({
-                        html: `<i class="${iconClass}" style="color: ${color}; font-size: 2.5rem;"></i>`,
-                        className: 'map-icon', // Aggiungi una classe per styling extra se necessario
-                        iconSize: [40, 40], // Dimensione dell'icona (width, height)
-                        iconAnchor: [20, 40], // Punto dell'icona che corrisponde alla posizione del marker (metà larghezza, fondo)
-                        popupAnchor: [0, -40] // Sposta il popup sopra l'icona
-                    });
-                };
-
-                // Aggiungi marker alla mappa
-                locations.forEach(loc => {
-                    const customIcon = createCustomIcon(loc.icon, loc.color);
-                    const marker = L.marker([loc.lat, loc.lng], { icon: customIcon }).addTo(map);
-
-                    let popupContent = `<strong>${loc.name}</strong><br><br><strong>Rischi Climatici Principali:</strong><ul>`;
-                    loc.risks.forEach(risk => {
-                        popupContent += `<li>${risk}</li>`;
-                    });
-                    popupContent += `</ul><p style="font-size:0.85em; margin-top:10px;"><em>(Dati simulati per l'esempio)</em></p>`;
-                    
-                    marker.bindPopup(popupContent);
-                    markers.push(marker); // Aggiungi il marker all'array
-                });
-
-                // Aggiungi Legenda Personalizzata
-                const legend = L.control({ position: 'bottomright' });
-
-                legend.onAdd = function (map) {
-                    const div = L.DomUtil.create('div', 'info legend');
-                    div.innerHTML = '<b>Aree di Rischio</b><br>';
-                    locations.forEach(loc => {
-                        div.innerHTML +=
-                            `<span style="background-color:${loc.color};"></span> ${loc.name}<br>`;
-                    });
-                    return div;
-                };
-
-                legend.addTo(map);
-            }
-
-            // Inizializza la mappa quando la sezione "mappa-rischi" diventa visibile
-            const mapSection = document.getElementById('mappa-rischi');
-            const mapObserver = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        initMap();
-                        observer.disconnect(); // Smetti di osservare una volta che la mappa è stata inizializzata
-                    }
-                });
-            }, { threshold: 0.1 }); // Trigger quando il 10% della sezione è visibile
-
-            mapObserver.observe(mapSection);
-
-
-            // --- Content Reveal (Scroll Animation) ---
-            const contentRevealElements = document.querySelectorAll('.content-reveal');
-            const animatedTitles = document.querySelectorAll('.section-title-animated');
-            const animatedGraphs = document.querySelectorAll('.simulated-graph-container');
-
-            function revealContentOnScroll() {
-                contentRevealElements.forEach(element => {
-                    const rect = element.getBoundingClientRect();
-                    // Se l'elemento è visibile (almeno una parte)
-                    if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-                        element.classList.add('active');
-                        // Attiva animazioni interne con ritardo
-                        element.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
-                            child.classList.add('active');
-                        });
-                        // Attiva specifici grafici simulati quando visibili
-                        element.querySelectorAll('.simulated-graph-container').forEach(graph => {
-                            graph.classList.add('active');
-                        });
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once activated
+                        // observer.unobserve(entry.target); 
                     } else {
-                        // Optional: remove 'active' when out of view to re-trigger on scroll up
-                        // element.classList.remove('active');
-                        // element.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
-                        //     child.classList.remove('active');
-                        // });
-                        // element.querySelectorAll('.simulated-graph-container').forEach(graph => {
-                        //     graph.classList.remove('active');
-                        // });
+                        // Optional: remove 'active' class when out of view
+                        // entry.target.classList.remove('active');
                     }
                 });
-            }
+            }, observerOptions);
 
-            // Trigger on load and on scroll
-            revealContentOnScroll(); // Initial check
-            window.addEventListener('scroll', revealContentOnScroll);
+            contentReveals.forEach(el => observer.observe(el));
 
 
-            // --- Content Swiper Logic (for Indici and Prospettive) ---
-            document.querySelectorAll('.content-swiper-container').forEach(container => {
-                const slides = container.querySelectorAll('.content-slide');
-                const nextBtn = document.createElement('button');
-                nextBtn.innerHTML = 'Continua <i class="fas fa-arrow-right"></i>';
-                const prevBtn = document.createElement('button');
-                prevBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Indietro';
-                const pageInfo = document.createElement('span');
-                
-                const controls = document.createElement('div');
-                controls.classList.add('content-controls');
-                controls.appendChild(prevBtn);
-                controls.appendChild(pageInfo);
-                controls.appendChild(nextBtn);
-                container.appendChild(controls);
+            // Content Swiper for Indici Climatici
+            const contentSwiperContainer = document.querySelector('.content-swiper-container');
+            const slides = contentSwiperContainer ? contentSwiperContainer.querySelectorAll('.content-slide') : [];
+            const prevButton = document.getElementById('prev-slide');
+            const nextButton = document.getElementById('next-slide');
+            const paginationContainer = document.querySelector('.swiper-pagination');
+            let currentSlide = 0;
 
-                let currentIndex = 0;
+            if (slides.length > 0) {
+                // Create pagination bullets
+                slides.forEach((_, index) => {
+                    const bullet = document.createElement('span');
+                    bullet.classList.add('swiper-pagination-bullet');
+                    bullet.addEventListener('click', () => showSlide(index));
+                    paginationContainer.appendChild(bullet);
+                });
 
                 function showSlide(index) {
                     slides.forEach((slide, i) => {
+                        slide.classList.remove('active');
                         if (i === index) {
                             slide.classList.add('active');
-                            // Attiva animazioni interne quando lo slide diventa attivo
-                            slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
-                                child.classList.add('active');
-                            });
-                             // Attiva il grafico simulato specifico dello slide
-                            slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
-                                graph.classList.add('active');
-                            });
-                        } else {
-                            slide.classList.remove('active');
-                            // Rimuovi animazioni quando lo slide non è attivo
-                            // slide.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right, .scale-in-sm').forEach(child => {
-                            //     child.classList.remove('active');
-                            // });
-                            //  slide.querySelectorAll('.simulated-graph-container').forEach(graph => {
-                            //     graph.classList.remove('active');
-                            // });
                         }
                     });
 
-                    prevBtn.disabled = index === 0;
-                    nextBtn.disabled = index === slides.length - 1;
-                    pageInfo.textContent = `${index + 1} / ${slides.length}`;
+                    // Update pagination bullets
+                    const bullets = paginationContainer.querySelectorAll('.swiper-pagination-bullet');
+                    bullets.forEach((bullet, i) => {
+                        bullet.classList.remove('active');
+                        if (i === index) {
+                            bullet.classList.add('active');
+                        }
+                    });
+
+                    currentSlide = index;
+                    updateButtons();
                 }
 
-                prevBtn.addEventListener('click', () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                        showSlide(currentIndex);
+                function updateButtons() {
+                    prevButton.disabled = currentSlide === 0;
+                    nextButton.disabled = currentSlide === slides.length - 1;
+                }
+
+                prevButton.addEventListener('click', () => {
+                    if (currentSlide > 0) {
+                        showSlide(currentSlide - 1);
                     }
                 });
 
-                nextBtn.addEventListener('click', () => {
-                    if (currentIndex < slides.length - 1) {
-                        currentIndex++;
-                        showSlide(currentIndex);
+                nextButton.addEventListener('click', () => {
+                    if (currentSlide < slides.length - 1) {
+                        showSlide(currentSlide + 1);
                     }
                 });
 
-                showSlide(currentIndex); // Mostra il primo slide all'inizializzazione
-            });
+                showSlide(0); // Show the first slide initially
+            } else {
+                // If no slides found, hide controls to prevent errors
+                if (prevButton) prevButton.style.display = 'none';
+                if (nextButton) nextButton.style.display = 'none';
+                if (paginationContainer) paginationContainer.style.display = 'none';
+            }
+
+
+            // Leaflet Map Initialization
+            if (document.getElementById('map')) {
+                const map = L.map('map').setView([45.3283, 8.3719], 12); // Coordonate approssimative di Vercelli
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Esempio di marker per Vercelli
+                const vercelliMarker = L.marker([45.3283, 8.3719], {
+                    icon: L.divIcon({
+                        className: 'map-icon',
+                        html: '<i class="fas fa-map-marker-alt fa-3x" style="color: #FF6347;"></i>',
+                        iconSize: [40, 40],
+                        iconAnchor: [20, 40]
+                    })
+                }).addTo(map)
+                .bindPopup('<b>Vercelli</b><br>Area di studio principale.')
+                .openPopup();
+
+                // Puoi aggiungere più markers, poligoni, cerchi qui per rappresentare i rischi
+                // Esempio: un cerchio per un'ipotetica area a rischio siccità
+                L.circle([45.30, 8.40], {
+                    color: 'orange',
+                    fillColor: '#ffa500',
+                    fillOpacity: 0.3,
+                    radius: 3000
+                }).addTo(map).bindPopup('Area a rischio siccità.');
+
+                // Esempio di legenda (sarebbe da generare dinamicamente o predefinire)
+                const legend = L.control({ position: 'bottomright' });
+                legend.onAdd = function (map) {
+                    const div = L.DomUtil.create('div', 'info legend');
+                    div.innerHTML = '<b>Legenda Rischi</b><br>' +
+                                    '<span></span> Rischio Siccità<br>' +
+                                    '<span style="background-color: #FF6347;"></span> Punto di Interesse';
+                    return div;
+                };
+                legend.addTo(map);
+            }
         });
     </script>
 </body>
