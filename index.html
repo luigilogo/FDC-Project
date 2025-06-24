@@ -20,7 +20,7 @@
             --color-text-light: #555555; /* Testo Grigio per dettagli */
             --color-white: #FFFFFF; /* Bianco Puro */
             --color-border: #DCDCDC; /* Bordo Sottile */
-            --color-gradient-start: #2c3e50; /* Gradiente Hero */
+            --color-gradient-start: #2c3e50; /* Gradiente Hero (Non usato più per testo hero, ma tenuto per flessibilità) */
             --color-gradient-end: #007bff; /* Gradiente Hero */
 
             --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra leggera e diffusa */
@@ -115,7 +115,7 @@
         /* Header e Navigazione - Completamente Rinnovato */
         #main-header {
             background-color: transparent; /* Inizialmente trasparente */
-            padding: 1.2rem 0; /* Header leggermente più stretto */
+            padding: 1.0rem 0; /* Header ancora più stretto */
             z-index: 1000;
             position: fixed;
             top: 0;
@@ -125,27 +125,7 @@
                         backdrop-filter 0.4s ease,
                         padding 0.3s ease;
             border-bottom: 1px solid transparent;
-            overflow: hidden; /* Per l'immagine di sfondo */
-        }
-
-        #header-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1517743915835-26d9c668b556?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzM5NTN8MHwxfHNlYXJjaHw0fHxyaWNlJTIwZmllbGRzJTIwaXRhbHl8ZW58MHx8fHwxNzE5MTYxNjAwfDA&ixlib=rb-4.0.3&q=80&w=1920'); /* Placeholder: risaie italiane */
-            background-size: cover;
-            background-position: center;
-            filter: grayscale(100%) brightness(0.4); /* Grayscale e scura */
-            opacity: 0.4; /* Leggermente trasparente */
-            transition: opacity 0.4s ease, filter 0.4s ease;
-            z-index: -1; /* Dietro il contenuto dell'header */
-        }
-
-        #main-header.scrolled #header-bg {
-            opacity: 0; /* Scompare l'immagine quando si scrolla */
-            filter: grayscale(100%) brightness(0.8); /* Potrebbe essere usata per un effetto diverso */
+            overflow: hidden; 
         }
 
         #main-header.scrolled {
@@ -154,57 +134,34 @@
             -webkit-backdrop-filter: blur(15px);
             box-shadow: var(--shadow-subtle);
             border-bottom: 1px solid var(--color-border);
-            padding: 0.8rem 0; /* Header leggermente più piccolo allo scroll */
+            padding: 0.6rem 0; /* Header più piccolo allo scroll */
         }
 
         nav {
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centrato, senza logo */
             align-items: center;
         }
-
-        .logo {
-            font-size: 2.2rem; /* Dimensione del logo */
-            font-weight: 800;
-            color: var(--color-white); /* Inizialmente bianco per contrasto con hero */
-            display: flex;
-            align-items: center;
-            letter-spacing: -0.03em;
-            user-select: none;
-            transition: color var(--transition-speed) var(--transition-ease);
-        }
-
-        #main-header.scrolled .logo {
-            color: var(--color-primary-dark); /* Cambia colore allo scroll */
-        }
-
-        .logo i {
-            margin-right: 12px; /* Spazio ridotto */
-            font-size: 1em; /* Stessa dimensione del testo */
-            color: var(--color-accent-blue); /* Icona sempre accentata */
-            transition: transform 0.4s var(--transition-ease); /* Rimossa animazione colore sul hover */
-        }
-
-        .logo:hover i {
-            transform: rotate(-10deg) scale(1.1); /* Animazione solo su icona */
-        }
-
+        
         nav ul {
             display: flex;
             margin: 0;
+            padding: 0; /* Assicurati che non ci sia padding */
         }
 
         nav ul li {
-            margin-left: 28px; /* Spazio tra i link ulteriormente ridotto */
+            margin: 0 20px; /* Spazio uniforme tra i link, ancora più stretto */
         }
 
         .nav-link {
             font-weight: 600;
-            font-size: 1rem; /* Dimensione del testo più piccola */
-            padding: 10px 0;
+            font-size: 0.95rem; /* Dimensione del testo più piccola */
+            padding: 8px 0; /* Padding ridotto per rendere la navbar più stretta */
             position: relative;
             transition: all var(--transition-speed) var(--transition-ease);
-            color: rgba(255, 255, 255, 0.85); /* Inizialmente bianco con trasparenza */
+            color: rgba(255, 255, 255, 0.9); /* Inizialmente bianco con trasparenza */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         #main-header.scrolled .nav-link {
@@ -215,13 +172,13 @@
             content: '';
             position: absolute;
             width: 0;
-            height: 3px; /* Linea più sottile */
+            height: 2px; /* Linea ancora più sottile */
             display: block;
-            margin-top: 8px;
+            margin-top: 6px; /* Spazio ridotto */
             left: 50%;
             transform: translateX(-50%);
             background: var(--color-accent-blue);
-            border-radius: 3px;
+            border-radius: 2px;
             transition: width var(--transition-speed) var(--transition-ease), background-color var(--transition-speed) var(--transition-ease);
         }
 
@@ -245,153 +202,31 @@
         }
 
 
-        /* Hero Section - Dinamico e Immersivo */
+        /* Hero Section - Puramente Visivo */
         .hero {
-            background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
-            color: var(--color-white);
-            text-align: center;
-            padding: 200px 20px 120px; /* Più padding top */
-            min-height: 100vh; /* Full height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-image: url('https://images.unsplash.com/photo-1628178652431-b84742f1f4b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzM5NTN8MHwxfHNlYXJjaHw1fHxyaWNlJTIwZmllbGRzJTIwZGF3biUyMGl0YWx5fGVufDB8fHx8MTcxOTExOTkwMHww&ixlib=rb-4.0.3&q=80&w=1920'); /* Placeholder: risaie all'alba in Italia */
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* Full height */
             position: relative;
             overflow: hidden;
-            background-size: 200% 200%;
-            animation: gradientShift 25s ease infinite alternate;
+            display: flex; /* Centrare il contenuto se in futuro volessi rimettere qualcosa */
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        .hero::before { /* Elemento decorativo di sfondo */
+        .hero::before { /* Overlay scuro per l'immagine */
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at top left, rgba(255,255,255,0.08) 0%, transparent 40%),
-                        radial-gradient(circle at bottom right, rgba(255,255,255,0.08) 0%, transparent 40%);
+            background-color: rgba(0, 0, 0, 0.5); /* Overlay scuro */
+            backdrop-filter: blur(2px); /* Lieve blur per l'immagine */
+            -webkit-backdrop-filter: blur(2px);
             z-index: 0;
-            opacity: 0.7;
         }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1000px;
-            margin: 0 auto;
-            opacity: 0;
-            transform: translateY(50px) scale(0.95);
-            perspective: 1000px; /* Per effetto 3D */
-        }
-
-        .hero-content.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            transition: opacity 1.5s var(--transition-ease), transform 1.5s var(--transition-ease);
-            transition-delay: 0.2s;
-        }
-
-        .hero-title {
-            color: var(--color-white);
-            font-size: clamp(4.0rem, 9vw, 6.5rem);
-            margin-bottom: 35px;
-            text-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            line-height: 1.05;
-            opacity: 0;
-            transform: translateZ(50px) translateY(40px); /* Parallasse iniziale */
-        }
-
-        .hero-content.active .hero-title {
-            opacity: 1;
-            transform: translateZ(0) translateY(0);
-            transition: opacity 1.5s var(--transition-ease), transform 1.5s var(--transition-ease);
-            transition-delay: 0.5s;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.6rem, 3.5vw, 2.1rem);
-            max-width: 800px;
-            margin: 0 auto 60px;
-            opacity: 0.95;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            opacity: 0;
-            transform: translateZ(30px) translateY(30px); /* Parallasse iniziale */
-        }
-
-        .hero-content.active .hero-subtitle {
-            opacity: 1;
-            transform: translateZ(0) translateY(0);
-            transition: opacity 1.5s var(--transition-ease), transform 1.5s var(--transition-ease);
-            transition-delay: 0.8s;
-        }
-
-        .hero-button {
-            opacity: 0;
-            transform: scale(0.8) translateZ(20px); /* Parallasse iniziale */
-        }
-
-        .hero-content.active .hero-button {
-            opacity: 1;
-            transform: scale(1) translateZ(0);
-            transition: opacity 1.5s var(--transition-ease), transform 1.5s var(--transition-ease);
-            transition-delay: 1.1s;
-        }
-
-        .button-primary {
-            display: inline-flex; /* Per icona e testo allineati */
-            align-items: center;
-            background-color: var(--color-accent-blue);
-            color: var(--color-white);
-            padding: 22px 55px;
-            border-radius: 60px; /* Bottone più arrotondato, "pill-like" */
-            font-weight: 700;
-            font-size: 1.4rem;
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .button-primary::before { /* Effetto ondata al hover */
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .button-primary:hover::before {
-            left: 100%;
-        }
-
-        .button-primary:hover {
-            background-color: var(--color-accent-green);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-        }
-
-        .button-primary i {
-            margin-left: 20px;
-            font-size: 1.1em;
-            transition: transform 0.3s ease;
-        }
-
-        .button-primary:hover i {
-            transform: translateX(5px);
-        }
-
 
         /* Main Content Sections - Più spazio e stile pulito */
         main {
@@ -515,7 +350,7 @@
         /* Introduzione Section - Nuovo Stile */
         #introduzione {
             background-color: var(--color-white); /* Sfondo chiaro per questa sezione */
-            padding-top: calc(150px + var(--header-height, 80px)); /* Più spazio in alto */
+            padding-top: 120px; 
             padding-bottom: 120px;
             display: block; /* Non più flex per centraggio verticale, gestito da padding */
             text-align: center;
@@ -1022,14 +857,10 @@
 
         /* Media Queries per Responsività Perfetta */
         @media (max-width: 992px) {
-            nav ul { display: none; } /* Considera un menu hamburger per schermi più piccoli */
-            .logo { font-size: 2rem; }
-            .logo i { font-size: 0.9em; margin-right: 10px;}
+            nav ul li { margin: 0 15px; }
+            .nav-link { font-size: 0.9rem; padding: 6px 0;}
 
-            .hero { padding: 160px 20px 100px; min-height: 85vh; }
-            .hero-title { font-size: clamp(3rem, 8vw, 5rem); }
-            .hero-subtitle { font-size: clamp(1.3rem, 3vw, 1.7rem); margin-bottom: 50px; }
-            .button-primary { padding: 18px 40px; font-size: 1.3rem; }
+            .hero { height: 90vh; }
 
             section { padding: 100px 0; min-height: 80vh; }
             section h2 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 50px; }
@@ -1072,10 +903,10 @@
         @media (max-width: 768px) {
             .container { padding: 0 25px; }
 
-            .hero { padding: 120px 15px 80px; min-height: 75vh; }
-            .hero-title { font-size: clamp(2.8rem, 8vw, 4rem); margin-bottom: 30px; }
-            .hero-subtitle { font-size: clamp(1.2rem, 3.5vw, 1.5rem); margin-bottom: 40px; }
-            .button-primary { padding: 15px 32px; font-size: 1.2rem; }
+            nav ul li { margin: 0 10px; }
+            .nav-link { font-size: 0.85rem; padding: 4px 0;}
+
+            .hero { height: 80vh; }
 
             section { padding: 80px 0; min-height: 70vh; }
             section h2 { font-size: clamp(2.2rem, 7vw, 3.5rem); margin-bottom: 40px; }
@@ -1121,10 +952,10 @@
         @media (max-width: 480px) {
             .container { padding: 0 15px; }
 
-            .hero { padding: 90px 10px 60px; min-height: 65vh; }
-            .hero-title { font-size: clamp(2.2rem, 9vw, 3.5rem); }
-            .hero-subtitle { font-size: clamp(0.95rem, 3.8vw, 1.2rem); margin-bottom: 30px; }
-            .button-primary { padding: 12px 25px; font-size: 1rem; }
+            nav ul li { margin: 0 8px; }
+            .nav-link { font-size: 0.8rem; padding: 3px 0; }
+
+            .hero { height: 70vh; }
 
             section { padding: 60px 0; min-height: 60vh; }
             section h2 { font-size: clamp(2.0rem, 8vw, 3rem); margin-bottom: 30px; }
@@ -1163,32 +994,59 @@
     <div id="scroll-progress-indicator"></div>
 
     <header id="main-header">
-        <div id="header-bg"></div>
         <nav class="container">
-            <div class="logo">
-                <i class="fas fa-meteor"></i> Vercelli
-            </div>
             <ul>
+                <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li>
                 <li><a href="#introduzione" class="nav-link">Introduzione</a></li>
                 <li><a href="#highlights" class="nav-link">Punti Chiave</a></li>
                 <li><a href="#indici" class="nav-link">Indici Climatici</a></li>
                 <li><a href="#impatti" class="nav-link">Impatti & Rischi</a></li>
                 <li><a href="#conclusioni" class="nav-link">Conclusioni</a></li>
                 <li><a href="#prospettive" class="nav-link">Prospettive</a></li>
-                <li><a href="#mappa-rischi" class="nav-link">Mappa Rischi</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Vercelli: Uno Sguardo al Clima che Cambia</h1>
-            <p class="hero-subtitle">Un'analisi approfondita (1994-2024) per comprendere i trend climatici e i loro impatti socio-economici sul nostro territorio.</p>
-            <a href="#introduzione" class="button-primary hero-button">Esplora l'Analisi <i class="fas fa-chevron-right"></i></a>
         </div>
-    </div>
 
     <main>
+        <section id="mappa-rischi" class="bg-light-section content-reveal">
+            <div class="container">
+                <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Vercelli: Mappa Interattiva dei Rischi Climatici</h2>
+                <p class="section-description content-reveal">Esplora le aree chiave del territorio di Vercelli e scopri i rischi climatici specifici a cui sono esposte, con un focus sui settori socio-economici. Clicca sui marker per visualizzare i dettagli.</p>
+                
+                <div class="map-results fade-in delay-1" style="margin-top: 60px; text-align: center;">
+                    <h3 style="font-size: clamp(1.8rem, 3.8vw, 2.5rem); margin-bottom: 25px;"><i class="fas fa-chart-area"></i> Risultati Chiave dalla Mappa</h3>
+                    <p style="max-width: 900px; margin: 0 auto 30px; font-size: 1.15rem; color: var(--color-text-dark);">
+                        L'analisi georeferenziata dei dati climatici di Vercelli (1994-2024) evidenzia come le variazioni termiche e pluviometriche si manifestino in specifici rischi territoriali.
+                    </p>
+                    <div class="highlight-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 40px;">
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-2" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-tree-deciduous" style="color: #68B1A0; font-size: 3.5rem;"></i>
+                            <h3>Aree Agricole (Risaie)</h3>
+                            <p><strong>Rischio: Siccità estrema.</strong> Gli SPI/SPEI negativi si concentrano nelle vaste aree risicole, indicando una grave carenza idrica essenziale per le colture. Questo minaccia la stabilità della filiera agroalimentare locale e richiede un'urgente revisione delle pratiche irrigue.</p>
+                        </div>
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-3" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-city" style="color: #d62828; font-size: 3.5rem;"></i>
+                            <h3>Nucleo Urbano di Vercelli</h3>
+                            <p><strong>Rischio: Ondate di calore e notti tropicali.</strong> Le zone edificate mostrano una spiccata vulnerabilità all'aumento dei giorni TX90p e TN90p. L'effetto isola di calore urbano amplifica il disagio termico, con possibili impatti sulla salute pubblica, soprattutto per i soggetti più fragili.</p>
+                        </div>
+                        <div class="highlight-item small-note fade-in scale-in-sm delay-4" style="padding: 30px; border-radius: var(--border-radius-sm);">
+                            <i class="fas fa-river" style="color: #007bff; font-size: 3.5rem;"></i>
+                            <h3>Bacini Fluviali e Canali</h3>
+                            <p><strong>Rischio: Riduzione della portata e stress idrico.</strong> Il trend decrescente delle precipitazioni (PRCPTOT) e l'aumento dell'evapotraspirazione influenzano direttamente la portata del Sesia e dei canali di irrigazione, fondamentali per l'intero ecosistema e l'economia locale.</p>
+                        </div>
+                    </div>
+                    <p class="note-global fade-in delay-5" style="margin-top: 60px;">
+                        Questi risultati sottolineano l'urgenza di piani di adattamento territoriali che integrino soluzioni basate sulla natura e sull'innovazione tecnologica.
+                    </p>
+                </div>
+
+                <div id="map"></div>
+                <p class="note-global fade-in delay-6">La mappa è una rappresentazione semplificata; una modellazione GIS completa permetterebbe una valutazione più dettagliata della microzonazione del rischio.</p>
+            </div>
+        </section>
         <section id="introduzione" class="content-reveal">
             <div class="container">
                 <h2 class="section-title-animated"><i class="fas fa-info-circle"></i> Vercelli: Un Clima in Evoluzione</h2>
@@ -1432,20 +1290,11 @@
                 <div class="content-slide">
                     <h3 class="fade-in delay-6"><i class="fas fa-bullhorn"></i> Un Appello all'Azione</h3>
                     <p class="fade-in delay-7">La ricerca scientifica come la nostra è il primo passo. Il prossimo è l'azione. La comunità di Vercelli, dalle istituzioni ai cittadini, deve collaborare per implementare strategie di adattamento e mitigazione. La resilienza al clima è un investimento nel futuro del nostro territorio.</p>
-                    <a href="#mappa-rischi" class="button-primary fade-in delay-8" style="margin-top: 30px;">Esplora la Mappa dei Rischi <i class="fas fa-map-marked-alt"></i></a>
+                    <a href="#mappa-rischi" class="button-primary fade-in delay-8" style="margin-top: 30px;">Vedi la Mappa dei Rischi <i class="fas fa-map-marked-alt"></i></a>
                 </div>
             </div>
         </section>
-
-        <section id="mappa-rischi" class="bg-light-section content-reveal">
-            <div class="container">
-                <h2 class="section-title-animated"><i class="fas fa-map-location-dot"></i> Vercelli: Mappa Interattiva dei Rischi Climatici</h2>
-                <p class="section-description content-reveal">Esplora le aree chiave del territorio di Vercelli e scopri i rischi climatici specifici a cui sono esposte, con un focus sui settori socio-economici.</p>
-                <div id="map"></div>
-                <p class="note-global fade-in delay-1">Clicca sui marker per visualizzare i rischi specifici per quell'area o attività.</p>
-            </div>
-        </section>
-        </main>
+    </main>
 
     <footer>
         <p>&copy; 2025 Luigi [Tuo Cognome]. Tutti i diritti riservati. <br>Presentazione interattiva per l'analisi Climpact Vercelli.</p>
@@ -1466,7 +1315,6 @@
             const header = document.getElementById('main-header');
             const navLinks = document.querySelectorAll('nav .nav-link');
             const sections = document.querySelectorAll('section');
-            const heroContent = document.querySelector('.hero-content'); 
             const body = document.body; 
 
             // --- Funzione per aggiornare il padding del body in base all'altezza dell'header ---
@@ -1481,11 +1329,6 @@
 
             updateBodyPadding();
             window.addEventListener('resize', updateBodyPadding);
-
-            // --- Animazione iniziale Hero Section ---
-            if (heroContent) {
-                heroContent.classList.add('active');
-            }
 
             // --- Gestione Eventi Scroll ---
             window.addEventListener('scroll', () => {
@@ -1626,9 +1469,9 @@
                         }, 300);
                     }
                 } else {
-                    const introLink = document.querySelector('nav .nav-link[href="#introduzione"]');
-                    if (introLink) {
-                        introLink.classList.add('active');
+                    const firstNavLink = document.querySelector('nav .nav-link'); // Activate first link by default
+                    if (firstNavLink) {
+                        firstNavLink.classList.add('active');
                     }
                 }
                 updateActiveNavLink(); 
