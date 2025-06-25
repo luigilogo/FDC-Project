@@ -1,897 +1,895 @@
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisi Climatica - Vercelli</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <style>
-    :root {
-      --main-color: #2c3e50;
-      --accent-color: #3498db;
-      --light-gray: #f4f4f4;
-      --warning-color: #f39c12; /* Orange for socio-economic impacts */
-      --danger-color: #e74c3c; /* Red for high severity */
-      --success-color: #27ae60; /* Green for low severity/positive */
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--light-gray);
-      color: #333;
-    }
-    header {
-      background: var(--main-color);
-      color: white;
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    nav {
-      background: #1c2833;
-      display: flex;
-      justify-content: center;
-      padding: 10px 0;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 5px 0;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    #map {
-      height: 60vh;
-      width: 100%;
-      margin-bottom: 30px;
-    }
-    .content {
-      padding: 30px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h2 {
-      color: var(--main-color);
-      border-bottom: 2px solid var(--accent-color);
-      padding-bottom: 5px;
-      margin-top: 40px;
-    }
-    .info-box, .info-box-socio, .interactive-section {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .info-box ul, .info-box-socio ul {
-      padding-left: 20px;
-      list-style: none;
-      margin-top: 15px;
-    }
-    .info-box ul li { /* Always visible for climate data points */
-      margin-bottom: 8px;
-      line-height: 1.6em;
-      display: list-item;
-    }
-    .info-box ul li .show-graph-link {
-        font-size: 0.9em;
-        margin-left: 10px;
-        color: var(--accent-color);
-        cursor: pointer;
-        text-decoration: underline;
-    }
-    .info-box ul li .show-graph-link:hover {
-        color: var(--main-color);
-    }
-
-    .info-box i {
-      margin-right: 6px;
-      color: var(--accent-color);
-    }
-    .info-box-socio {
-      background: #fff9e6;
-      border-left: 6px solid var(--warning-color);
-    }
-    .info-box-socio h2 {
-        border-bottom-color: var(--warning-color);
-    }
-    .chart {
-      margin: 25px auto;
-      text-align: center;
-    }
-    footer {
-      background: #2c3e50;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 0.9em;
-      margin-top: 40px;
-    }
-    /* Hidden section to hold graph data */
-    .graph-data-container {
-        display: none; /* Hide this container */
-    }
-    .graph-data-container img {
-        max-width: 100%;
-        height: auto;
-    }
-    .graph-data-container .graph-commentary {
-        margin-top: 15px;
-        font-size: 1em;
-        line-height: 1.6em;
-        color: #666;
-        text-align: left; /* Align commentary left */
-    }
-
-
-    /* Modal (Lightbox) Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      padding-top: 60px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.9);
-    }
-    
-    .modal-body-container { /* New flex container for modal content */
-      display: flex;
-      flex-wrap: wrap; /* Allows stacking on smaller screens */
-      justify-content: center; /* Center items when they don't fill width */
-      align-items: flex-start; /* Align items to the top */
-      gap: 20px; /* Space between image and commentary */
-      margin: auto;
-      width: 90%; /* Overall width of the content area */
-      max-width: 1200px; /* Max width for large screens */
-      background-color: white; /* Background for the modal content */
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      animation-name: zoom;
-      animation-duration: 0.6s;
-    }
-
-    .modal-body-container img#img01 { /* Styling for the image within the modal */
-      flex: 1 1 45%; /* Allows image to take up to 45% of space, grows/shrinks */
-      max-width: 100%; /* Ensure image doesn't overflow */
-      height: auto;
-      object-fit: contain; /* Ensures image fits within its container */
-      min-width: 300px; /* Minimum width before stacking */
-    }
-
-    .modal-body-container #caption { /* Styling for the caption/commentary */
-      flex: 1 1 45%; /* Allows caption to take up to 45% of space, grows/shrinks */
-      margin: 0; /* Remove default margins */
-      padding: 0; /* Remove default padding */
-      text-align: left; /* Align caption text left */
-      color: #333; /* Darker color for readability */
-      font-size: 1.1em;
-      line-height: 1.6;
-      min-width: 300px; /* Minimum width before stacking */
-    }
-    
-    @keyframes zoom {
-      from {transform:scale(0)}
-      to {transform:scale(1)}
-    }
-    .close-button {
-      position: absolute;
-      top: 15px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    .close-button:hover,
-    .close-button:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    @media only screen and (max-width: 768px){ /* Adjusted breakpoint for modal stacking */
-      .modal-body-container {
-        flex-direction: column; /* Stack vertically */
-        align-items: center; /* Center items when stacked */
-        width: 95%; /* More width on smaller screens */
-        padding: 20px;
-      }
-      .modal-body-container img#img01,
-      .modal-body-container #caption {
-        flex: none; /* Remove flex sizing */
-        width: 100%; /* Take full width */
-        min-width: unset; /* Remove min-width constraint */
-      }
-    }
-
-    /* Interactive Section Styles */
-    .interactive-section {
-      background: #e6f7ff;
-      border-left: 6px solid var(--accent-color);
-      padding: 30px;
-      margin-top: 40px;
-    }
-    .interactive-section h2 {
-      color: var(--main-color);
-      border-bottom-color: var(--accent-color);
-    }
-    .interactive-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .control-group {
-      display: flex;
-      flex-direction: column;
-    }
-    .control-group label {
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: var(--main-color);
-    }
-    .control-group input[type="range"] {
-      width: 100%;
-      -webkit-appearance: none;
-      height: 8px;
-      background: #ddd;
-      border-radius: 50px; /* Rounded track */
-      outline: none;
-      opacity: 0.8; /* Slightly less opaque */
-      transition: opacity .2s;
-    }
-    .control-group input[type="range"]:hover {
-      opacity: 1;
-    }
-    .control-group input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px; /* Larger thumb */
-      height: 24px;
-      background: var(--accent-color);
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid white; /* Thicker border */
-      box-shadow: 0 0 8px rgba(0,0,0,0.3); /* Stronger shadow */
-    }
-    .control-group input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      background: var(--accent-color);
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid white;
-      box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    }
-    .control-value {
-      text-align: center;
-      font-weight: bold;
-      color: var(--accent-color);
-      margin-top: 5px;
-      font-size: 1.1em; /* Slightly larger */
-    }
-    .impact-results {
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-      margin-top: 25px; /* Added space */
-    }
-    .impact-results h3 {
-      color: var(--main-color);
-      margin-bottom: 15px;
-      font-size: 1.2em;
-    }
-    .impact-category {
-      margin-bottom: 20px;
-    }
-    .impact-category h4 {
-      color: var(--warning-color);
-      margin-bottom: 10px;
-      font-size: 1.1em;
-      display: flex;
-      align-items: center;
-    }
-    .impact-category h4 i {
-        margin-right: 10px;
-        font-size: 1.3em;
-    }
-    .impact-category p {
-      line-height: 1.6em;
-      color: #555;
-    }
-    .impact-category.positive h4 { color: var(--success-color); }
-    .impact-category.positive h4 i { color: var(--success-color); }
-    .impact-category.warning h4 { color: var(--warning-color); }
-    .impact-category.warning h4 i { color: var(--warning-color); }
-    .impact-category.negative h4 { color: var(--danger-color); }
-    .impact-category.negative h4 i { color: var(--danger-color); }
-
-
-    /* New styles for Impact Cards grid */
-    .impacts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-      gap: 25px;
-      margin-top: 30px;
-    }
-
-    .impact-card {
-      background: #f9f9f9;
-      border-left: 5px solid var(--warning-color); /* Default warning color for impact */
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-      /* cursor: pointer; // Not for the whole card anymore, just header */
-    }
-
-    .impact-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
-
-    /* Accordion styles */
-    .impact-card .icon-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-      cursor: pointer; /* Indicate clickable area */
-      position: relative; /* For button positioning */
-      padding-bottom: 10px; /* Space for the summary */
-      border-bottom: 1px solid #eee; /* Separator for header */
-    }
-
-    .impact-card .icon-header h3 {
-      flex-grow: 1; /* Allow h3 to take available space */
-      margin: 0;
-      font-size: 1.3em;
-      color: var(--main-color);
-    }
-
-    .impact-card .impact-icon {
-      font-size: 2.5em;
-      margin-right: 15px;
-      color: var(--warning-color); /* Default color, overridden by severity classes */
-    }
-    /* Severity Indicators for icons */
-    .impact-icon.severity-low { color: var(--success-color); }
-    .impact-icon.severity-medium { color: var(--warning-color); }
-    .impact-icon.severity-high { color: var(--danger-color); }
-
-    .impact-card .impact-summary {
-      font-style: italic;
-      color: #777;
-      margin-bottom: 0; /* Adjusted for accordion */
-      padding-top: 10px; /* Space from header */
-    }
-
-    .impact-details-collapsible {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease-out, padding-top 0.4s ease-out; /* Smooth transition */
-      padding-top: 0;
-    }
-
-    .impact-card.expanded .impact-details-collapsible {
-      max-height: 500px; /* Large enough to contain content, adjust if needed */
-      padding-top: 15px; /* Add padding when expanded */
-      /* border-top is now handled by the header */
-    }
-
-    .impact-details-collapsible p {
-        margin-top: 0; /* Remove default paragraph top margin */
-        line-height: 1.6em;
-        color: #555;
-    }
-
-    .expand-button {
-      background: none;
-      border: none;
-      font-size: 1.2em;
-      color: var(--main-color);
-      cursor: pointer;
-      padding: 5px;
-      margin-left: 10px; /* Space from h3 */
-      transition: transform 0.3s ease;
-    }
-
-    .expand-button .fa-chevron-down {
-      transform: rotate(0deg);
-    }
-
-    .impact-card.expanded .expand-button .fa-chevron-down {
-      transform: rotate(180deg);
-    }
-
-    /* Simulator Trend Visualizer */
-    #trend-visualizer {
-        width: 100%;
-        height: 200px;
-        background-image: url('https://via.placeholder.com/600x200/e0e0e0/555555?text=Simulazione+Andamento+Climatico'); /* Generic graph placeholder */
-        background-size: cover;
-        background-position: center;
-        border-radius: 8px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-        transition: filter 0.5s ease-out; /* Smooth transition for visual effects */
-        filter: brightness(1) contrast(1); /* Default filter */
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        display: flex; /* For centering text if needed */
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        font-size: 1.5em;
-        font-weight: bold;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    }
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: center;
-      }
-      nav a {
-        margin: 5px 0;
-      }
-      .content {
-        padding: 15px;
-      }
-      .interactive-controls {
-        flex-direction: column;
-      }
-      .impacts-grid {
-        grid-template-columns: 1fr; /* Single column on smaller screens */
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisi Climatica - Vercelli</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --main-color: #2c3e50;
+      --accent-color: #3498db;
+      --light-gray: #f4f4f4;
+      --warning-color: #f39c12; /* Orange for socio-economic impacts */
+      --danger-color: #e74c3c; /* Red for high severity */
+      --success-color: #27ae60; /* Green for low severity/positive */
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--light-gray);
+      color: #333;
+    }
+    header {
+      background: var(--main-color);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    nav {
+      background: #1c2833;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 0;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    #map {
+      height: 60vh;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    .content {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      color: var(--main-color);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 5px;
+      margin-top: 40px;
+    }
+    .info-box, .info-box-socio, .interactive-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .info-box ul, .info-box-socio ul {
+      padding-left: 20px;
+      list-style: none;
+      margin-top: 15px;
+    }
+    .info-box ul li { /* Always visible for climate data points */
+      margin-bottom: 8px;
+      line-height: 1.6em;
+      display: list-item;
+    }
+    .info-box ul li .show-graph-link {
+        font-size: 0.9em;
+        margin-left: 10px;
+        color: var(--accent-color);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .info-box ul li .show-graph-link:hover {
+        color: var(--main-color);
+    }
+ 
+    .info-box i {
+      margin-right: 6px;
+      color: var(--accent-color);
+    }
+    .info-box-socio {
+      background: #fff9e6;
+      border-left: 6px solid var(--warning-color);
+    }
+    .info-box-socio h2 {
+        border-bottom-color: var(--warning-color);
+    }
+    .chart {
+      margin: 25px auto;
+      text-align: center;
+    }
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9em;
+      margin-top: 40px;
+    }
+    /* Hidden section to hold graph data */
+    .graph-data-container {
+        display: none; /* Hide this container */
+    }
+    .graph-data-container img {
+        max-width: 100%;
+        height: auto;
+    }
+    .graph-data-container .graph-commentary {
+        margin-top: 15px;
+        font-size: 1em;
+        line-height: 1.6em;
+        color: #666;
+        text-align: left; /* Align commentary left */
+    }
+ 
+ 
+    /* Modal (Lightbox) Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.9);
+    }
+    
+    .modal-body-container { /* New flex container for modal content */
+      display: flex;
+      flex-wrap: wrap; /* Allows stacking on smaller screens */
+      justify-content: center; /* Center items when they don't fill width */
+      align-items: flex-start; /* Align items to the top */
+      gap: 20px; /* Space between image and commentary */
+      margin: auto;
+      width: 90%; /* Overall width of the content area */
+      max-width: 1200px; /* Max width for large screens */
+      background-color: white; /* Background for the modal content */
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation-name: zoom;
+      animation-duration: 0.6s;
+    }
+ 
+    .modal-body-container img#img01 { /* Styling for the image within the modal */
+      flex: 1 1 45%; /* Allows image to take up to 45% of space, grows/shrinks */
+      max-width: 100%; /* Ensure image doesn't overflow */
+      height: auto;
+      object-fit: contain; /* Ensures image fits within its container */
+      min-width: 300px; /* Minimum width before stacking */
+    }
+ 
+    .modal-body-container #caption { /* Styling for the caption/commentary */
+      flex: 1 1 45%; /* Allows caption to take up to 45% of space, grows/shrinks */
+      margin: 0; /* Remove default margins */
+      padding: 0; /* Remove default padding */
+      text-align: left; /* Align caption text left */
+      color: #333; /* Darker color for readability */
+      font-size: 1.1em;
+      line-height: 1.6;
+      min-width: 300px; /* Minimum width before stacking */
+    }
+    
+    @keyframes zoom {
+      from {transform:scale(0)}
+      to {transform:scale(1)}
+    }
+    .close-button {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .close-button:hover,
+    .close-button:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    @media only screen and (max-width: 768px){
+/* Adjusted breakpoint for modal stacking */
+      .modal-body-container {
+        flex-direction: column; /* Stack vertically */
+        align-items: center; /* Center items when stacked */
+        width: 95%; /* More width on smaller screens */
+        padding: 20px;
+      }
+      .modal-body-container img#img01,
+      .modal-body-container #caption {
+        flex: none; /* Remove flex sizing */
+        width: 100%; /* Take full width */
+        min-width: unset; /* Remove min-width constraint */
+      }
+    }
+ 
+    /* Interactive Section Styles */
+    .interactive-section {
+      background: #e6f7ff;
+      border-left: 6px solid var(--accent-color);
+      padding: 30px;
+      margin-top: 40px;
+    }
+    .interactive-section h2 {
+      color: var(--main-color);
+      border-bottom-color: var(--accent-color);
+    }
+    .interactive-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .control-group label {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--main-color);
+    }
+    .control-group input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 8px;
+      background: #ddd;
+      border-radius: 50px; /* Rounded track */
+      outline: none;
+      opacity: 0.8; /* Slightly less opaque */
+      transition: opacity .2s;
+    }
+    .control-group input[type="range"]:hover {
+      opacity: 1;
+    }
+    .control-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px; /* Larger thumb */
+      height: 24px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid white; /* Thicker border */
+      box-shadow: 0 0 8px rgba(0,0,0,0.3); /* Stronger shadow */
+    }
+    .control-group input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+    .control-value {
+      text-align: center;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-top: 5px;
+      font-size: 1.1em; /* Slightly larger */
+    }
+    .impact-results {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+      margin-top: 25px; /* Added space */
+    }
+    .impact-results h3 {
+      color: var(--main-color);
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+    .impact-category {
+      margin-bottom: 20px;
+    }
+    .impact-category h4 {
+      color: var(--warning-color);
+      margin-bottom: 10px;
+      font-size: 1.1em;
+      display: flex;
+      align-items: center;
+    }
+    .impact-category h4 i {
+        margin-right: 10px;
+        font-size: 1.3em;
+    }
+    .impact-category p {
+      line-height: 1.6em;
+      color: #555;
+    }
+    .impact-category.positive h4 { color: var(--success-color); }
+    .impact-category.positive h4 i { color: var(--success-color); }
+    .impact-category.warning h4 { color: var(--warning-color); }
+    .impact-category.warning h4 i { color: var(--warning-color); }
+    .impact-category.negative h4 { color: var(--danger-color); }
+    .impact-category.negative h4 i { color: var(--danger-color); }
+ 
+ 
+    /* New styles for Impact Cards grid */
+    .impacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+      gap: 25px;
+      margin-top: 30px;
+    }
+ 
+    .impact-card {
+      background: #f9f9f9;
+      border-left: 5px solid var(--warning-color); /* Default warning color for impact */
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      /* cursor: pointer; // Not for the whole card anymore, just header */
+    }
+ 
+    .impact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+ 
+    /* Accordion styles */
+    .impact-card .icon-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      cursor: pointer; /* Indicate clickable area */
+      position: relative; /* For button positioning */
+      padding-bottom: 10px; /* Space for the summary */
+      border-bottom: 1px solid #eee; /* Separator for header */
+    }
+ 
+    .impact-card .icon-header h3 {
+      flex-grow: 1; /* Allow h3 to take available space */
+      margin: 0;
+      font-size: 1.3em;
+      color: var(--main-color);
+    }
+ 
+    .impact-card .impact-icon {
+      font-size: 2.5em;
+      margin-right: 15px;
+      color: var(--warning-color); /* Default color, overridden by severity classes */
+    }
+    /* Severity Indicators for icons */
+    .impact-icon.severity-low { color: var(--success-color); }
+    .impact-icon.severity-medium { color: var(--warning-color); }
+    .impact-icon.severity-high { color: var(--danger-color); }
+ 
+    .impact-card .impact-summary {
+      font-style: italic;
+      color: #777;
+      margin-bottom: 0; /* Adjusted for accordion */
+      padding-top: 10px; /* Space from header */
+    }
+ 
+    .impact-details-collapsible {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, padding-top 0.4s ease-out; /* Smooth transition */
+      padding-top: 0;
+    }
+ 
+    .impact-card.expanded .impact-details-collapsible {
+      max-height: 500px; /* Large enough to contain content, adjust if needed */
+      padding-top: 15px; /* Add padding when expanded */
+      /* border-top is now handled by the header */
+    }
+ 
+    .impact-details-collapsible p {
+        margin-top: 0; /* Remove default paragraph top margin */
+        line-height: 1.6em;
+        color: #555;
+    }
+ 
+    .expand-button {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      color: var(--main-color);
+      cursor: pointer;
+      padding: 5px;
+      margin-left: 10px; /* Space from h3 */
+      transition: transform 0.3s ease;
+    }
+ 
+    .expand-button .fa-chevron-down {
+      transform: rotate(0deg);
+    }
+ 
+    .impact-card.expanded .expand-button .fa-chevron-down {
+      transform: rotate(180deg);
+    }
+ 
+    /* Simulator Trend Visualizer */
+    #trend-visualizer {
+        width: 100%;
+        height: 200px;
+        background-image: url('https://via.placeholder.com/600x200/e0e0e0/555555?text=Simulazione+Andamento+Climatico');
+/* Generic graph placeholder */
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        transition: filter 0.5s ease-out; /* Smooth transition for visual effects */
+        filter: brightness(1) contrast(1); /* Default filter */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: flex; /* For centering text if needed */
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      nav a {
+        margin: 5px 0;
+      }
+      .content {
+        padding: 15px;
+      }
+      .interactive-controls {
+        flex-direction: column;
+      }
+      .impacts-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Analisi Climatica e Impatti Socio-Economici - Vercelli</h1>
-    <p>Uno sguardo integrato ai cambiamenti climatici sul territorio vercellese</p>
-  </header>
-  <nav>
-    <a href="#minime">Temperature Minime</a>
-    <a href="#massime">Temperature Massime</a>
-    <a href="#precipitazioni">Precipitazioni</a>
-    <a href="#impatto">Impatto Socio-Economico</a>
-    <a href="#simulatore">Simulatore di Impatto</a>
-  </nav>
-
-  <div id="map"></div>
-
-  <div class="content">
-    <div id="minime" class="info-box">
-      <h2>📊 Temperature Minime</h2>
-      <ul>
-        <li>
-          <i class="fas fa-temperature-low"></i> <strong>TR</strong> – Le notti tropicali (Tmin > 20°C) sono in forte aumento. Questo fenomeno riduce il raffrescamento notturno, aumentando consumi energetici e stress termico sia per l'uomo che per le colture.
-          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.
-          <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.
-          <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-
-    <div id="massime" class="info-box">
-      <h2>🔥 Temperature Massime</h2>
-      <ul>
-        <li>
-          <i class="fas fa-sun"></i> <strong>TX90p</strong> – I giorni con Tmax > 90° percentile sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e irrigazione.
-          <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-burn"></i> <strong>HWF</strong> – Più eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
-          <span class="show-graph-link" data-graph-id="hwf_tx90_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-burn"></i> <strong>HWN</strong> – Più lunghi eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
-          <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.
-          <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-
-    <div id="precipitazioni" class="info-box">
-      <h2>🌧️ Precipitazioni</h2>
-      <ul>
-        <li>
-          <i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – I periodi consecutivi senza pioggia superano spesso i 30 giorni: questo indebolisce la resilienza idrica delle colture e aumenta il rischio di perdite nel riso.
-          <span class="show-graph-link" data-graph-id="cdd_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.
-          <span class="show-graph-link" data-graph-id="prcptot_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.
-          <span class="show-graph-link" data-graph-id="r95p_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-
-    <div id="impatto" class="info-box-socio">
-      <h2>🌱 Impatti sul Tessuto Socio-Economico</h2>
-      <p>Il cambiamento climatico sta già alterando in modo tangibile l’equilibrio socio-economico del vercellese, in particolare per un’economia agricola fortemente specializzata. Gli scenari futuri indicano una crescente urgenza nell'adottare strategie di mitigazione e adattamento per preservare la qualità della vita e la prosperità economica del territorio.</p>
-
-      <div class="impacts-grid">
-        <div class="impact-card">
-          <div class="icon-header">
-            <i class="fas fa-hand-holding-water impact-icon severity-high"></i>
-            <h3>Costi Irrigui e Stress Idrico</h3>
-            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
-          </div>
-          <p class="impact-summary">L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche.</p>
-          <div class="impact-details-collapsible">
-            <p>I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
-          </div>
-        </div>
-
-        <div class="impact-card">
-          <div class="icon-header">
-            <i class="fas fa-user-injured impact-icon severity-high"></i>
-            <h3>Rischi Sanitari e Disagio Urbano</h3>
-            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
-          </div>
-          <p class="impact-summary">L'intensificarsi delle ondate di calore e delle notti tropicali rappresenta una seria minaccia per la salute pubblica e il benessere dei cittadini.</p>
-          <div class="impact-details-collapsible">
-            <p>L'incremento delle **Notti Tropicali (TR)**, dei giorni con **Temperature Massime estreme (TX90p)** e della **Frequenza/Durata delle Ondate di Calore (HWF/HWN)**, come evidenziato dai grafici, impedisce il recupero fisiologico durante le ore notturne. Questo porta a un aumento di colpi di calore, disidratazione e aggravamento di patologie cardiovascolari e respiratorie, specialmente tra anziani, bambini e lavoratori all'aperto. Le "isole di calore urbane" amplificano il problema, mettendo sotto pressione i servizi sanitari locali.</p>
-          </div>
-        </div>
-
-        <div class="impact-card">
-          <div class="icon-header">
-            <i class="fas fa-handshake-slash impact-icon severity-medium"></i>
-            <h3>Vulnerabilità Economica Agricola</h3>
-            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
-          </div>
-          <p class="impact-summary">Le piccole e medie imprese agricole faticano ad adattarsi ai rapidi cambiamenti climatici, compromettendo la loro sostenibilità economica e competitività.</p>
-          <div class="impact-details-collapsible">
-            <p>La minor frequenza di notti fredde (**TN10p**) altera il ciclo di vita dei parassiti, mentre le temperature costantemente elevate (**TXGE30**) e le notti calde (**TN90p**) stressano le colture durante le fasi critiche di crescita. Queste condizioni richiedono investimenti significativi in nuove tecnologie agricole, varietà resilienti e strategie di gestione integrate che spesso superano le capacità finanziarie delle piccole aziende. Ciò può portare a una riduzione della redditività, all'indebitamento e, nei casi peggiori, alla chiusura delle attività, con ripercussioni negative sull'occupazione e sul PIL locale.</p>
-          </div>
-        </div>
-
-        <div class="impact-card">
-          <div class="icon-header">
-            <i class="fas fa-chart-line impact-icon severity-medium"></i>
-            <h3>Competitività e Sicurezza Alimentare</h3>
-            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
-          </div>
-          <p class="impact-summary">La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale.</p>
-          <div class="impact-details-collapsible">
-            <p>L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromettendo l'autosufficienza alimentare locale.</p>
-          </div>
-        </div>
-
-        <div class="impact-card">
-          <div class="icon-header">
-            <i class="fas fa-city impact-icon severity-medium"></i>
-            <h3>Pianificazione Territoriale e Infrastrutture</h3>
-            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
-          </div>
-          <p class="impact-summary">La crescente frequenza di eventi climatici estremi impone una revisione urgente delle strategie di pianificazione urbana e rurale e degli investimenti infrastrutturali.</p>
-          <div class="impact-details-collapsible">
-            <p>L'aumento delle piogge intense (**R95p**) richiede sistemi di drenaggio più efficienti e nuove strategie per la gestione del rischio idrogeologico, inclusa la manutenzione di argini e canali. Le ondate di calore più intense e prolungate (**HWF/HWN**) sollecitano la necessità di "infrastrutture verdi" (parchi, alberi, tetti verdi) nelle aree urbane per mitigare l'effetto isola di calore. La pianificazione deve considerare la resilienza di strade, edifici e reti di servizio, implicando investimenti significativi e un approccio integrato tra settori.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="chart">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Climate_change_graph_%282020%29.png/600px-Climate_change_graph_%282020%29.png" alt="Grafico cambiamento climatico globale" width="90%">
-        <p style="font-size: 0.85em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature medie (dal 1880 al 2020)</p>
-      </div>
-    </div>
-
-    <div id="simulatore" class="interactive-section">
-      <h2>🌍 Simulatore di Impatto Climatico su Vercelli</h2>
-      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su diversi settori. Questo simulatore fornisce un'indicazione basata su modelli semplificati e non sostituisce analisi climatiche approfondite.</p>
-
-      <div class="interactive-controls">
-        <div class="control-group">
-          <label for="temp-slider">Aumento Temperatura Media Annuale (°C): <span id="temp-value">0.0</span></label>
-          <input type="range" id="temp-slider" min="0" max="4" step="0.5" value="0">
-        </div>
-        <div class="control-group">
-          <label for="precip-slider">Variazione Precipitazioni Annue Totali (%): <span id="precip-value">0</span></label>
-          <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
-        </div>
-      </div>
-
-      <div id="trend-visualizer">
-        <p>Visualizzazione Andamento Stimato</p>
-      </div>
-
-      <div class="impact-results">
-        <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
-        <div class="impact-category" id="impact-people">
-          <h4><i class="fas fa-users"></i> Impatto sulle Persone e la Salute</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-        <div class="impact-category" id="impact-agriculture">
-          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo e l'Ambiente</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-        <div class="impact-category" id="impact-economy">
-          <h4><i class="fas fa-chart-line"></i> Impatto Economico e Sociale</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <footer>
-    Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
-  </footer>
-
-  <button onclick="scrollToTop()" style="position: fixed; bottom: 20px; left: 20px; padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 16px;">
-    ⬆ Torna su
-  </button>
-
-  <div id="imageModal" class="modal">
-    <span class="close-button">&times;</span>
-    <div class="modal-body-container">
-        <img id="img01" />
-        <div id="caption"></div>
-    </div>
-  </div>
-
-  <div class="graph-data-container" id="graph-tr_ANN">
-    <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_tr_ANN.png" mostra l'andamento annuale del numero di notti tropicali (TR), definite come notti in cui la temperatura minima non scende sotto i 20°C. Si osserva un chiaro trend di aumento nel periodo 1994-2024. Questo incremento indica una riduzione del raffrescamento notturno, con implicazioni per il benessere umano (disturbi del sonno, aumento dello stress termico) e per l'agricoltura (stress termico per le colture che non riescono a recuperare durante la notte). Il trend è statisticamente significativo, evidenziando un riscaldamento delle minime estive.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tn10p_ANN">
-    <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn10p_ANN.png" illustra la frequenza annuale dei giorni con temperatura minima inferiore al 10° percentile (notti fredde). Si evidenzia una tendenza alla diminuzione di queste notti nel corso degli anni. Questo fenomeno implica una riduzione delle gelate, il che può essere positivo per alcune colture sensibili al gelo, ma può anche favorire la sopravvivenza e la proliferazione di parassiti e patogeni che normalmente sarebbero controllati dalle basse temperature invernali, richiedendo nuove strategie di difesa fitosanitaria.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tn90p_ANN">
-    <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn90p_ANN.png" rappresenta l'andamento annuale delle notti estremamente calde (Tmin > 90° percentile). Si osserva una tendenza all'aumento di questi eventi. Notti calde persistenti stressano sia la popolazione che le colture, alterando i ritmi fisiologici, anticipando le fasi vegetative e aumentando il consumo idrico delle piante, con ripercussioni negative sulla produttività agricola e sul comfort termico.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tx90p_ANN">
-    <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_tx90p_ANN.png" mostra l'andamento annuale dei giorni con temperatura massima superiore al 90° percentile (giorni caldi estremi). Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali.</p>
-  </div>
-  <div class="graph-data-container" id="graph-hwf_tx90_ANN">
-    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwf_tx90_ANN.png" illustra la frequenza annuale delle ondate di calore, definite in base alla persistenza di temperature massime elevate (superiori al 90° percentile per almeno 6 giorni consecutivi). Il grafico evidenzia un aumento nella frequenza di questi eventi. Ciò implica che Vercelli è soggetta a un numero crescente di periodi con caldo intenso e prolungato, aumentando i rischi per la salute pubblica, la produttività lavorativa e il consumo di risorse.</p>
-  </div>
-  <div class="graph-data-container" id="graph-hwn_tx90_ANN">
-    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwn_tx90_ANN.png" rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo.</p>
-  </div>
-  <div class="graph-data-container" id="graph-txge30_ANN">
-    <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_txge30_ANN.png" mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento.</p>
-  </div>
-  <div class="graph-data-container" id="graph-cdd_ANN">
-    <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_cdd_ANN.png" rappresenta la durata massima annuale dei giorni secchi consecutivi (CDD), ovvero i giorni senza precipitazioni significative. Si osserva una tendenza all'aumento di questi periodi. Questo prolungamento delle siccità indebolisce la resilienza idrica delle colture, in particolare del riso che richiede molta acqua, e aumenta il rischio di perdite significative, richiedendo maggiori interventi irrigui e una gestione più accurata delle risorse idriche.</p>
-  </div>
-  <div class="graph-data-container" id="graph-prcptot_ANN">
-    <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_prcptot_ANN.png" mostra l'andamento annuale delle precipitazioni totali. Il grafico indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura.</p>
-  </div>
-  <div class="graph-data-container" id="graph-r95p_ANN">
-    <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_r95p_ANN.png" illustra il contributo delle precipitazioni estreme (superiori al 95° percentile) al totale annuo. Si nota una tendenza all'aumento degli eventi di pioggia intensa e concentrata. Questo fenomeno aumenta il rischio di allagamenti, erosione del suolo e inefficienza nella ricarica idrica dei terreni agricoli, poiché l'acqua scorre via rapidamente invece di essere assorbita, causando danni alle infrastrutture e alle colture.</p>
-  </div>
-
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([45.32, 8.42], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    const layers = [
-      {
-        name: "Zona Risaie",
-        coords: [45.25, 8.52],
-        descrizione: "Area vulnerabile alla siccità estiva (CDD) e alla gestione idrica complessa."
-      },
-      {
-        name: "Area Urbana di Vercelli",
-        coords: [45.32, 8.42],
-        descrizione: "Popolazione esposta all'effetto isola di calore e ai picchi termici prolungati."
-      },
-      {
-        name: "Zona Mais e Frumento",
-        coords: [45.35, 8.30],
-        descrizione: "A rischio di squilibri termici in primavera e piogge estreme dannose."
-      }
-    ];
-
-    layers.forEach(zona => {
-      L.circle(zona.coords, {
-        color: '#e74c3c',
-        fillColor: '#e74c3c',
-        fillOpacity: 0.5,
-        radius: 4000
-      }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
-    });
-
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Lightbox functionality
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("img01");
-    const captionText = document.getElementById("caption");
-    const closeButton = document.getElementsByClassName("close-button")[0];
-
-    document.querySelectorAll('.show-graph-link').forEach(link => {
-      link.addEventListener('click', function(event){
-        event.stopPropagation();
-        const graphId = this.getAttribute('data-graph-id');
-        const graphContainer = document.getElementById('graph-' + graphId);
-        
-        if (graphContainer) {
-            const img = graphContainer.querySelector('img');
-            const commentary = graphContainer.querySelector('.graph-commentary');
-
-            modal.style.display = "block";
-            modalImg.src = img.src;
-            captionText.innerHTML = `<strong>${img.alt}</strong><br>${commentary.innerHTML}`;
-        }
-      });
-    });
-
-    closeButton.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    modal.addEventListener('click', function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    });
-
-    // Accordion functionality for Impact Cards
-    document.querySelectorAll('.impact-card .icon-header').forEach(header => {
-      header.addEventListener('click', function() {
-        const impactCard = this.closest('.impact-card');
-        const details = impactCard.querySelector('.impact-details-collapsible');
-        const buttonIcon = this.querySelector('.expand-button i');
-
-        if (impactCard.classList.contains('expanded')) {
-          impactCard.classList.remove('expanded');
-          buttonIcon.classList.remove('fa-chevron-up');
-          buttonIcon.classList.add('fa-chevron-down');
-        } else {
-          // Optional: Close other open accordions when a new one is opened
-          // document.querySelectorAll('.impact-card.expanded').forEach(openCard => {
-          //   openCard.classList.remove('expanded');
-          //   openCard.querySelector('.expand-button i').classList.remove('fa-chevron-up');
-          //   openCard.querySelector('.expand-button i').classList.add('fa-chevron-down');
-          // });
-
-          impactCard.classList.add('expanded');
-          buttonIcon.classList.remove('fa-chevron-down');
-          buttonIcon.classList.add('fa-chevron-up');
-        }
-      });
-    });
-
-    // Interactive Impact Simulator
-    const tempSlider = document.getElementById('temp-slider');
-    const tempValueSpan = document.getElementById('temp-value');
-    const precipSlider = document.getElementById('precip-slider');
-    const precipValueSpan = document.getElementById('precip-value');
-
-    const impactPeople = document.getElementById('impact-people');
-    const impactAgriculture = document.getElementById('impact-agriculture');
-    const impactEconomy = document.getElementById('impact-economy');
-    const trendVisualizer = document.getElementById('trend-visualizer');
-
-    function updateImpacts() {
-      const tempChange = parseFloat(tempSlider.value);
-      const precipChange = parseInt(precipSlider.value);
-
-      tempValueSpan.textContent = tempChange.toFixed(1);
-      precipValueSpan.textContent = precipChange;
-
-      // Update trend visualizer
-      let filterValue = '';
-      let visualizerText = 'Andamento Stimato';
-
-      if (tempChange > 2 || precipChange < -15) { // High warming or severe drought
-        filterValue = `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(340deg)`; // More red/intense
-        visualizerText = 'Trend Critico';
-      } else if (tempChange > 0.5 || precipChange !== 0) { // Moderate changes
-        filterValue = `brightness(1.1) contrast(1.1) saturate(1.2) hue-rotate(10deg)`; // Slightly warmer
-        visualizerText = 'Trend Moderato';
-      } else { // Minimal changes
-        filterValue = `brightness(1) contrast(1) saturate(1) hue-rotate(0deg)`; // Original
-        visualizerText = 'Trend Stabile';
-      }
-      trendVisualizer.style.filter = filterValue;
-      trendVisualizer.querySelector('p').textContent = visualizerText;
-
-
-      // Reset classes
-      impactPeople.className = 'impact-category';
-      impactAgriculture.className = 'impact-category';
-      impactEconomy.className = 'impact-category';
-
-      // Impact on People
-      let peopleImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
-        impactPeople.classList.add('positive');
-      } else if (tempChange >= 0.5 && tempChange < 2) {
-        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
-        impactPeople.classList.add('warning');
-      } else { // tempChange >= 2
-        peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
-        impactPeople.classList.add('negative');
-      }
-      impactPeople.querySelector('p').textContent = peopleImpactText;
-
-      // Impact on Agriculture
-      let agricultureImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)"; // Add data link reminder
-        impactAgriculture.classList.add('positive');
-      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
-        agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
-        impactAgriculture.classList.add('warning');
-      } else { // tempChange >= 1.5 or precipChange < -15 or precipChange > 15
-        agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
-        impactAgriculture.classList.add('negative');
-      }
-      impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
-
-      // Impact on Economy
-      let economyImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
-        economyImpactText += " <br> (Collegato a scenari globali di resilienza economica)";
-        impactEconomy.classList.add('positive');
-      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) {
-        economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
-        economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
-        impactEconomy.classList.add('warning');
-      } else { // tempChange >= 1.5 or Math.abs(precipChange) > 15
-        economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
-        economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
-        impactEconomy.classList.add('negative');
-      }
-      impactEconomy.querySelector('p').innerHTML = economyImpactText;
-    }
-
-    tempSlider.addEventListener('input', updateImpacts);
-    precipSlider.addEventListener('input', updateImpacts);
-
-    // Initial update when the page loads
-    updateImpacts();
-  </script>
+  <header>
+    <h1>Analisi Climatica e Impatti Socio-Economici - Vercelli</h1>
+    <p>Uno sguardo integrato ai cambiamenti climatici sul territorio vercellese</p>
+  </header>
+  <nav>
+    <a href="#minime">Temperature Minime</a>
+    <a href="#massime">Temperature Massime</a>
+    <a href="#precipitazioni">Precipitazioni</a>
+    <a href="#impatto">Impatto Socio-Economico</a>
+    <a href="#simulatore">Simulatore di Impatto</a>
+  </nav>
+ 
+  <div id="map"></div>
+ 
+  <div class="content">
+    <div id="minime" class="info-box">
+      <h2>📊 Temperature Minime</h2>
+      <ul>
+        <li>
+          <i class="fas fa-temperature-low"></i> <strong>TR</strong> – Le notti tropicali (Tmin > 20°C) sono in forte aumento. Questo fenomeno riduce il raffrescamento notturno, aumentando consumi energetici e stress termico sia per l'uomo che per le colture.
+          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.
+          <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.
+          <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
+        </li>
+      </ul>
+    </div>
+ 
+    <div id="massime" class="info-box">
+      <h2>🔥 Temperature Massime</h2>
+      <ul>
+        <li>
+          <i class="fas fa-sun"></i> <strong>TX90p</strong> – I giorni con Tmax > 90° percentile sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e irrigazione.
+          <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-burn"></i> <strong>HWF</strong> – Più eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
+          <span class="show-graph-link" data-graph-id="hwf_tx90_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-burn"></i> <strong>HWN</strong> – Più lunghi eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
+          <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.
+          <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
+        </li>
+      </ul>
+    </div>
+ 
+    <div id="precipitazioni" class="info-box">
+      <h2>🌧️ Precipitazioni</h2>
+      <ul>
+        <li>
+          <i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – I periodi consecutivi senza pioggia superano spesso i 30 giorni: questo indebolisce la resilienza idrica delle colture e aumenta il rischio di perdite nel riso.
+          <span class="show-graph-link" data-graph-id="cdd_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.
+          <span class="show-graph-link" data-graph-id="prcptot_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.
+          <span class="show-graph-link" data-graph-id="r95p_ANN">Mostra grafico</span>
+        </li>
+      </ul>
+    </div>
+ 
+    <div id="impatto" class="info-box-socio">
+      <h2>🌱 Impatti sul Tessuto Socio-Economico</h2>
+      <p>Il cambiamento climatico sta già alterando in modo tangibile l’equilibrio socio-economico del vercellese, in particolare per un’economia agricola fortemente specializzata. Gli scenari futuri indicano una crescente urgenza nell'adottare strategie di mitigazione e adattamento per preservare la qualità della vita e la prosperità economica del territorio.</p>
+ 
+      <div class="impacts-grid">
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-hand-holding-water impact-icon severity-high"></i>
+            <h3>Costi Irrigui e Stress Idrico</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <p class="impact-summary">L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche.</p>
+          <div class="impact-details-collapsible">
+            <p>I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
+          </div>
+        </div>
+ 
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-user-injured impact-icon severity-high"></i>
+            <h3>Rischi Sanitari e Disagio Urbano</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <p class="impact-summary">L'intensificarsi delle ondate di calore e delle notti tropicali rappresenta una seria minaccia per la salute pubblica e il benessere dei cittadini.</p>
+          <div class="impact-details-collapsible">
+            <p>L'incremento delle **Notti Tropicali (TR)**, dei giorni con **Temperature Massime estreme (TX90p)** e della **Frequenza/Durata delle Ondate di Calore (HWF/HWN)**, come evidenziato dai grafici, impedisce il recupero fisiologico durante le ore notturne. Questo porta a un aumento di colpi di calore, disidratazione e aggravamento di patologie cardiovascolari e respiratorie, specialmente tra anziani, bambini e lavoratori all'aperto. Le "isole di calore urbane" amplificano il problema, mettendo sotto pressione i servizi sanitari locali.</p>
+          </div>
+        </div>
+ 
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-handshake-slash impact-icon severity-medium"></i>
+            <h3>Vulnerabilità Economica Agricola</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <p class="impact-summary">Le piccole e medie imprese agricole faticano ad adattarsi ai rapidi cambiamenti climatici, compromettendo la loro sostenibilità economica e competitività.</p>
+          <div class="impact-details-collapsible">
+            <p>La minor frequenza di notti fredde (**TN10p**) altera il ciclo di vita dei parassiti, mentre le temperature costantemente elevate (**TXGE30**) e le notti calde (**TN90p**) stressano le colture durante le fasi critiche di crescita. Queste condizioni richiedono investimenti significativi in nuove tecnologie agricole, varietà resilienti e strategie di gestione integrate che spesso superano le capacità finanziarie delle piccole aziende. Ciò può portare a una riduzione della redditività, all'indebitamento e, nei casi peggiori, alla chiusura delle attività, con ripercussioni negative sull'occupazione e sul PIL locale.</p>
+          </div>
+        </div>
+ 
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-chart-line impact-icon severity-medium"></i>
+            <h3>Competitività e Sicurezza Alimentare</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <p class="impact-summary">La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale.</p>
+          <div class="impact-details-collapsible">
+            <p>L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromettendo l'autosufficienza alimentare locale.</p>
+          </div>
+        </div>
+ 
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-city impact-icon severity-medium"></i>
+            <h3>Pianificazione Territoriale e Infrastrutture</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <p class="impact-summary">La crescente frequenza di eventi climatici estremi impone una revisione urgente delle strategie di pianificazione urbana e rurale e degli investimenti infrastrutturali.</p>
+          <div class="impact-details-collapsible">
+            <p>L'aumento delle piogge intense (**R95p**) richiede sistemi di drenaggio più efficienti e nuove strategie per la gestione del rischio idrogeologico, inclusa la manutenzione di argini e canali. Le ondate di calore più intense e prolungate (**HWF/HWN**) sollecitano la necessità di "infrastrutture verdi" (parchi, alberi, tetti verdi) nelle aree urbane per mitigare l'effetto isola di calore. La pianificazione deve considerare la resilienza di strade, edifici e reti di servizio, implicando investimenti significativi e un approccio integrato tra settori.</p>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="chart">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Climate_change_graph_%282020%29.png/600px-Climate_change_graph_%282020%29.png" alt="Grafico cambiamento climatico globale" width="90%">
+        <p style="font-size: 0.85em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature medie (dal 1880 al 2020)</p>
+      </div>
+    </div>
+ 
+    <div id="simulatore" class="interactive-section">
+      <h2>🌍 Simulatore di Impatto Climatico su Vercelli</h2>
+      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su diversi settori. Questo simulatore fornisce un'indicazione basata su modelli semplificati e non sostituisce analisi climatiche approfondite.</p>
+ 
+      <div class="interactive-controls">
+        <div class="control-group">
+          <label for="temp-slider">Aumento Temperatura Media Annuale (°C): <span id="temp-value">0.0</span></label>
+          <input type="range" id="temp-slider" min="0" max="4" step="0.5" value="0">
+        </div>
+        <div class="control-group">
+          <label for="precip-slider">Variazione Precipitazioni Annue Totali (%): <span id="precip-value">0</span></label>
+          <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
+        </div>
+      </div>
+ 
+      <div id="trend-visualizer">
+              </div>
+ 
+      <div class="impact-results">
+        <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
+        <div class="impact-category" id="impact-people">
+          <h4><i class="fas fa-users"></i> Impatto sulle Persone e la Salute</h4>
+         <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-agriculture">
+          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo e l'Ambiente</h4>
+         <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-economy">
+          <h4><i class="fas fa-chart-line"></i> Impatto Economico e Sociale</h4>
+         <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <footer>
+    Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
+  </footer>
+  <button onclick="scrollToTop()" style="position: fixed; bottom: 20px; left: 20px; padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 16px;">
+    ⬆ Torna su
+  </button>
+ 
+  <div id="imageModal" class="modal">
+    <span class="close-button">&times;</span>
+    <div class="modal-body-container">
+        <img id="img01" />
+        <div id="caption"></div>
+    </div>
+  </div>
+ 
+  <div class="graph-data-container" id="graph-tr_ANN">
+    <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tr_ANN.png" mostra l'andamento annuale del numero di notti tropicali (TR), definite come notti in cui la temperatura minima non scende sotto i 20°C. Si osserva un chiaro trend di aumento nel periodo 1994-2024. Questo incremento indica una riduzione del raffrescamento notturno, con implicazioni per il benessere umano (disturbi del sonno, aumento dello stress termico) e per l'agricoltura (stress termico per le colture che non riescono a recuperare durante la notte). Il trend è statisticamente significativo, evidenziando un riscaldamento delle minime estive.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tn10p_ANN">
+    <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn10p_ANN.png" illustra la frequenza annuale dei giorni con temperatura minima inferiore al 10° percentile (notti fredde). Si evidenzia una tendenza alla diminuzione di queste notti nel corso degli anni. Questo fenomeno implica una riduzione delle gelate, il che può essere positivo per alcune colture sensibili al gelo, ma può anche favorire la sopravvivenza e la proliferazione di parassiti e patogeni che normalmente sarebbero controllati dalle basse temperature invernali, richiedendo nuove strategie di difesa fitosanitaria.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tn90p_ANN">
+    <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn90p_ANN.png" rappresenta l'andamento annuale delle notti estremamente calde (Tmin > 90° percentile). Si osserva una tendenza all'aumento di questi eventi. Notti calde persistenti stressano sia la popolazione che le colture, alterando i ritmi fisiologici, anticipando le fasi vegetative e aumentando il consumo idrico delle piante, con ripercussioni negative sulla produttività agricola e sul comfort termico.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tx90p_ANN">
+    <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tx90p_ANN.png" mostra l'andamento annuale dei giorni con temperatura massima superiore al 90° percentile (giorni caldi estremi). Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali.</p>
+  </div>
+  <div class="graph-data-container" id="graph-hwf_tx90_ANN">
+    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwf_tx90_ANN.png" illustra la frequenza annuale delle ondate di calore, definite in base alla persistenza di temperature massime elevate (superiori al 90° percentile per almeno 6 giorni consecutivi). Il grafico evidenzia un aumento nella frequenza di questi eventi. Ciò implica che Vercelli è soggetta a un numero crescente di periodi con caldo intenso e prolungato, aumentando i rischi per la salute pubblica, la produttività lavorativa e il consumo di risorse.</p>
+  </div>
+  <div class="graph-data-container" id="graph-hwn_tx90_ANN">
+    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwn_tx90_ANN.png" rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo.</p>
+  </div>
+  <div class="graph-data-container" id="graph-txge30_ANN">
+    <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_txge30_ANN.png" mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento.</p>
+  </div>
+  <div class="graph-data-container" id="graph-cdd_ANN">
+    <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_cdd_ANN.png" rappresenta la durata massima annuale dei giorni secchi consecutivi (CDD), ovvero i giorni senza precipitazioni significative. Si osserva una tendenza all'aumento di questi periodi. Questo prolungamento delle siccità indebolisce la resilienza idrica delle colture, in particolare del riso che richiede molta acqua, e aumenta il rischio di perdite significative, richiedendo maggiori interventi irrigui e una gestione più accurata delle risorse idriche.</p>
+  </div>
+  <div class="graph-data-container" id="graph-prcptot_ANN">
+    <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_prcptot_ANN.png" mostra l'andamento annuale delle precipitazioni totali. Il grafico indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura.</p>
+  </div>
+  <div class="graph-data-container" id="graph-r95p_ANN">
+    <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_r95p_ANN.png" illustra il contributo delle precipitazioni estreme (superiori al 95° percentile) al totale annuo. Si nota una tendenza all'aumento degli eventi di pioggia intensa e concentrata. Questo fenomeno aumenta il rischio di allagamenti, erosione del suolo e inefficienza nella ricarica idrica dei terreni agricoli, poiché l'acqua scorre via rapidamente invece di essere assorbita, causando danni alle infrastrutture e alle colture.</p>
+  </div>
+ 
+ 
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([45.32, 8.42], 10);
+   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+ 
+    const layers = [
+      {
+        name: "Zona Risaie",
+        coords: [45.25, 8.52],
+        descrizione: "Area vulnerabile alla siccità estiva (CDD) e alla gestione idrica complessa."
+      },
+      {
+        name: "Area Urbana di Vercelli",
+        coords: [45.32, 8.42],
+        descrizione: "Popolazione esposta all'effetto isola di calore e ai picchi termici prolungati."
+      },
+      {
+        name: "Zona Mais e Frumento",
+        coords: [45.35, 8.30],
+        descrizione: "A rischio di squilibri termici in primavera e piogge estreme dannose."
+      }
+    ];
+ 
+   layers.forEach(zona => {
+     L.circle(zona.coords, {
+        color: '#e74c3c',
+        fillColor: '#e74c3c',
+        fillOpacity: 0.5,
+        radius: 4000
+     }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
+    });
+ 
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+ 
+    // Lightbox functionality
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("img01");
+    const captionText = document.getElementById("caption");
+    const closeButton = document.getElementsByClassName("close-button")[0];
+ 
+   document.querySelectorAll('.show-graph-link').forEach(link => {
+      link.addEventListener('click', function(event){
+        event.stopPropagation();
+        const graphId = this.getAttribute('data-graph-id');
+        const graphContainer = document.getElementById('graph-' + graphId);
+        
+        if (graphContainer) {
+            const img = graphContainer.querySelector('img');
+            const commentary = graphContainer.querySelector('.graph-commentary');
+ 
+            modal.style.display = "block";
+            modalImg.src = img.src;
+            captionText.innerHTML = `<strong>${img.alt}</strong><br>${commentary.innerHTML}`;
+        }
+      });
+    });
+ 
+    closeButton.onclick = function() {
+      modal.style.display = "none";
+    }
+ 
+    modal.addEventListener('click', function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+ 
+    // Accordion functionality for Impact Cards
+    document.querySelectorAll('.impact-card .icon-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const impactCard = this.closest('.impact-card');
+        const details = impactCard.querySelector('.impact-details-collapsible');
+        const buttonIcon = this.querySelector('.expand-button i');
+ 
+        if (impactCard.classList.contains('expanded')) {
+         impactCard.classList.remove('expanded');
+         buttonIcon.classList.remove('fa-chevron-up');
+          buttonIcon.classList.add('fa-chevron-down');
+        } else {
+          // Optional: Close other open accordions when a new one is opened
+          // document.querySelectorAll('.impact-card.expanded').forEach(openCard => {
+          //  openCard.classList.remove('expanded');
+          //  openCard.querySelector('.expand-button i').classList.remove('fa-chevron-up');
+          //  openCard.querySelector('.expand-button i').classList.add('fa-chevron-down');
+          // });
+ 
+          impactCard.classList.add('expanded');
+         buttonIcon.classList.remove('fa-chevron-down');
+          buttonIcon.classList.add('fa-chevron-up');
+        }
+      });
+    });
+ 
+    // Interactive Impact Simulator
+    const tempSlider = document.getElementById('temp-slider');
+    const tempValueSpan = document.getElementById('temp-value');
+    const precipSlider = document.getElementById('precip-slider');
+    const precipValueSpan = document.getElementById('precip-value');
+ 
+    const impactPeople = document.getElementById('impact-people');
+    const impactAgriculture = document.getElementById('impact-agriculture');
+    const impactEconomy = document.getElementById('impact-economy');
+    const trendVisualizer = document.getElementById('trend-visualizer');
+ 
+    function updateImpacts() {
+      const tempChange = parseFloat(tempSlider.value);
+      const precipChange = parseInt(precipSlider.value);
+ 
+      tempValueSpan.textContent = tempChange.toFixed(1);
+      precipValueSpan.textContent = precipChange;
+ 
+      // Update trend visualizer
+      let filterValue = '';
+      // Rimosso il testo dinamico dal visualizzatore
+      // trendVisualizer.querySelector('p').textContent = visualizerText;
+ 
+      if (tempChange > 2 || precipChange < -15) { // High warming or severe drought
+        filterValue = `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(340deg)`; // More red/intense
+      } else if (tempChange > 0.5 || precipChange !== 0) { // Moderate changes
+        filterValue = `brightness(1.1) contrast(1.1) saturate(1.2) hue-rotate(10deg)`; // Slightly warmer
+      } else { // Minimal changes
+        filterValue = `brightness(1) contrast(1) saturate(1) hue-rotate(0deg)`; // Original
+      }
+      trendVisualizer.style.filter = filterValue;
+ 
+ 
+      // Reset classes
+      impactPeople.className = 'impact-category';
+      impactAgriculture.className = 'impact-category';
+      impactEconomy.className = 'impact-category';
+ 
+      // Impact on People
+      let peopleImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+       peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
+        impactPeople.classList.add('positive');
+      } else if (tempChange >= 0.5 && tempChange < 2) {
+        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
+        impactPeople.classList.add('warning');
+      } else { // tempChange >= 2
+        peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
+        impactPeople.classList.add('negative');
+      }
+     impactPeople.querySelector('p').textContent = peopleImpactText;
+ 
+      // Impact on Agriculture
+      let agricultureImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+       agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
+       agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)"; // Add data link reminder
+        impactAgriculture.classList.add('positive');
+      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
+        agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+       impactAgriculture.classList.add('warning');
+      } else { // tempChange >= 1.5 or precipChange < -15 or precipChange > 15
+        agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+       impactAgriculture.classList.add('negative');
+      }
+     impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
+ 
+      // Impact on Economy
+      let economyImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+       economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
+       economyImpactText += " <br> (Collegato a scenari globali di resilienza economica)";
+        impactEconomy.classList.add('positive');
+      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) {
+        economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
+       economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
+        impactEconomy.classList.add('warning');
+      } else { // tempChange >= 1.5 or Math.abs(precipChange) > 15
+        economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
+       economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
+        impactEconomy.classList.add('negative');
+      }
+     impactEconomy.querySelector('p').innerHTML = economyImpactText;
+    }
+ 
+    tempSlider.addEventListener('input', updateImpacts);
+    precipSlider.addEventListener('input', updateImpacts);
+ 
+    // Initial update when the page loads
+    updateImpacts();
+  </script>
 </body>
 </html>
-
