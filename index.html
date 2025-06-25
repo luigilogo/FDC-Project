@@ -609,7 +609,7 @@
         </div>
       </div>
       <div class="chart">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Climate_change_graph_%282020%29.png/600px-Climate_change_graph_%282020%29.png" alt="Grafico cambiamento climatico globale" width="90%">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Global_Average_Temperature_Change.png" alt="Grafico cambiamento climatico globale" width="90%">
         <p style="font-size: 0.9em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature medie (dal 1880 al 2020)</p>
       </div>
     </div>
@@ -682,7 +682,7 @@
   </div>
   <div class="graph-data-container" id="graph-txge30_ANN">
     <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
-    <p class="graph-commentary">Il grafico mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento. Il trend è statisticamente significativo. Il massimo è stato osservato nel 2023 con 60 giorni, e il minimo nel 1995 con 15 giorni.</p>
+    <p class="graph-commentary">Il grafico mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento. Il trend è statisticamente significativo. Il massimo è stato osservato nel 2023 with 60 giorni, e il minimo nel 1995 with 15 giorni.</p>
   </div>
   <div class="graph-data-container" id="graph-cdd_ANN">
     <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
@@ -789,6 +789,7 @@
         impactPeople.classList.add('positive');
       } else if (tempChange >= 0.5 && tempChange < 2) {
         peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
+        peopleImpactText += " <br> (Collegato a indici come TR, TX90p, HWF, HWN)";
         impactPeople.classList.add('warning');
       } else {
         peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
