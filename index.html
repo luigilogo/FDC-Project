@@ -11,6 +11,9 @@
       --main-color: #2c3e50;
       --accent-color: #3498db;
       --light-gray: #f4f4f4;
+      --warning-color: #f39c12;
+      --danger-color: #e74c3c;
+      --success-color: #27ae60;
     }
     body {
       margin: 0;
@@ -30,18 +33,22 @@
       display: flex;
       justify-content: center;
       padding: 10px 0;
+      flex-wrap: wrap; /* Allow navigation items to wrap */
     }
     nav a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
+      padding: 5px 0; /* Add some padding for better click area */
     }
     nav a:hover {
       text-decoration: underline;
     }
     #map {
       height: 60vh;
+      width: 100%;
+      margin-bottom: 30px;
     }
     .content {
       padding: 30px;
@@ -52,28 +59,26 @@
       color: var(--main-color);
       border-bottom: 2px solid var(--accent-color);
       padding-bottom: 5px;
+      margin-top: 40px;
     }
-    .info-box, .info-box-socio {
+    .info-box, .info-box-socio, .interactive-section {
       background: white;
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       cursor: pointer;
-      overflow: hidden; /* Hide content when not expanded */
+      overflow: hidden;
     }
     .info-box ul, .info-box-socio ul {
       padding-left: 20px;
-      list-style: none; /* Remove default list style for custom icon */
+      list-style: none;
       margin-top: 15px;
     }
     .info-box ul li, .info-box-socio ul li {
       margin-bottom: 8px;
       line-height: 1.6em;
-      display: none; /* Hidden by default, shown when expanded */
-    }
-    .info-box.expanded ul li, .info-box-socio.expanded ul li {
-      display: list-item; /* Show when expanded */
+      display: list-item; /* Always visible */
     }
     .info-box i {
       margin-right: 6px;
@@ -81,7 +86,7 @@
     }
     .info-box-socio {
       background: #fff9e6;
-      border-left: 6px solid #f39c12;
+      border-left: 6px solid var(--warning-color);
     }
     .chart {
       margin: 25px auto;
@@ -97,14 +102,11 @@
     }
     /* Styles for graphs */
     .graphs-section {
-      display: none; /* Hidden by default, shown when expanded */
       margin-top: 20px;
       border-top: 1px solid #eee;
       padding-top: 20px;
       text-align: center;
-    }
-    .info-box.expanded .graphs-section {
-      display: block; /* Show when the info-box is expanded */
+      display: block; /* Always visible */
     }
     .graphs-section img {
       max-width: 100%;
@@ -113,65 +115,52 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      cursor: pointer; /* Indicate that images are clickable */
+      cursor: pointer;
     }
     .graphs-section h3 {
       color: var(--accent-color);
       margin-bottom: 10px;
       font-size: 1.1em;
     }
-    /* Initial state for list items */
-    .info-box.expanded ul li {
-        display: list-item;
-    }
 
     /* Modal (Lightbox) Styles */
     .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 1000; /* Sit on top */
-      padding-top: 60px; /* Location of the box */
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 60px;
       left: 0;
       top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgb(0,0,0); /* Fallback color */
-      background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.9);
     }
-
-    /* Modal Content (image) */
     .modal-content {
       margin: auto;
       display: block;
       width: 80%;
-      max-width: 700px;
+      max-width: 900px; /* Increased max-width for better viewing */
     }
-
-    /* Caption of Modal Image */
     #caption {
       margin: auto;
       display: block;
       width: 80%;
-      max-width: 700px;
+      max-width: 900px;
       text-align: center;
       color: #ccc;
       padding: 10px 0;
       height: 150px;
     }
-
-    /* Add Animation - Zoom in the modal */
     .modal-content, #caption {
       animation-name: zoom;
       animation-duration: 0.6s;
     }
-
     @keyframes zoom {
       from {transform:scale(0)}
       to {transform:scale(1)}
     }
-
-    /* The Close Button */
     .close-button {
       position: absolute;
       top: 15px;
@@ -181,18 +170,123 @@
       font-weight: bold;
       transition: 0.3s;
     }
-
     .close-button:hover,
     .close-button:focus {
       color: #bbb;
       text-decoration: none;
       cursor: pointer;
     }
-
-    /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px){
       .modal-content {
         width: 100%;
+      }
+    }
+
+    /* Interactive Section Styles */
+    .interactive-section {
+      background: #e6f7ff; /* Light blue background */
+      border-left: 6px solid var(--accent-color);
+      padding: 30px;
+      margin-top: 40px;
+    }
+    .interactive-section h2 {
+      color: var(--main-color);
+      border-bottom-color: var(--accent-color);
+    }
+    .interactive-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .control-group label {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--main-color);
+    }
+    .control-group input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 8px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+    }
+    .control-group input[type="range"]:hover {
+      opacity: 1;
+    }
+    .control-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    .control-group input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    .control-value {
+      text-align: center;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-top: 5px;
+    }
+    .impact-results {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+    .impact-results h3 {
+      color: var(--main-color);
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+    .impact-category {
+      margin-bottom: 20px;
+    }
+    .impact-category h4 {
+      color: var(--warning-color);
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+    .impact-category p {
+      line-height: 1.6em;
+      color: #555;
+    }
+    .impact-category.positive h4 { color: var(--success-color); }
+    .impact-category.negative h4 { color: var(--danger-color); }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      nav a {
+        margin: 5px 0;
+      }
+      .content {
+        padding: 15px;
+      }
+      .interactive-controls {
+        flex-direction: column;
       }
     }
   </style>
@@ -207,6 +301,7 @@
     <a href="#massime">Temperature Massime</a>
     <a href="#precipitazioni">Precipitazioni</a>
     <a href="#impatto">Impatto Socio-Economico</a>
+    <a href="#simulatore">Simulatore di Impatto</a>
   </nav>
 
   <div id="map"></div>
@@ -238,6 +333,7 @@
         <h3>Grafici Indici Temperature Massime</h3>
         <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi" class="enlargeable-graph">
         <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore" class="enlargeable-graph">
+        <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore" class="enlargeable-graph">
         <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C" class="enlargeable-graph">
       </div>
     </div>
@@ -272,6 +368,39 @@
         <p style="font-size: 0.85em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature</p>
       </div>
     </div>
+
+    <div id="simulatore" class="interactive-section">
+      <h2>🌍 Simulatore di Impatto Climatico su Vercelli</h2>
+      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su persone, agricoltura ed economia.</p>
+
+      <div class="interactive-controls">
+        <div class="control-group">
+          <label for="temp-slider">Aumento Temperatura Media (°C): <span id="temp-value">0.0</span></label>
+          <input type="range" id="temp-slider" min="0" max="4" step="0.5" value="0">
+        </div>
+        <div class="control-group">
+          <label for="precip-slider">Variazione Precipitazioni Annue (%): <span id="precip-value">0</span></label>
+          <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
+        </div>
+      </div>
+
+      <div class="impact-results">
+        <h3>Impatti Stimati:</h3>
+        <div class="impact-category" id="impact-people">
+          <h4><i class="fas fa-users"></i> Impatto sulle Persone</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-agriculture">
+          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-economy">
+          <h4><i class="fas fa-chart-line"></i> Impatto Economico Generale</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer>
@@ -326,31 +455,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Interactive functionality for info-boxes
-    document.querySelectorAll('.info-box').forEach(box => {
-      const listItems = box.querySelectorAll('ul li');
-      const graphsSection = box.querySelector('.graphs-section');
-
-      box.addEventListener('click', () => {
-        const isExpanded = box.classList.toggle('expanded');
-
-        listItems.forEach(li => {
-          li.style.display = isExpanded ? 'list-item' : 'none';
-        });
-
-        if (graphsSection) {
-          graphsSection.style.display = isExpanded ? 'block' : 'none';
-        }
-      });
-
-      // Set initial state to expanded
-      box.classList.add('expanded');
-      listItems.forEach(li => li.style.display = 'list-item');
-      if (graphsSection) {
-        graphsSection.style.display = 'block';
-      }
-    });
-
     // Lightbox functionality
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("img01");
@@ -359,24 +463,105 @@
 
     document.querySelectorAll('.graphs-section img').forEach(img => {
       img.addEventListener('click', function(event){
-        event.stopPropagation(); // Prevent click from bubbling up to info-box and closing it
+        event.stopPropagation();
         modal.style.display = "block";
         modalImg.src = this.src;
         captionText.innerHTML = this.alt;
       });
     });
 
-    // When the user clicks on <span> (x), close the modal
     closeButton.onclick = function() {
       modal.style.display = "none";
     }
 
-    // When the user clicks anywhere outside of the image, close it
     modal.addEventListener('click', function(event) {
       if (event.target === modal) {
         modal.style.display = "none";
       }
     });
+
+    // Interactive Impact Simulator
+    const tempSlider = document.getElementById('temp-slider');
+    const tempValueSpan = document.getElementById('temp-value');
+    const precipSlider = document.getElementById('precip-slider');
+    const precipValueSpan = document.getElementById('precip-value');
+
+    const impactPeople = document.getElementById('impact-people');
+    const impactAgriculture = document.getElementById('impact-agriculture');
+    const impactEconomy = document.getElementById('impact-economy');
+
+    function updateImpacts() {
+      const tempChange = parseFloat(tempSlider.value);
+      const precipChange = parseInt(precipSlider.value);
+
+      tempValueSpan.textContent = tempChange.toFixed(1);
+      precipValueSpan.textContent = precipChange;
+
+      // Reset classes
+      impactPeople.className = 'impact-category';
+      impactAgriculture.className = 'impact-category';
+      impactEconomy.className = 'impact-category';
+
+      // Impact on People
+      let peopleImpactText = "";
+      if (tempChange === 0 && precipChange === 0) {
+        peopleImpactText = "Nessun cambiamento significativo previsto. Le condizioni attuali persistono.";
+      } else if (tempChange > 2) {
+        peopleImpactText = "Aumento significativo dello stress da calore, rischio elevato per anziani e bambini. Necessità di sistemi di raffreddamento e servizi sanitari potenziati.";
+        impactPeople.classList.add('negative');
+      } else if (tempChange > 0.5) {
+        peopleImpactText = "Aumento delle ondate di calore, maggiore disagio estivo e rischi moderati per la salute, specialmente per le fasce vulnerabili.";
+        impactPeople.classList.add('negative');
+      } else {
+        peopleImpactText = "Condizioni stabili o leggermente più calde, con impatti gestibili sulla salute pubblica.";
+        impactPeople.classList.add('positive');
+      }
+      impactPeople.querySelector('p').textContent = peopleImpactText;
+
+      // Impact on Agriculture
+      let agricultureImpactText = "";
+      if (tempChange === 0 && precipChange === 0) {
+        agricultureImpactText = "Nessun cambiamento significativo previsto. La produzione agricola rimane stabile.";
+      } else if (tempChange > 2 && precipChange < -15) {
+        agricultureImpactText = "Grave stress idrico per le risaie e colture estive, calo drastico delle rese. Aumento esponenziale dei costi di irrigazione e rischio di abbandono di alcune coltivazioni.";
+        impactAgriculture.classList.add('negative');
+      } else if (tempChange > 1 && precipChange < -5) {
+        agricultureImpactText = "Aumento della siccità e ondate di calore che minacciano le colture. Richiesta maggiore di irrigazione e potenziale riduzione della qualità/quantità dei raccolti.";
+        impactAgriculture.classList.add('negative');
+      } else if (precipChange > 10) {
+        agricultureImpactText = "Rischio di piogge intense e allagamenti che danneggiano le colture e causano erosione del suolo. Difficoltà nella semina e nel raccolto.";
+        impactAgriculture.classList.add('negative');
+      } else if (tempChange < 0.5 && precipChange > -5 && precipChange < 5) {
+        agricultureImpactText = "Condizioni relativamente stabili o lievi variazioni che richiedono piccoli aggiustamenti nelle pratiche agricole.";
+        impactAgriculture.classList.add('positive');
+      } else {
+        agricultureImpactText = "Variazioni moderate che richiedono adattamenti nelle pratiche agricole, come la scelta di varietà più resistenti o l'ottimizzazione dell'irrigazione.";
+        impactAgriculture.classList.add('warning');
+      }
+      impactAgriculture.querySelector('p').textContent = agricultureImpactText;
+
+      // Impact on Economy
+      let economyImpactText = "";
+      if (tempChange === 0 && precipChange === 0) {
+        economyImpactText = "Nessun impatto economico diretto significativo. L'economia locale mantiene la sua resilienza attuale.";
+      } else if (tempChange > 2 || Math.abs(precipChange) > 20) {
+        economyImpactText = "Rischio economico elevato: calo della produzione agricola, aumento dei costi energetici per raffreddamento, danni alle infrastrutture da eventi estremi. Potenziale perdita di posti di lavoro e diminuzione del PIL locale.";
+        impactEconomy.classList.add('negative');
+      } else if (tempChange > 1 || Math.abs(precipChange) > 10) {
+        economyImpactText = "Costi crescenti per l'adattamento (es. irrigazione, climatizzazione), impatto sulla filiera agroalimentare. Necessità di investimenti in resilienza e diversificazione economica.";
+        impactEconomy.classList.add('negative');
+      } else {
+        economyImpactText = "Impatti economici gestibili con strategie di adattamento proattive. Opportunità per nuove tecnologie e servizi legati alla sostenibilità.";
+        impactEconomy.classList.add('positive');
+      }
+      impactEconomy.querySelector('p').textContent = economyImpactText;
+    }
+
+    tempSlider.addEventListener('input', updateImpacts);
+    precipSlider.addEventListener('input', updateImpacts);
+
+    // Initial update when the page loads
+    updateImpacts();
   </script>
 </body>
 </html>
