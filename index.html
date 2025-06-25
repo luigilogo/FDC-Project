@@ -3,110 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisi Climatica - Vercelli</title>
+  <title>Clima e Impatti Socio-Economici - Vercelli</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-    :root {
-      --main-color: #2c3e50;
-      --accent-color: #3498db;
-      --light-gray: #f4f4f4;
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--light-gray);
-      color: #333;
-    }
-    header {
-      background: var(--main-color);
-      color: white;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    #map {
-      height: 60vh;
-    }
-    .content {
-      padding: 30px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h1, h2 {
-      color: var(--main-color);
-    }
-    .info-box {
-      background: white;
-      padding: 20px;
-      border-left: 6px solid var(--accent-color);
-      border-radius: 5px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    footer {
-      background: #2c3e50;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 0.9em;
-      margin-top: 40px;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    #map { height: 60vh; }
+    .content { padding: 20px; }
+    h1, h2 { color: #2b3e50; }
+    .info-box { background: #f0f0f0; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Analisi Climatica e Impatti Socio-Economici - Vercelli</h1>
-    <p>Uno sguardo integrato ai cambiamenti climatici sul territorio vercellese</p>
-  </header>
-
   <div id="map"></div>
-
   <div class="content">
+    <h1>Clima e Impatti a Vercelli</h1>
+
     <div class="info-box">
-      <h2>📊 Temperature Minime</h2>
+      <h2>Temperature Minime</h2>
       <ul>
-        <li><strong>TR</strong>: notti tropicali in aumento → peggioramento del comfort e aumento dei consumi energetici.</li>
-        <li><strong>TN10p</strong>: inverni più miti → meno gelate, ma più malattie agricole.</li>
-        <li><strong>TN90p</strong>: notti calde persistenti → stress idrico notturno e impatto sulla produttività agricola.</li>
+        <li><strong>TR</strong>: aumento notti tropicali → peggior comfort notturno, maggiore consumo energetico.</li>
+        <li><strong>TN10p</strong>: inverni meno rigidi → meno gelate ma più parassiti agricoli.</li>
+        <li><strong>TN90p</strong>: notti calde estive → maggiore stress per colture e persone vulnerabili.</li>
       </ul>
     </div>
 
     <div class="info-box">
-      <h2>🔥 Temperature Massime</h2>
+      <h2>Temperature Massime</h2>
       <ul>
-        <li><strong>TX90p</strong>: ondate di calore frequenti → effetti su salute pubblica e colture sensibili.</li>
-        <li><strong>HWN/HWF</strong>: più ondate, più lunghe → pressione su infrastrutture e sistemi sanitari.</li>
-        <li><strong>TXGE30</strong>: più giorni sopra i 30°C → crisi produttive nel comparto agricolo.</li>
+        <li><strong>TX90p</strong>: ondate di calore frequenti → impatto su salute pubblica e colture estive.</li>
+        <li><strong>HWN/HWF</strong>: più ondate, più lunghe → pressioni su sanità e sistema agricolo.</li>
+        <li><strong>TXGE30</strong>: più giorni torridi → diminuzione delle rese agricole, aumento black-out estivi.</li>
       </ul>
     </div>
 
     <div class="info-box">
-      <h2>🌧️ Precipitazioni</h2>
+      <h2>Precipitazioni</h2>
       <ul>
-        <li><strong>CDD</strong>: lunghi periodi siccitosi → irrigazione sempre più critica per le risaie.</li>
-        <li><strong>PRCPTOT</strong>: pioggia annuale stabile ma mal distribuita → difficoltà nella gestione idrica.</li>
-        <li><strong>R95p</strong>: eventi estremi più intensi → rischio allagamenti, erosione e perdite agrarie.</li>
-      </ul>
-    </div>
-
-    <div class="info-box">
-      <h2>🌱 Impatti sul Tessuto Socio-Economico</h2>
-      <p>
-        Il territorio di Vercelli, fortemente legato alla risicoltura, sta subendo conseguenze dirette dal cambiamento climatico:
-      </p>
-      <ul>
-        <li>Aumento dei costi per l'irrigazione e la protezione delle colture.</li>
-        <li>Maggiore stress su popolazione anziana durante le ondate di calore.</li>
-        <li>Pressioni economiche su piccole e medie imprese agricole per adattarsi.</li>
-        <li>Rischio di cali produttivi che impattano sull'export locale (riso, mais).</li>
-        <li>Esigenza di pianificazione urbanistica e infrastrutturale resiliente al clima.</li>
+        <li><strong>CDD</strong>: lunghi periodi secchi → stress idrico per risaie e aumento costi irrigazione.</li>
+        <li><strong>PRCPTOT</strong>: distribuzione irregolare → difficile pianificazione agricola e idrica.</li>
+        <li><strong>R95p</strong>: piogge intense improvvise → allagamenti, erosione e danni infrastrutturali.</li>
       </ul>
     </div>
   </div>
-
-  <footer>
-    Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
-  </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
@@ -120,26 +58,25 @@
       {
         name: "Zona Risaie",
         coords: [45.25, 8.52],
-        descrizione: "Area vulnerabile alla siccità estiva (CDD) e alla gestione idrica complessa."
+        descrizione: "Alta sensibilità alla siccità estiva (CDD), elevata domanda irrigua."
       },
       {
         name: "Area Urbana di Vercelli",
         coords: [45.32, 8.42],
-        descrizione: "Popolazione esposta all'effetto isola di calore e ai picchi termici prolungati."
+        descrizione: "Effetto isola di calore accentuato. Ondate di calore più impattanti su anziani."
       },
       {
         name: "Zona Mais e Frumento",
         coords: [45.35, 8.30],
-        descrizione: "A rischio di squilibri termici in primavera e piogge estreme dannose."
+        descrizione: "Soffre gelate irregolari e piogge intense dannose in primavera."
       }
     ];
 
     layers.forEach(zona => {
       L.circle(zona.coords, {
-        color: '#e74c3c',
-        fillColor: '#e74c3c',
-        fillOpacity: 0.5,
-        radius: 4000
+        color: 'darkred',
+        radius: 4000,
+        fillOpacity: 0.4
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
     });
   </script>
