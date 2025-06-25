@@ -443,6 +443,31 @@
     .impact-category.negative h4 { color: var(--danger-color); }
     .impact-category.negative h4 i { color: var(--danger-color); }
 
+    /* Styles for the map popup */
+    .leaflet-popup-content h3 {
+        color: var(--main-color);
+        font-size: 1.3em;
+        margin-top: 0;
+        margin-bottom: 10px;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 5px;
+    }
+    .leaflet-popup-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .leaflet-popup-content ul li {
+        margin-bottom: 8px;
+        line-height: 1.5em;
+        color: #555;
+    }
+    .leaflet-popup-content ul li i {
+        margin-right: 8px;
+        color: var(--accent-color);
+        font-size: 1em;
+    }
+
     @media (max-width: 768px) {
       nav {
         flex-direction: column;
@@ -591,7 +616,7 @@
             <h3><i class="fas fa-chart-line"></i> Competitività e Sicurezza Alimentare</h3>
             <span class="toggle-icon">&#9660;</span>
           </div>
-          <div class->
+          <div class="impact-item-content">
             <p>La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale. L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromising l'autosufficienza alimentare locale.</p>
           </div>
         </div>
@@ -703,23 +728,44 @@
       {
         name: "Zona Risaie",
         coords: [45.25, 8.52],
-        descrizione: "Vulnerabile a siccità (CDD), che aumenta i costi irrigui. Piogge intense (R95p) causano allagamenti. Temperature minime elevate (TR, TN90p) influenzano negativamente la produttività."
+        descrizione: `
+          <h3><i class="fas fa-hand-holding-water"></i> Impatti sull'Agricoltura del Riso</h3>
+          <ul>
+            <li><i class="fas fa-tint-slash"></i> Vulnerabile a siccità prolungata (CDD), che aumenta drasticamente i costi irrigui.</li>
+            <li><i class="fas fa-cloud-showers-heavy"></i> Piogge intense e concentrate (R95p) possono causare allagamenti e danni alle colture.</li>
+            <li><i class="fas fa-thermometer-three-quarters"></i> Temperature minime elevate (TR, TN90p) influenzano negativamente la produttività e la qualità del riso.</li>
+          </ul>
+        `
       },
       {
         name: "Area Urbana di Vercelli",
         coords: [45.32, 8.42],
-        descrizione: "Esposta a ondate di calore (TR, TXGE30, HWF, HWN) con disagio per la popolazione e stress su servizi sanitari. Effetto 'isola di calore' urbano amplificato."
+        descrizione: `
+          <h3><i class="fas fa-city"></i> Impatti sulla Vita Urbana</h3>
+          <ul>
+            <li><i class="fas fa-thermometer-full"></i> Esposta a ondate di calore (TR, TXGE30, HWF, HWN) con forte disagio per la popolazione.</li>
+            <li><i class="fas fa-hospital"></i> Aumento dello stress sui servizi sanitari dovuto a patologie correlate al calore.</li>
+            <li><i class="fas fa-tree-city"></i> L'effetto 'isola di calore' urbano è amplificato, rendendo le notti meno rinfrescanti.</li>
+          </ul>
+        `
       },
       {
         name: "Zona Mais e Frumento",
         coords: [45.35, 8.30],
-        descrizione: "Impattata da irregolarità precipitazioni (PRCPTOT) e siccità (CDD). Temperature elevate (TX90p) riducono resa. Meno notti fredde (TN10p) favoriscono parassiti."
+        descrizione: `
+          <h3><i class="fas fa-seedling"></i> Impatti su Mais e Frumento</h3>
+          <ul>
+            <li><i class="fas fa-cloud-sun"></i> Impattata da irregolarità delle precipitazioni (PRCPTOT) e periodi di siccità (CDD).</li>
+            <li><i class="fas fa-temperature-high"></i> Temperature massime elevate (TX90p) riducono la resa delle colture.</li>
+            <li><i class="fas fa-bug"></i> Meno notti fredde (TN10p) favoriscono la proliferazione di parassiti e patogeni.</li>
+          </ul>
+        `
       }
     ];
     layers.forEach(zona => {
       L.circle(zona.coords, {
-        color: '#D32F2F', /* Danger color for map markers */
-        fillColor: '#D32F2F',
+        color: 'var(--accent-color)', /* Use accent color for border */
+        fillColor: 'var(--accent-color)', /* Use accent color for fill */
         fillOpacity: 0.6,
         radius: 4000
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
