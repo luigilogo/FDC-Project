@@ -8,18 +8,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     :root {
-      --main-color: #0F2C59; /* Dark, deep blue for a strong digital base */
-      --accent-color: #00FFFF; /* Electric Cyan - Vibrant, interactive highlight */
-      --light-gray: #E0F7FA; /* Lightest cyan-blue tint - Fresh, airy background */
-      --warning-color: #FFD700; /* Gold - Bright warning */
-      --danger-color: #FF4500; /* Orange Red - Strong alert */
-      --success-color: #32CD32; /* Lime Green - Lively positive */
+      --main-color: #2E4057; /* Deep, sophisticated blue */
+      --accent-color: #00BFA5; /* Vibrant, modern teal */
+      --light-gray: #F5F8FA; /* Very light blue-gray for background */
+      --text-color: #333; /* Dark gray for main text */
+      --warning-color: #FFA000; /* Amber for caution */
+      --danger-color: #D32F2F; /* Deep Red for danger */
+      --success-color: #4CAF50; /* Medium Green for success */
     }
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
       background-color: var(--light-gray);
-      color: #333;
+      color: var(--text-color);
       text-align: left;
     }
     header {
@@ -38,7 +39,7 @@
       opacity: 0.9;
     }
     nav {
-      background: #1A374D; /* Slightly darker shade of the main blue */
+      background: #39526D; /* Slightly lighter shade of main-color for nav */
       display: flex;
       justify-content: center;
       padding: 15px 0;
@@ -324,7 +325,7 @@
       }
     }
     .interactive-section {
-      background: #E0FFFF; /* Light Cyan - Very light, cool background */
+      background: #E8F5E9; /* Light Green - Very light, cool background, harmonizes with success color */
       border-top: 5px solid var(--success-color);
       padding: 35px;
       margin-top: 40px;
@@ -720,8 +721,8 @@
     ];
     layers.forEach(zona => {
       L.circle(zona.coords, {
-        color: '#FF4500', /* Danger color for map markers */
-        fillColor: '#FF4500',
+        color: '#D32F2F', /* Danger color for map markers */
+        fillColor: '#D32F2F',
         fillOpacity: 0.6,
         radius: 4000
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
