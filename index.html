@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     :root {
-      --main-color: #1A374D; /* Deep Blue/Teal - Modern, digital base */
-      --accent-color: #00BFFF; /* Deep Sky Blue - Vibrant, interactive highlight */
-      --light-gray: #F0F8FF; /* Alice Blue - Very light, fresh background */
+      --main-color: #0F2C59; /* Dark, deep blue for a strong digital base */
+      --accent-color: #00FFFF; /* Electric Cyan - Vibrant, interactive highlight */
+      --light-gray: #E0F7FA; /* Lightest cyan-blue tint - Fresh, airy background */
       --warning-color: #FFD700; /* Gold - Bright warning */
       --danger-color: #FF4500; /* Orange Red - Strong alert */
       --success-color: #32CD32; /* Lime Green - Lively positive */
@@ -38,7 +38,7 @@
       opacity: 0.9;
     }
     nav {
-      background: #2A4E6C; /* Slightly darker than main-color */
+      background: #1A374D; /* Slightly darker shade of the main blue */
       display: flex;
       justify-content: center;
       padding: 15px 0;
@@ -98,24 +98,29 @@
     .info-box ul li {
       margin-bottom: 12px;
       line-height: 1.7em;
-      display: flex;
+      display: flex; /* Use flexbox */
       align-items: flex-start;
+      justify-content: space-between; /* Push items to ends */
       text-align: left;
+      flex-wrap: wrap; /* Allow wrapping on small screens */
+    }
+    .info-box ul li > span:first-child { /* Targets the descriptive text before the link */
+        flex-basis: 70%; /* Allow it to take up more space */
+        min-width: 250px; /* Ensure it doesn't get too squished */
     }
     .info-box ul li strong {
       color: var(--main-color);
     }
     .info-box ul li .show-graph-link {
         font-size: 0.95em;
-        margin-left: 15px;
         color: var(--accent-color);
         cursor: pointer;
         text-decoration: underline;
         font-weight: bold;
         transition: color 0.3s ease;
-        display: inline-block;
-        vertical-align: top;
-        line-height: 1.7em;
+        line-height: 1.7em; /* Match line-height of other text */
+        margin-left: auto; /* Push to the right */
+        white-space: nowrap; /* Keep the link on one line */
     }
     .info-box ul li .show-graph-link:hover {
         color: var(--main-color);
@@ -470,6 +475,16 @@
       .impact-item-header h3 {
         margin-bottom: 10px;
       }
+      .info-box ul li {
+          flex-direction: column;
+          align-items: flex-start;
+      }
+      .info-box ul li .show-graph-link {
+          margin-left: 0; /* Reset margin-left for small screens */
+          width: 100%; /* Take full width */
+          text-align: right; /* Align right within its own space */
+          margin-top: 5px; /* Add some space from the text above */
+      }
     }
   </style>
 </head>
@@ -491,15 +506,15 @@
       <h2><i class="fas fa-chart-bar"></i> Temperature Minime</h2>
       <ul>
         <li>
-          <strong>TR</strong> – Notti tropicali (> 20°C): in forte aumento, riducono raffrescamento notturno e aumentano stress termico.
+          <span><strong>TR</strong> – Notti tropicali (> 20°C): in forte aumento, riducono raffrescamento notturno e aumentano stress termico.</span>
           <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>TN10p</strong> – Notti molto fredde (10° percentile): in riduzione, meno gelate ma anche meno controllo naturale di parassiti.
+          <span><strong>TN10p</strong> – Notti molto fredde (10° percentile): in riduzione, meno gelate ma anche meno controllo naturale di parassiti.</span>
           <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>TN90p</strong> – Notti estremamente calde: in aumento, alterano ritmi fisiologici colture e aumentano consumo idrico.
+          <span><strong>TN90p</strong> – Notti estremamente calde: in aumento, alterano ritmi fisiologici colture e aumentano consumo idrico.</span>
           <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
         </li>
       </ul>
@@ -508,19 +523,19 @@
       <h2><i class="fas fa-fire"></i> Temperature Massime</h2>
       <ul>
         <li>
-          <strong>TX90p</strong> – Giorni con Tmax > 90° percentile: in crescita, peggiorano vivibilità estiva e aumentano costi climatizzazione/irrigazione.
+          <span><strong>TX90p</strong> – Giorni con Tmax > 90° percentile: in crescita, peggiorano vivibilità estiva e aumentano costi climatizzazione/irrigazione.</span>
           <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>HWF</strong> – Frequenza ondate di calore: in aumento, impatti sanitari e produttivi.
+          <span><strong>HWF</strong> – Frequenza ondate di calore: in aumento, impatti sanitari e produttivi.</span>
           <span class="show-graph-link" data-graph-id="hwf_tx90_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>HWN</strong> – Durata ondate di calore: in aumento, impatti sanitari e produttivi amplificati.
+          <span><strong>HWN</strong> – Durata ondate di calore: in aumento, impatti sanitari e produttivi amplificati.</span>
           <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>TXGE30</strong> – Giorni oltre i 30°C: in aumento, compromettono crescita agricola.
+          <span><strong>TXGE30</strong> – Giorni oltre i 30°C: in aumento, compromettono crescita agricola.</span>
           <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
         </li>
       </ul>
@@ -529,15 +544,15 @@
       <h2><i class="fas fa-cloud-showers-heavy"></i> Precipitazioni</h2>
       <ul>
         <li>
-          <strong>CDD</strong> – Periodi consecutivi senza pioggia (> 30 giorni): in aumento, indeboliscono resilienza idrica e aumentano rischio perdite riso.
+          <span><strong>CDD</strong> – Periodi consecutivi senza pioggia (> 30 giorni): in aumento, indeboliscono resilienza idrica e aumentano rischio perdite riso.</span>
           <span class="show-graph-link" data-graph-id="cdd_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>PRCPTOT</strong> – Totale annuale: stabile ma distribuzione irregolare e meno utile all’agricoltura.
+          <span><strong>PRCPTOT</strong> – Totale annuale: stabile ma distribuzione irregolare e meno utile all’agricoltura.</span>
           <span class="show-graph-link" data-graph-id="prcptot_ANN">Mostra grafico</span>
         </li>
         <li>
-          <strong>R95p</strong> – Piogge intense e concentrate: in aumento, causano allagamenti, erosione e inefficienza ricarica idrica.
+          <span><strong>R95p</strong> – Piogge intense e concentrate: in aumento, causano allagamenti, erosione e inefficienza ricarica idrica.</span>
           <span class="show-graph-link" data-graph-id="r95p_ANN">Mostra grafico</span>
         </li>
       </ul>
@@ -776,9 +791,11 @@
         impactPeople.classList.add('warning');
       } else {
         peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
+        peopleImpactText += " <br> (Collegato a indici come TR, TX90p, HWF, HWN)";
         impactPeople.classList.add('negative');
       }
-      impactPeople.querySelector('p').textContent = peopleImpactText;
+      impactPeople.querySelector('p').innerHTML = peopleImpactText;
+
 
       let agricultureImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
