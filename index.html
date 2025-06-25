@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -60,13 +61,21 @@
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       cursor: pointer;
+      /* Ensure that the overflow is visible for the list items */
+      overflow: hidden; /* Hide content when not expanded */
     }
     .info-box ul, .info-box-socio ul {
       padding-left: 20px;
+      list-style: none; /* Remove default list style for custom icon */
+      margin-top: 15px;
     }
     .info-box ul li, .info-box-socio ul li {
       margin-bottom: 8px;
       line-height: 1.6em;
+      display: none; /* Hidden by default, shown when expanded */
+    }
+    .info-box.expanded ul li, .info-box-socio.expanded ul li {
+      display: list-item; /* Show when expanded */
     }
     .info-box i {
       margin-right: 6px;
@@ -87,6 +96,34 @@
       padding: 10px;
       font-size: 0.9em;
       margin-top: 40px;
+    }
+    /* Styles for graphs */
+    .graphs-section {
+      display: none; /* Hidden by default, shown when expanded */
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+      text-align: center;
+    }
+    .info-box.expanded .graphs-section {
+      display: block; /* Show when the info-box is expanded */
+    }
+    .graphs-section img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .graphs-section h3 {
+      color: var(--accent-color);
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+    /* Initial state for list items */
+    .info-box.expanded ul li {
+        display: list-item;
     }
   </style>
 </head>
@@ -112,6 +149,12 @@
         <li><i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.</li>
         <li><i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.</li>
       </ul>
+      <div class="graphs-section">
+        <h3>Grafici Indici Temperature Minime</h3>
+        <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
+        <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde">
+        <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
+      </div>
     </div>
 
     <div id="massime" class="info-box">
@@ -121,6 +164,12 @@
         <li><i class="fas fa-burn"></i> <strong>HWN / HWF</strong> – Più eventi di ondate di calore e più lunghi: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.</li>
         <li><i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.</li>
       </ul>
+      <div class="graphs-section">
+        <h3>Grafici Indici Temperature Massime</h3>
+        <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
+        <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
+        <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
+      </div>
     </div>
 
     <div id="precipitazioni" class="info-box">
@@ -130,6 +179,12 @@
         <li><i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.</li>
         <li><i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.</li>
       </ul>
+      <div class="graphs-section">
+        <h3>Grafici Indici Precipitazioni</h3>
+        <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
+        <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
+        <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
+      </div>
     </div>
 
     <div id="impatto" class="info-box-socio">
@@ -195,15 +250,34 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Interactive functionality for info-boxes
     document.querySelectorAll('.info-box').forEach(box => {
+      const listItems = box.querySelectorAll('ul li');
+      const graphsSection = box.querySelector('.graphs-section');
+
       box.addEventListener('click', () => {
-        box.classList.toggle('expanded');
-        box.querySelectorAll('li').forEach(li => li.style.display = box.classList.contains('expanded') ? 'list-item' : 'none');
+        const isExpanded = box.classList.toggle('expanded');
+
+        listItems.forEach(li => {
+          li.style.display = isExpanded ? 'list-item' : 'none';
+        });
+
+        if (graphsSection) {
+          graphsSection.style.display = isExpanded ? 'block' : 'none';
+        }
       });
-    });
-    document.querySelectorAll('.info-box').forEach(box => {
+
+      // Set initial state to expanded
       box.classList.add('expanded');
+      listItems.forEach(li => li.style.display = 'list-item');
+      if (graphsSection) {
+        graphsSection.style.display = 'block';
+      }
     });
+
+    // The socio-economic info-box should also be interactive if desired, currently it's not handled by the above.
+    // If you want the socio-economic info-box to also toggle, you'll need to add it to the .info-box class or
+    // create a separate listener for .info-box-socio. For now, it's always visible as per previous code.
   </script>
 </body>
 </html>
