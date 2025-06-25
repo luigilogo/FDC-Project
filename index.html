@@ -11,9 +11,9 @@
       --main-color: #2c3e50;
       --accent-color: #3498db;
       --light-gray: #f4f4f4;
-      --warning-color: #f39c12;
-      --danger-color: #e74c3c;
-      --success-color: #27ae60;
+      --warning-color: #f39c12; /* Orange for socio-economic impacts */
+      --danger-color: #e74c3c; /* Red for high severity */
+      --success-color: #27ae60; /* Green for low severity/positive */
     }
     body {
       margin: 0;
@@ -33,14 +33,14 @@
       display: flex;
       justify-content: center;
       padding: 10px 0;
-      flex-wrap: wrap; /* Allow navigation items to wrap */
+      flex-wrap: wrap;
     }
     nav a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
-      padding: 5px 0; /* Add some padding for better click area */
+      padding: 5px 0;
     }
     nav a:hover {
       text-decoration: underline;
@@ -67,7 +67,7 @@
       border-radius: 8px;
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      cursor: pointer;
+      /* Removed cursor: pointer; from info-box as content is always visible */
       overflow: hidden;
     }
     .info-box ul, .info-box-socio ul {
@@ -87,6 +87,10 @@
     .info-box-socio {
       background: #fff9e6;
       border-left: 6px solid var(--warning-color);
+      /* Specific override for h2 border color within this section */
+    }
+    .info-box-socio h2 {
+        border-bottom-color: var(--warning-color);
     }
     .chart {
       margin: 25px auto;
@@ -100,7 +104,7 @@
       font-size: 0.9em;
       margin-top: 40px;
     }
-    /* Styles for graphs */
+    /* Styles for graphs - always visible */
     .graphs-section {
       margin-top: 20px;
       border-top: 1px solid #eee;
@@ -141,7 +145,7 @@
       margin: auto;
       display: block;
       width: 80%;
-      max-width: 900px; /* Increased max-width for better viewing */
+      max-width: 900px;
     }
     #caption {
       margin: auto;
@@ -184,7 +188,7 @@
 
     /* Interactive Section Styles */
     .interactive-section {
-      background: #e6f7ff; /* Light blue background */
+      background: #e6f7ff;
       border-left: 6px solid var(--accent-color);
       padding: 30px;
       margin-top: 40px;
@@ -273,6 +277,64 @@
     .impact-category.positive h4 { color: var(--success-color); }
     .impact-category.negative h4 { color: var(--danger-color); }
 
+    /* New styles for Impact Cards */
+    .impacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .impact-card {
+      background: #f9f9f9;
+      border-left: 5px solid var(--warning-color); /* Default warning color for impact */
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      cursor: default;
+    }
+
+    .impact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .impact-card .icon-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .impact-card .impact-icon {
+      font-size: 2.5em;
+      margin-right: 15px;
+      color: var(--warning-color); /* Default color, can be overridden by severity classes */
+    }
+    /* Severity Indicators for icons */
+    .impact-icon.severity-low { color: var(--success-color); }
+    .impact-icon.severity-medium { color: var(--warning-color); }
+    .impact-icon.severity-high { color: var(--danger-color); }
+
+    .impact-card h3 {
+      color: var(--main-color);
+      margin: 0;
+      font-size: 1.3em;
+    }
+
+    .impact-card .impact-summary {
+      font-style: italic;
+      color: #777;
+      margin-bottom: 15px;
+    }
+
+    .impact-card .impact-details {
+      border-top: 1px dashed #eee;
+      padding-top: 15px;
+      font-size: 0.95em;
+      color: #555;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       nav {
@@ -287,6 +349,9 @@
       }
       .interactive-controls {
         flex-direction: column;
+      }
+      .impacts-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
       }
     }
   </style>
@@ -355,47 +420,98 @@
 
     <div id="impatto" class="info-box-socio">
       <h2>🌱 Impatti sul Tessuto Socio-Economico</h2>
-      <p>Il cambiamento climatico sta già alterando in modo tangibile l’equilibrio socio-economico del vercellese, in particolare per un’economia agricola fortemente specializzata.</p>
-      <ul>
-        <li><i class="fas fa-hand-holding-water"></i> Aumento dei costi irrigui e dipendenza da fonti idriche stabili.</li>
-        <li><i class="fas fa-user-injured"></i> Popolazioni vulnerabili più esposte agli effetti sanitari delle ondate di calore.</li>
-        <li><i class="fas fa-industry"></i> Difficoltà economiche per piccole aziende agricole nell’adattamento al clima.</li>
-        <li><i class="fas fa-truck-loading"></i> Rischio di riduzione della produzione e perdita di competitività nei mercati.</li>
-        <li><i class="fas fa-city"></i> Necessità di pianificazione urbana e rurale resiliente al clima estremo.</li>
-      </ul>
+      <p>Il cambiamento climatico sta già alterando in modo tangibile l’equilibrio socio-economico del vercellese, in particolare per un’economia agricola fortemente specializzata. Gli scenari futuri indicano una crescente urgenza nell'adottare strategie di mitigazione e adattamento per preservare la qualità della vita e la prosperità economica del territorio.</p>
+
+      <div class="impacts-grid">
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-hand-holding-water impact-icon severity-high"></i>
+            <h3>Costi Irrigui e Stress Idrico</h3>
+          </div>
+          <p class="impact-summary">L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche.</p>
+          <div class="impact-details">
+            <p>I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
+          </div>
+        </div>
+
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-user-injured impact-icon severity-high"></i>
+            <h3>Rischi Sanitari e Disagio Urbano</h3>
+          </div>
+          <p class="impact-summary">L'intensificarsi delle ondate di calore e delle notti tropicali rappresenta una seria minaccia per la salute pubblica e il benessere dei cittadini.</p>
+          <div class="impact-details">
+            <p>L'incremento delle **Notti Tropicali (TR)**, dei giorni con **Temperature Massime estreme (TX90p)** e della **Frequenza/Durata delle Ondate di Calore (HWF/HWN)**, come evidenziato dai grafici, impedisce il recupero fisiologico durante le ore notturne. Questo porta a un aumento di colpi di calore, disidratazione e aggravamento di patologie cardiovascolari e respiratorie, specialmente tra anziani, bambini e lavoratori all'aperto. Le "isole di calore urbane" amplificano il problema, mettendo sotto pressione i servizi sanitari locali.</p>
+          </div>
+        </div>
+
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-handshake-slash impact-icon severity-medium"></i>
+            <h3>Vulnerabilità Economica Agricola</h3>
+          </div>
+          <p class="impact-summary">Le piccole e medie imprese agricole faticano ad adattarsi ai rapidi cambiamenti climatici, compromettendo la loro sostenibilità economica e competitività.</p>
+          <div class="impact-details">
+            <p>La minor frequenza di notti fredde (**TN10p**) altera il ciclo di vita dei parassiti, mentre le temperature costantemente elevate (**TXGE30**) e le notti calde (**TN90p**) stressano le colture durante le fasi critiche di crescita. Queste condizioni richiedono investimenti significativi in nuove tecnologie agricole, varietà resilienti e strategie di gestione integrate che spesso superano le capacità finanziarie delle piccole aziende. Ciò può portare a una riduzione della redditività, all'indebitamento e, nei casi peggiori, alla chiusura delle attività, con ripercussioni negative sull'occupazione e sul PIL locale.</p>
+          </div>
+        </div>
+
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-chart-line impact-icon severity-medium"></i>
+            <h3>Competitività e Sicurezza Alimentare</h3>
+          </div>
+          <p class="impact-summary">La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale.</p>
+          <div class="impact-details">
+            <p>L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromettendo l'autosufficienza alimentare locale.</p>
+          </div>
+        </div>
+
+        <div class="impact-card">
+          <div class="icon-header">
+            <i class="fas fa-city impact-icon severity-medium"></i>
+            <h3>Pianificazione Territoriale e Infrastrutture</h3>
+          </div>
+          <p class="impact-summary">La crescente frequenza di eventi climatici estremi impone una revisione urgente delle strategie di pianificazione urbana e rurale e degli investimenti infrastrutturali.</p>
+          <div class="impact-details">
+            <p>L'aumento delle piogge intense (**R95p**) richiede sistemi di drenaggio più efficienti e nuove strategie per la gestione del rischio idrogeologico, inclusa la manutenzione di argini e canali. Le ondate di calore più intense e prolungate (**HWF/HWN**) sollecitano la necessità di "infrastrutture verdi" (parchi, alberi, tetti verdi) nelle aree urbane per mitigare l'effetto isola di calore. La pianificazione deve considerare la resilienza di strade, edifici e reti di servizio, implicando investimenti significativi e un approccio integrato tra settori.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="chart">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Climate_change_graph_%282020%29.png/600px-Climate_change_graph_%282020%29.png" alt="Grafico cambiamento climatico" width="90%">
-        <p style="font-size: 0.85em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Climate_change_graph_%282020%29.png/600px-Climate_change_graph_%282020%29.png" alt="Grafico cambiamento climatico globale" width="90%">
+        <p style="font-size: 0.85em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature medie (dal 1880 al 2020)</p>
       </div>
     </div>
 
     <div id="simulatore" class="interactive-section">
       <h2>🌍 Simulatore di Impatto Climatico su Vercelli</h2>
-      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su persone, agricoltura ed economia.</p>
+      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su diversi settori. Questo simulatore fornisce un'indicazione basata su modelli semplificati e non sostituisce analisi climatiche approfondite.</p>
 
       <div class="interactive-controls">
         <div class="control-group">
-          <label for="temp-slider">Aumento Temperatura Media (°C): <span id="temp-value">0.0</span></label>
+          <label for="temp-slider">Aumento Temperatura Media Annuale (°C): <span id="temp-value">0.0</span></label>
           <input type="range" id="temp-slider" min="0" max="4" step="0.5" value="0">
         </div>
         <div class="control-group">
-          <label for="precip-slider">Variazione Precipitazioni Annue (%): <span id="precip-value">0</span></label>
+          <label for="precip-slider">Variazione Precipitazioni Annue Totali (%): <span id="precip-value">0</span></label>
           <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
         </div>
       </div>
 
       <div class="impact-results">
-        <h3>Impatti Stimati:</h3>
+        <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
         <div class="impact-category" id="impact-people">
-          <h4><i class="fas fa-users"></i> Impatto sulle Persone</h4>
+          <h4><i class="fas fa-users"></i> Impatto sulle Persone e la Salute</h4>
           <p>Seleziona i parametri per visualizzare l'impatto.</p>
         </div>
         <div class="impact-category" id="impact-agriculture">
-          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo</h4>
+          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo e l'Ambiente</h4>
           <p>Seleziona i parametri per visualizzare l'impatto.</p>
         </div>
         <div class="impact-category" id="impact-economy">
-          <h4><i class="fas fa-chart-line"></i> Impatto Economico Generale</h4>
+          <h4><i class="fas fa-chart-line"></i> Impatto Economico e Sociale</h4>
           <p>Seleziona i parametri per visualizzare l'impatto.</p>
         </div>
       </div>
@@ -463,7 +579,7 @@
 
     document.querySelectorAll('.graphs-section img').forEach(img => {
       img.addEventListener('click', function(event){
-        event.stopPropagation();
+        event.stopPropagation(); // Prevent any parent click listeners from firing
         modal.style.display = "block";
         modalImg.src = this.src;
         captionText.innerHTML = this.alt;
@@ -504,55 +620,43 @@
 
       // Impact on People
       let peopleImpactText = "";
-      if (tempChange === 0 && precipChange === 0) {
-        peopleImpactText = "Nessun cambiamento significativo previsto. Le condizioni attuali persistono.";
-      } else if (tempChange > 2) {
-        peopleImpactText = "Aumento significativo dello stress da calore, rischio elevato per anziani e bambini. Necessità di sistemi di raffreddamento e servizi sanitari potenziati.";
-        impactPeople.classList.add('negative');
-      } else if (tempChange > 0.5) {
-        peopleImpactText = "Aumento delle ondate di calore, maggiore disagio estivo e rischi moderati per la salute, specialmente per le fasce vulnerabili.";
-        impactPeople.classList.add('negative');
-      } else {
-        peopleImpactText = "Condizioni stabili o leggermente più calde, con impatti gestibili sulla salute pubblica.";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+        peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
         impactPeople.classList.add('positive');
+      } else if (tempChange >= 0.5 && tempChange < 2) {
+        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) portano a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
+        impactPeople.classList.add('warning');
+      } else { // tempChange >= 2
+        peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
+        impactPeople.classList.add('negative');
       }
       impactPeople.querySelector('p').textContent = peopleImpactText;
 
       // Impact on Agriculture
       let agricultureImpactText = "";
-      if (tempChange === 0 && precipChange === 0) {
-        agricultureImpactText = "Nessun cambiamento significativo previsto. La produzione agricola rimane stabile.";
-      } else if (tempChange > 2 && precipChange < -15) {
-        agricultureImpactText = "Grave stress idrico per le risaie e colture estive, calo drastico delle rese. Aumento esponenziale dei costi di irrigazione e rischio di abbandono di alcune coltivazioni.";
-        impactAgriculture.classList.add('negative');
-      } else if (tempChange > 1 && precipChange < -5) {
-        agricultureImpactText = "Aumento della siccità e ondate di calore che minacciano le colture. Richiesta maggiore di irrigazione e potenziale riduzione della qualità/quantità dei raccolti.";
-        impactAgriculture.classList.add('negative');
-      } else if (precipChange > 10) {
-        agricultureImpactText = "Rischio di piogge intense e allagamenti che danneggiano le colture e causano erosione del suolo. Difficoltà nella semina e nel raccolto.";
-        impactAgriculture.classList.add('negative');
-      } else if (tempChange < 0.5 && precipChange > -5 && precipChange < 5) {
-        agricultureImpactText = "Condizioni relativamente stabili o lievi variazioni che richiedono piccoli aggiustamenti nelle pratiche agricole.";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+        agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
         impactAgriculture.classList.add('positive');
-      } else {
-        agricultureImpactText = "Variazioni moderate che richiedono adattamenti nelle pratiche agricole, come la scelta di varietà più resistenti o l'ottimizzazione dell'irrigazione.";
+      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
+        agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
         impactAgriculture.classList.add('warning');
+      } else { // tempChange >= 1.5 or precipChange < -15 or precipChange > 15
+        agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
+        impactAgriculture.classList.add('negative');
       }
       impactAgriculture.querySelector('p').textContent = agricultureImpactText;
 
       // Impact on Economy
       let economyImpactText = "";
-      if (tempChange === 0 && precipChange === 0) {
-        economyImpactText = "Nessun impatto economico diretto significativo. L'economia locale mantiene la sua resilienza attuale.";
-      } else if (tempChange > 2 || Math.abs(precipChange) > 20) {
-        economyImpactText = "Rischio economico elevato: calo della produzione agricola, aumento dei costi energetici per raffreddamento, danni alle infrastrutture da eventi estremi. Potenziale perdita di posti di lavoro e diminuzione del PIL locale.";
-        impactEconomy.classList.add('negative');
-      } else if (tempChange > 1 || Math.abs(precipChange) > 10) {
-        economyImpactText = "Costi crescenti per l'adattamento (es. irrigazione, climatizzazione), impatto sulla filiera agroalimentare. Necessità di investimenti in resilienza e diversificazione economica.";
-        impactEconomy.classList.add('negative');
-      } else {
-        economyImpactText = "Impatti economici gestibili con strategie di adattamento proattive. Opportunità per nuove tecnologie e servizi legati alla sostenibilità.";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
+        economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
         impactEconomy.classList.add('positive');
+      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) {
+        economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
+        impactEconomy.classList.add('warning');
+      } else { // tempChange >= 1.5 or Math.abs(precipChange) > 15
+        economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
+        impactEconomy.classList.add('negative');
       }
       impactEconomy.querySelector('p').textContent = economyImpactText;
     }
