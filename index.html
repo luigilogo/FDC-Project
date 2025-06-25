@@ -59,6 +59,7 @@
       border-radius: 8px;
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
     }
     .info-box ul, .info-box-socio ul {
       padding-left: 20px;
@@ -107,27 +108,27 @@
     <div id="minime" class="info-box">
       <h2>📊 Temperature Minime</h2>
       <ul>
-        <li><i class="fas fa-temperature-low"></i> <strong>TR</strong> – Aumento delle notti tropicali: impatto sul benessere urbano e aumento del fabbisogno energetico notturno.</li>
-        <li><i class="fas fa-snowflake"></i> <strong>TN10p</strong> – Riduzione delle notti molto fredde: minori gelate, ma maggiore sopravvivenza di parassiti agricoli.</li>
-        <li><i class="fas fa-moon"></i> <strong>TN90p</strong> – Più notti calde: maggiore stress per le colture e difficoltà di raffrescamento notturno.</li>
+        <li><i class="fas fa-temperature-low"></i> <strong>TR</strong> – Le notti tropicali (Tmin > 20°C) sono in forte aumento. Questo fenomeno riduce il raffrescamento notturno, aumentando consumi energetici e stress termico sia per l'uomo che per le colture.</li>
+        <li><i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.</li>
+        <li><i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.</li>
       </ul>
     </div>
 
     <div id="massime" class="info-box">
       <h2>🔥 Temperature Massime</h2>
       <ul>
-        <li><i class="fas fa-sun"></i> <strong>TX90p</strong> – Aumento dei giorni molto caldi: rischio per salute pubblica e perdita di produttività agricola.</li>
-        <li><i class="fas fa-burn"></i> <strong>HWN / HWF</strong> – Più ondate e più lunghe: incremento degli impatti cumulativi su persone e infrastrutture.</li>
-        <li><i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – Più giornate sopra i 30°C: condizioni critiche per la gestione dell’acqua e delle colture.</li>
+        <li><i class="fas fa-sun"></i> <strong>TX90p</strong> – I giorni con Tmax > 90° percentile sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e irrigazione.</li>
+        <li><i class="fas fa-burn"></i> <strong>HWN / HWF</strong> – Più eventi di ondate di calore e più lunghi: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.</li>
+        <li><i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.</li>
       </ul>
     </div>
 
     <div id="precipitazioni" class="info-box">
       <h2>🌧️ Precipitazioni</h2>
       <ul>
-        <li><i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – Periodi secchi più lunghi: maggiore difficoltà nella pianificazione irrigua, soprattutto per il riso.</li>
-        <li><i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Pioggia annua irregolare: rende inefficiente la ricarica delle risorse idriche.</li>
-        <li><i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Piogge estreme più intense: aumenta il rischio di erosione e danni strutturali ai campi.</li>
+        <li><i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – I periodi consecutivi senza pioggia superano spesso i 30 giorni: questo indebolisce la resilienza idrica delle colture e aumenta il rischio di perdite nel riso.</li>
+        <li><i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.</li>
+        <li><i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.</li>
       </ul>
     </div>
 
@@ -152,10 +153,13 @@
     Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
   </footer>
 
+  <button onclick="scrollToTop()" style="position: fixed; bottom: 20px; left: 20px; padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 16px;">
+    ⬆ Torna su
+  </button>
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([45.32, 8.42], 10);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
@@ -185,6 +189,20 @@
         fillOpacity: 0.5,
         radius: 4000
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.info-box').forEach(box => {
+      box.addEventListener('click', () => {
+        box.classList.toggle('expanded');
+        box.querySelectorAll('li').forEach(li => li.style.display = box.classList.contains('expanded') ? 'list-item' : 'none');
+      });
+    });
+    document.querySelectorAll('.info-box').forEach(box => {
+      box.classList.add('expanded');
     });
   </script>
 </body>
