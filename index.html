@@ -342,7 +342,7 @@
     }
     .impact-card {
       background: #f9f9f9;
-      border-left: 5px solid var(--warning-color); /* Default warning color for impact */
+      border-left: 8px solid var(--warning-color); /* More pronounced border */
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -374,9 +374,9 @@
       color: var(--warning-color); /* Default color, overridden by severity classes */
     }
     /* Severity Indicators for icons */
-    .impact-icon.severity-low { color: var(--success-color); }
-    .impact-icon.severity-medium { color: var(--warning-color); }
-    .impact-icon.severity-high { color: var(--danger-color); }
+    .impact-icon.severity-low { color: var(--success-color); border-left-color: var(--success-color); } /* Added border color */
+    .impact-icon.severity-medium { color: var(--warning-color); border-left-color: var(--warning-color); } /* Added border color */
+    .impact-icon.severity-high { color: var(--danger-color); border-left-color: var(--danger-color); } /* Added border color */
     .impact-card .impact-summary {
       font-style: italic;
       color: #777;
@@ -426,7 +426,7 @@
         margin-top: 20px;
         margin-bottom: 30px;
         transition: filter 0.5s ease-out; /* Smooth transition for visual effects */
-        filter: brightness(1) contrast(1); /* Default filter */
+        filter: brightness(1) contrast(1) saturate(1) hue-rotate(0deg); /* Default neutral filter */
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         display: flex; /* For centering text if needed */
         justify-content: center;
@@ -486,7 +486,7 @@
       </ul>
     </div>
     <div id="massime" class="info-box">
-      <h2> 🔥  Temperature Massime</h2>
+      <h2> 🔥  Temperatures Massime</h2>
       <ul>
         <li>
           <i class="fas fa-sun"></i> <strong>TX90p</strong> – **Giorni Caldi Estremi:** Questo indice si riferisce ai giorni con temperatura massima superiore al 90° percentile. A Vercelli, questi giorni sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e l'irrigazione. <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
@@ -604,7 +604,7 @@
         </div>
       </div>
       <div id="trend-visualizer">
-        <p>Visualizzazione Andamento Stimato</p>
+        <p>Andamento Climatico</p>
       </div>
       <div class="impact-results">
         <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
@@ -654,11 +654,11 @@
     <p class="graph-commentary">Il grafico "Vercelli_94_24_tx90p_ANN.png" mostra l'andamento annuale dei giorni con temperatura massima superiore al 90° percentile (giorni caldi estremi). Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali.</p>
   </div>
   <div class="graph-data-container" id="graph-hwf_tx90_ANN">
-    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
+    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF - Frequenza Ondate di Calore">
     <p class="graph-commentary">Il grafico "Vercelli_94_24_hwf_tx90_ANN.png" illustra la frequenza annuale delle ondate di calore, definite in base alla persistenza di temperature massime elevate (superiori al 90° percentile per almeno 6 giorni consecutivi). Il grafico evidenzia un aumento nella frequenza di questi eventi. Ciò implica che Vercelli è soggetta a un numero crescente di periodi con caldo intenso e prolungato, aumentando i rischi per la salute pubblica, la produttività lavorativa e il consumo di risorse.</p>
   </div>
   <div class="graph-data-container" id="graph-hwn_tx90_ANN">
-    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
+    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN - Durata Ondate di Calore">
     <p class="graph-commentary">Il grafico "Vercelli_94_24_hwn_tx90_ANN.png" rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo.</p>
   </div>
   <div class="graph-data-container" id="graph-txge30_ANN">
@@ -811,21 +811,9 @@
       precipValueSpan.textContent = precipChange;
       extremeEventsValueSpan.textContent = extremeEventsChange;
 
-      // Update trend visualizer
-      let filterValue = '';
-      let visualizerText = 'Andamento Stimato';
-      if (tempChange > 2 || precipChange < -15 || extremeEventsChange >= 2) {
-        filterValue = `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(340deg)`;
-        visualizerText = 'Trend Critico';
-      } else if (tempChange > 0.5 || precipChange !== 0 || extremeEventsChange >= 1) {
-        filterValue = `brightness(1.1) contrast(1.1) saturate(1.2) hue-rotate(10deg)`;
-        visualizerText = 'Trend Moderato';
-      } else {
-        filterValue = `brightness(1) contrast(1) saturate(1) hue-rotate(0deg)`;
-        visualizerText = 'Trend Stabile';
-      }
-      trendVisualizer.style.filter = filterValue;
-      trendVisualizer.querySelector('p').textContent = visualizerText;
+      // Update trend visualizer - removed dynamic text and filter changes
+      trendVisualizer.style.filter = `brightness(1) contrast(1) saturate(1) hue-rotate(0deg)`; // Static neutral filter
+      trendVisualizer.querySelector('p').textContent = 'Andamento Climatico'; // Static text
 
       // Reset classes
       impactPeople.className = 'impact-category';
