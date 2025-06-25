@@ -67,7 +67,6 @@
       border-radius: 8px;
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      /* Removed cursor: pointer; from info-box as content is always visible */
       overflow: hidden;
     }
     .info-box ul, .info-box-socio ul {
@@ -75,10 +74,10 @@
       list-style: none;
       margin-top: 15px;
     }
-    .info-box ul li, .info-box-socio ul li {
+    .info-box ul li { /* Always visible for climate data points */
       margin-bottom: 8px;
       line-height: 1.6em;
-      display: list-item; /* Always visible */
+      display: list-item;
     }
     .info-box i {
       margin-right: 6px;
@@ -87,7 +86,6 @@
     .info-box-socio {
       background: #fff9e6;
       border-left: 6px solid var(--warning-color);
-      /* Specific override for h2 border color within this section */
     }
     .info-box-socio h2 {
         border-bottom-color: var(--warning-color);
@@ -277,7 +275,7 @@
     .impact-category.positive h4 { color: var(--success-color); }
     .impact-category.negative h4 { color: var(--danger-color); }
 
-    /* New styles for Impact Cards */
+    /* New styles for Impact Cards grid */
     .impacts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
@@ -292,7 +290,7 @@
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-      cursor: default;
+      /* cursor: pointer; // Not for the whole card anymore, just header */
     }
 
     .impact-card:hover {
@@ -300,39 +298,77 @@
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
+    /* Accordion styles */
     .impact-card .icon-header {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      cursor: pointer; /* Indicate clickable area */
+      position: relative; /* For button positioning */
+      padding-bottom: 10px; /* Space for the summary */
+      border-bottom: 1px solid #eee; /* Separator for header */
+    }
+
+    .impact-card .icon-header h3 {
+      flex-grow: 1; /* Allow h3 to take available space */
+      margin: 0;
+      font-size: 1.3em;
+      color: var(--main-color);
     }
 
     .impact-card .impact-icon {
       font-size: 2.5em;
       margin-right: 15px;
-      color: var(--warning-color); /* Default color, can be overridden by severity classes */
+      color: var(--warning-color); /* Default color, overridden by severity classes */
     }
     /* Severity Indicators for icons */
     .impact-icon.severity-low { color: var(--success-color); }
     .impact-icon.severity-medium { color: var(--warning-color); }
     .impact-icon.severity-high { color: var(--danger-color); }
 
-    .impact-card h3 {
-      color: var(--main-color);
-      margin: 0;
-      font-size: 1.3em;
-    }
-
     .impact-card .impact-summary {
       font-style: italic;
       color: #777;
-      margin-bottom: 15px;
+      margin-bottom: 0; /* Adjusted for accordion */
+      padding-top: 10px; /* Space from header */
     }
 
-    .impact-card .impact-details {
-      border-top: 1px dashed #eee;
-      padding-top: 15px;
-      font-size: 0.95em;
-      color: #555;
+    .impact-details-collapsible {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, padding-top 0.4s ease-out; /* Smooth transition */
+      padding-top: 0;
+    }
+
+    .impact-card.expanded .impact-details-collapsible {
+      max-height: 500px; /* Large enough to contain content, adjust if needed */
+      padding-top: 15px; /* Add padding when expanded */
+      /* border-top is now handled by the header */
+    }
+
+    .impact-details-collapsible p {
+        margin-top: 0; /* Remove default paragraph top margin */
+        line-height: 1.6em;
+        color: #555;
+    }
+
+    .expand-button {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      color: var(--main-color);
+      cursor: pointer;
+      padding: 5px;
+      margin-left: 10px; /* Space from h3 */
+      transition: transform 0.3s ease;
+    }
+
+    .expand-button .fa-chevron-down {
+      transform: rotate(0deg);
+    }
+
+    .impact-card.expanded .expand-button .fa-chevron-down {
+      transform: rotate(180deg);
     }
 
     /* Responsive adjustments */
@@ -427,9 +463,10 @@
           <div class="icon-header">
             <i class="fas fa-hand-holding-water impact-icon severity-high"></i>
             <h3>Costi Irrigui e Stress Idrico</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
           </div>
           <p class="impact-summary">L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche.</p>
-          <div class="impact-details">
+          <div class="impact-details-collapsible">
             <p>I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
           </div>
         </div>
@@ -438,9 +475,10 @@
           <div class="icon-header">
             <i class="fas fa-user-injured impact-icon severity-high"></i>
             <h3>Rischi Sanitari e Disagio Urbano</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
           </div>
           <p class="impact-summary">L'intensificarsi delle ondate di calore e delle notti tropicali rappresenta una seria minaccia per la salute pubblica e il benessere dei cittadini.</p>
-          <div class="impact-details">
+          <div class="impact-details-collapsible">
             <p>L'incremento delle **Notti Tropicali (TR)**, dei giorni con **Temperature Massime estreme (TX90p)** e della **Frequenza/Durata delle Ondate di Calore (HWF/HWN)**, come evidenziato dai grafici, impedisce il recupero fisiologico durante le ore notturne. Questo porta a un aumento di colpi di calore, disidratazione e aggravamento di patologie cardiovascolari e respiratorie, specialmente tra anziani, bambini e lavoratori all'aperto. Le "isole di calore urbane" amplificano il problema, mettendo sotto pressione i servizi sanitari locali.</p>
           </div>
         </div>
@@ -449,9 +487,10 @@
           <div class="icon-header">
             <i class="fas fa-handshake-slash impact-icon severity-medium"></i>
             <h3>Vulnerabilità Economica Agricola</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
           </div>
           <p class="impact-summary">Le piccole e medie imprese agricole faticano ad adattarsi ai rapidi cambiamenti climatici, compromettendo la loro sostenibilità economica e competitività.</p>
-          <div class="impact-details">
+          <div class="impact-details-collapsible">
             <p>La minor frequenza di notti fredde (**TN10p**) altera il ciclo di vita dei parassiti, mentre le temperature costantemente elevate (**TXGE30**) e le notti calde (**TN90p**) stressano le colture durante le fasi critiche di crescita. Queste condizioni richiedono investimenti significativi in nuove tecnologie agricole, varietà resilienti e strategie di gestione integrate che spesso superano le capacità finanziarie delle piccole aziende. Ciò può portare a una riduzione della redditività, all'indebitamento e, nei casi peggiori, alla chiusura delle attività, con ripercussioni negative sull'occupazione e sul PIL locale.</p>
           </div>
         </div>
@@ -460,9 +499,10 @@
           <div class="icon-header">
             <i class="fas fa-chart-line impact-icon severity-medium"></i>
             <h3>Competitività e Sicurezza Alimentare</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
           </div>
           <p class="impact-summary">La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale.</p>
-          <div class="impact-details">
+          <div class="impact-details-collapsible">
             <p>L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromettendo l'autosufficienza alimentare locale.</p>
           </div>
         </div>
@@ -471,9 +511,10 @@
           <div class="icon-header">
             <i class="fas fa-city impact-icon severity-medium"></i>
             <h3>Pianificazione Territoriale e Infrastrutture</h3>
+            <button class="expand-button"><i class="fas fa-chevron-down"></i></button>
           </div>
           <p class="impact-summary">La crescente frequenza di eventi climatici estremi impone una revisione urgente delle strategie di pianificazione urbana e rurale e degli investimenti infrastrutturali.</p>
-          <div class="impact-details">
+          <div class="impact-details-collapsible">
             <p>L'aumento delle piogge intense (**R95p**) richiede sistemi di drenaggio più efficienti e nuove strategie per la gestione del rischio idrogeologico, inclusa la manutenzione di argini e canali. Le ondate di calore più intense e prolungate (**HWF/HWN**) sollecitano la necessità di "infrastrutture verdi" (parchi, alberi, tetti verdi) nelle aree urbane per mitigare l'effetto isola di calore. La pianificazione deve considerare la resilienza di strade, edifici e reti di servizio, implicando investimenti significativi e un approccio integrato tra settori.</p>
           </div>
         </div>
@@ -579,7 +620,7 @@
 
     document.querySelectorAll('.graphs-section img').forEach(img => {
       img.addEventListener('click', function(event){
-        event.stopPropagation(); // Prevent any parent click listeners from firing
+        event.stopPropagation();
         modal.style.display = "block";
         modalImg.src = this.src;
         captionText.innerHTML = this.alt;
@@ -594,6 +635,32 @@
       if (event.target === modal) {
         modal.style.display = "none";
       }
+    });
+
+    // Accordion functionality for Impact Cards
+    document.querySelectorAll('.impact-card .icon-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const impactCard = this.closest('.impact-card');
+        const details = impactCard.querySelector('.impact-details-collapsible');
+        const buttonIcon = this.querySelector('.expand-button i');
+
+        if (impactCard.classList.contains('expanded')) {
+          impactCard.classList.remove('expanded');
+          buttonIcon.classList.remove('fa-chevron-up');
+          buttonIcon.classList.add('fa-chevron-down');
+        } else {
+          // Optional: Close other open accordions when a new one is opened
+          // document.querySelectorAll('.impact-card.expanded').forEach(openCard => {
+          //   openCard.classList.remove('expanded');
+          //   openCard.querySelector('.expand-button i').classList.remove('fa-chevron-up');
+          //   openCard.querySelector('.expand-button i').classList.add('fa-chevron-down');
+          // });
+
+          impactCard.classList.add('expanded');
+          buttonIcon.classList.remove('fa-chevron-down');
+          buttonIcon.classList.add('fa-chevron-up');
+        }
+      });
     });
 
     // Interactive Impact Simulator
@@ -644,21 +711,25 @@
         agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
         impactAgriculture.classList.add('negative');
       }
-      impactAgriculture.querySelector('p').textContent = agricultureImpactText;
+      agricultureImpactText += "  <br> (Collegato a indici come CDD, R95p, TXGE30)"; // Add data link reminder
+      impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
 
       // Impact on Economy
       let economyImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
+        economyImpactText += " <br> (Collegato a scenari globali di resilienza economica)";
         impactEconomy.classList.add('positive');
       } else if ((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) {
         economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
+        economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
         impactEconomy.classList.add('warning');
       } else { // tempChange >= 1.5 or Math.abs(precipChange) > 15
         economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
+        economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
         impactEconomy.classList.add('negative');
       }
-      impactEconomy.querySelector('p').textContent = economyImpactText;
+      impactEconomy.querySelector('p').innerHTML = economyImpactText;
     }
 
     tempSlider.addEventListener('input', updateImpacts);
