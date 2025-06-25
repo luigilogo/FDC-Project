@@ -6,19 +6,20 @@
   <title>Analisi Climatica - Vercelli</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --main-color: #2E4057; /* Deep, sophisticated blue */
       --accent-color: #00BFA5; /* Vibrant, modern teal */
       --light-gray: #F5F8FA; /* Very light blue-gray for background */
       --text-color: #333; /* Dark gray for main text */
-      --warning-color: #FFA000; /* Amber for caution */
-      --danger-color: #D32F2F; /* Deep Red for danger */
+      --warning-color: #FFC107; /* Amber for caution */
+      --danger-color: #E74C3C; /* Deep Red for danger */
       --success-color: #4CAF50; /* Medium Green for success */
     }
     body {
       margin: 0;
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Roboto', sans-serif; /* Changed font to Roboto */
       background-color: var(--light-gray);
       color: var(--text-color);
       text-align: left;
@@ -28,15 +29,17 @@
       color: white;
       padding: 30px 0;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25); /* Enhanced shadow */
     }
     header h1 {
       font-size: 2.8em;
       margin-bottom: 10px;
+      font-weight: 700;
     }
     header p {
       font-size: 1.2em;
       opacity: 0.9;
+      font-weight: 300;
     }
     nav {
       background: #39526D; /* Slightly lighter shade of main-color for nav */
@@ -44,13 +47,13 @@
       justify-content: center;
       padding: 15px 0;
       flex-wrap: wrap;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Enhanced shadow */
     }
     nav a {
       color: white;
       margin: 0 20px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
       padding: 8px 0;
       transition: color 0.3s ease, text-decoration 0.3s ease;
     }
@@ -63,6 +66,7 @@
       width: 100%;
       margin-bottom: 40px;
       border-bottom: 5px solid var(--accent-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .content {
       padding: 40px;
@@ -78,6 +82,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      font-weight: 600;
     }
     h2 i {
       color: var(--accent-color);
@@ -87,7 +92,7 @@
       padding: 30px;
       border-radius: 10px;
       margin-bottom: 40px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12); /* Enhanced shadow */
       overflow: hidden;
       border-top: 5px solid var(--accent-color);
     }
@@ -212,6 +217,7 @@
     }
     .impact-item.active .impact-item-content {
         max-height: 500px;
+        padding: 25px 25px 25px; /* Adjust padding to make it visible */
     }
     .impact-item.active .impact-item-header .toggle-icon {
         transform: rotate(180deg);
@@ -269,7 +275,7 @@
       background-color: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Enhanced shadow */
       animation-name: zoom;
       animation-duration: 0.6s;
     }
@@ -444,6 +450,14 @@
     .impact-category.negative h4 i { color: var(--danger-color); }
 
     /* Styles for the map popup */
+    .leaflet-popup-content-wrapper {
+        border-radius: 10px; /* Rounded corners for popup */
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2); /* Subtle shadow for popup */
+        padding: 15px;
+    }
+    .leaflet-popup-content {
+        padding: 5px 10px; /* Adjust inner padding */
+    }
     .leaflet-popup-content h3 {
         color: var(--main-color);
         font-size: 1.3em;
@@ -451,6 +465,7 @@
         margin-bottom: 10px;
         border-bottom: 2px solid var(--accent-color);
         padding-bottom: 5px;
+        font-weight: 500;
     }
     .leaflet-popup-content ul {
         list-style: none;
@@ -461,11 +476,32 @@
         margin-bottom: 8px;
         line-height: 1.5em;
         color: #555;
+        font-weight: 400;
     }
     .leaflet-popup-content ul li i {
         margin-right: 8px;
         color: var(--accent-color);
         font-size: 1em;
+    }
+
+    /* Scroll to top button */
+    button[onclick="scrollToTop()"] {
+        position: fixed;
+        bottom: 20px;
+        right: 20px; /* Changed to right for common placement */
+        padding: 12px 18px;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        font-size: 18px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button[onclick="scrollToTop()"]:hover {
+        background-color: #008f7a; /* Darker shade on hover */
+        transform: translateY(-2px); /* Slight lift effect */
     }
 
     @media (max-width: 768px) {
@@ -767,7 +803,8 @@
         color: 'var(--accent-color)', /* Use accent color for border */
         fillColor: 'var(--accent-color)', /* Use accent color for fill */
         fillOpacity: 0.6,
-        radius: 4000
+        radius: 4000,
+        weight: 2 /* Added border weight */
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
     });
     function scrollToTop() {
