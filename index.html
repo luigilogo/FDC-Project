@@ -498,7 +498,7 @@
           <i class="fas fa-burn"></i> <strong>HWN</strong> – **Durata Ondate di Calore:** Questo indice misura la durata media degli eventi di ondate di calore. Un incremento di questi eventi significa periodi più lunghi di caldo, con impatti sanitari e produttivi su tutta la comunità e effetti cumulativi che amplificano il danno. <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
         </li>
         <li>
-          <i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – **Giorni Oltre 30°C:** Questo indice rappresenta l'aumento dei giorni in cui la temperatura massima supera i 30°C. Tali condizioni creano un caldo continuo che compromette le fasi critiche di crescita agricola. <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
+          <i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – **Giorni Oltre 30°C:** Questo indice rappresenta l'aumento dei giorni in cui la temperatura massima supera i 30°C. Tali condizioni creano un caldo continuo che compromettono le fasi critiche di crescita agricola. <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
         </li>
       </ul>
     </div>
@@ -596,11 +596,32 @@
         </div>
         <div class="control-group">
           <label for="precip-slider">Variazione Precipitazioni Annue Totali (%): <span id="precip-value">0</span></label>
-
           <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
         </div>
+        <div class="control-group">
+          <label for="extreme-events-slider">Aumento Frequenza Eventi Estremi (0=stabile, 3=molto alto): <span id="extreme-events-value">0</span></label>
+          <input type="range" id="extreme-events-slider" min="0" max="3" step="1" value="0">
+        </div>
       </div>
+      <div id="trend-visualizer">
+        <p>Visualizzazione Andamento Stimato</p>
       </div>
+      <div class="impact-results">
+        <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
+        <div class="impact-category" id="impact-people">
+          <h4><i class="fas fa-users"></i> Impatto sulle Persone e la Salute</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-agriculture">
+          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo e l'Ambiente</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+        <div class="impact-category" id="impact-economy">
+          <h4><i class="fas fa-chart-line"></i> Impatto Economico e Sociale</h4>
+          <p>Seleziona i parametri per visualizzare l'impatto.</p>
+        </div>
+      </div>
+    </div>
   </div>
   <footer>
     Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
@@ -650,7 +671,7 @@
   </div>
   <div class="graph-data-container" id="graph-prcptot_ANN">
     <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
-    <p class="graph-commentary">Il grafico "Vercelli_94_24_prcptot_ANN.png" mostra l'andamento annuale delle precipitazioni totali. Il grafico indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura.</p>
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_prcptot_ANN.png" indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura.</p>
   </div>
   <div class="graph-data-container" id="graph-r95p_ANN">
     <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
@@ -762,35 +783,109 @@
           buttonIcon.classList.add('fa-chevron-down');
 
         } else {
-          // Optional: Close other open accordions when a new one is opened
-          // document.querySelectorAll('.impact-card.expanded').forEach(openCard => {
-          //   openCard.classList.remove('expanded');
-          //   openCard.querySelector('.expand-button i').classList.remove('fa-chevron-up');
-          //   openCard.querySelector('.expand-button i').classList.add('fa-chevron-down');
-          // });
           impactCard.classList.add('expanded');
           buttonIcon.classList.remove('fa-chevron-down');
           buttonIcon.classList.add('fa-chevron-up');
         }
       });
     });
-    // Interactive Impact Simulator (simplified - no output visualization)
+    // Interactive Impact Simulator
     const tempSlider = document.getElementById('temp-slider');
     const tempValueSpan = document.getElementById('temp-value');
     const precipSlider = document.getElementById('precip-slider');
     const precipValueSpan = document.getElementById('precip-value');
+    const extremeEventsSlider = document.getElementById('extreme-events-slider');
+    const extremeEventsValueSpan = document.getElementById('extreme-events-value');
 
-    function updateSimulatorValues() {
+    const impactPeople = document.getElementById('impact-people');
+    const impactAgriculture = document.getElementById('impact-agriculture');
+    const impactEconomy = document.getElementById('impact-economy');
+    const trendVisualizer = document.getElementById('trend-visualizer');
+
+    function updateImpacts() {
       const tempChange = parseFloat(tempSlider.value);
       const precipChange = parseInt(precipSlider.value);
+      const extremeEventsChange = parseInt(extremeEventsSlider.value);
+
       tempValueSpan.textContent = tempChange.toFixed(1);
       precipValueSpan.textContent = precipChange;
-      // No impact text or trend visualizer updates since those sections are removed.
+      extremeEventsValueSpan.textContent = extremeEventsChange;
+
+      // Update trend visualizer
+      let filterValue = '';
+      let visualizerText = 'Andamento Stimato';
+      if (tempChange > 2 || precipChange < -15 || extremeEventsChange >= 2) {
+        filterValue = `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(340deg)`;
+        visualizerText = 'Trend Critico';
+      } else if (tempChange > 0.5 || precipChange !== 0 || extremeEventsChange >= 1) {
+        filterValue = `brightness(1.1) contrast(1.1) saturate(1.2) hue-rotate(10deg)`;
+        visualizerText = 'Trend Moderato';
+      } else {
+        filterValue = `brightness(1) contrast(1) saturate(1) hue-rotate(0deg)`;
+        visualizerText = 'Trend Stabile';
+      }
+      trendVisualizer.style.filter = filterValue;
+      trendVisualizer.querySelector('p').textContent = visualizerText;
+
+      // Reset classes
+      impactPeople.className = 'impact-category';
+      impactAgriculture.className = 'impact-category';
+      impactEconomy.className = 'impact-category';
+
+      // Impact on People and Health
+      let peopleImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5 && extremeEventsChange === 0) {
+        peopleImpactText = "In uno scenario di cambiamenti climatici minimi e stabilità degli eventi estremi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
+        impactPeople.classList.add('positive');
+      } else if ((tempChange >= 0.5 && tempChange < 2) || (extremeEventsChange === 1)) {
+        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) e un lieve aumento degli eventi estremi porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto e una maggiore preparazione per eventi improvvisi.";
+        impactPeople.classList.add('warning');
+      } else {
+        peopleImpactText = "Un aumento significativo delle temperature, ondate di calore prolungate (HWF/HWN) e un'alta frequenza di eventi estremi (es. piogge torrenziali, grandinate) causano un elevato stress termico e un forte incremento di patologie correlate al calore e rischi di infortuni/disagi da eventi improvvisi. La qualità della vita urbana diminuisce e i sistemi sanitari e di emergenza sono messi a dura prova, con impatti estesi su tutta la popolazione.";
+        impactPeople.classList.add('negative');
+      }
+      impactPeople.querySelector('p').textContent = peopleImpactText;
+
+      // Impact on Agriculture and Environment
+      let agricultureImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5 && extremeEventsChange === 0) {
+        agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. La stabilità degli eventi estremi minimizza i rischi di danni improvvisi alle colture. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        impactAgriculture.classList.add('positive');
+      } else if (((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) || (extremeEventsChange === 1)) {
+        agricultureImpactText = "L'aumento dei periodi di siccità (CDD), le precipitazioni più intense (R95p) o un moderato aumento degli eventi estremi mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese. Gli eventi estremi possono causare perdite localizzate.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        impactAgriculture.classList.add('warning');
+      } else {
+        agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali, aggravate da un'alta frequenza di eventi estremi, causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni. La resilienza ambientale è fortemente compromessa.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        impactAgriculture.classList.add('negative');
+      }
+      impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
+
+      // Impact on Economy and Society
+      let economyImpactText = "";
+      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5 && extremeEventsChange === 0) {
+        economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi e stabilità degli eventi estremi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità e innovazione.";
+        economyImpactText += " <br> (Collegato a scenari globali di resilienza economica)";
+        impactEconomy.classList.add('positive');
+      } else if (((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) || (extremeEventsChange === 1)) {
+        economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p), anche se moderati in frequenza, impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale e potenziale instabilità sociale in settori chiave.";
+        economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
+        impactEconomy.classList.add('warning');
+      } else {
+        economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture, aggravati da un'alta frequenza di eventi estremi, causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale e la coesione comunitaria.";
+        economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
+        impactEconomy.classList.add('negative');
+      }
+      impactEconomy.querySelector('p').innerHTML = economyImpactText;
     }
-    tempSlider.addEventListener('input', updateSimulatorValues);
-    precipSlider.addEventListener('input', updateSimulatorValues);
-    // Initial update when the page loads
-    updateSimulatorValues();
+
+    tempSlider.addEventListener('input', updateImpacts);
+    precipSlider.addEventListener('input', updateImpacts);
+    extremeEventsSlider.addEventListener('input', updateImpacts);
+
+    updateImpacts(); // Initial update when the page loads
   </script>
 </body>
 </html>
