@@ -79,6 +79,17 @@
       line-height: 1.6em;
       display: list-item;
     }
+    .info-box ul li .show-graph-link {
+        font-size: 0.9em;
+        margin-left: 10px;
+        color: var(--accent-color);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .info-box ul li .show-graph-link:hover {
+        color: var(--main-color);
+    }
+
     .info-box i {
       margin-right: 6px;
       color: var(--accent-color);
@@ -102,28 +113,22 @@
       font-size: 0.9em;
       margin-top: 40px;
     }
-    /* Styles for graphs - always visible */
-    .graphs-section {
-      margin-top: 20px;
-      border-top: 1px solid #eee;
-      padding-top: 20px;
-      text-align: center;
-      display: block; /* Always visible */
+    /* Hidden section to hold graph data */
+    .graph-data-container {
+        display: none; /* Hide this container */
     }
-    .graphs-section img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
+    .graph-data-container img {
+        max-width: 100%;
+        height: auto;
     }
-    .graphs-section h3 {
-      color: var(--accent-color);
-      margin-bottom: 10px;
-      font-size: 1.1em;
+    .graph-data-container .graph-commentary {
+        margin-top: 15px;
+        font-size: 1em;
+        line-height: 1.6em;
+        color: #666;
+        text-align: left; /* Align commentary left */
     }
+
 
     /* Modal (Lightbox) Styles */
     .modal {
@@ -144,6 +149,7 @@
       display: block;
       width: 80%;
       max-width: 900px;
+      border-radius: 8px; /* Added border radius */
     }
     #caption {
       margin: auto;
@@ -153,7 +159,9 @@
       text-align: center;
       color: #ccc;
       padding: 10px 0;
-      height: 150px;
+      height: auto; /* Changed height to auto */
+      font-size: 1.1em; /* Increased font size */
+      line-height: 1.5; /* Added line height for readability */
     }
     .modal-content, #caption {
       animation-name: zoom;
@@ -411,47 +419,59 @@
     <div id="minime" class="info-box">
       <h2>📊 Temperature Minime</h2>
       <ul>
-        <li><i class="fas fa-temperature-low"></i> <strong>TR</strong> – Le notti tropicali (Tmin > 20°C) sono in forte aumento. Questo fenomeno riduce il raffrescamento notturno, aumentando consumi energetici e stress termico sia per l'uomo che per le colture.</li>
-        <li><i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.</li>
-        <li><i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.</li>
+        <li>
+          <i class="fas fa-temperature-low"></i> <strong>TR</strong> – Le notti tropicali (Tmin > 20°C) sono in forte aumento. Questo fenomeno riduce il raffrescamento notturno, aumentando consumi energetici e stress termico sia per l'uomo che per le colture.
+          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-snowflake"></i> <strong>TN10p</strong> – La riduzione delle notti molto fredde (10° percentile) implica meno gelate, ma anche meno controllo naturale di parassiti, con conseguenze per la salute delle colture.
+          <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-moon"></i> <strong>TN90p</strong> – L’incremento delle notti estremamente calde altera i ritmi fisiologici delle colture, anticipa le fasi vegetative e aumenta il consumo idrico.
+          <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
+        </li>
       </ul>
-      <div class="graphs-section">
-        <h3>Grafici Indici Temperature Minime</h3>
-        <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali" class="enlargeable-graph">
-        <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde" class="enlargeable-graph">
-        <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive" class="enlargeable-graph">
-      </div>
     </div>
 
     <div id="massime" class="info-box">
       <h2>🔥 Temperature Massime</h2>
       <ul>
-        <li><i class="fas fa-sun"></i> <strong>TX90p</strong> – I giorni con Tmax > 90° percentile sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e irrigazione.</li>
-        <li><i class="fas fa-burn"></i> <strong>HWN / HWF</strong> – Più eventi di ondate di calore e più lunghi: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.</li>
-        <li><i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.</li>
+        <li>
+          <i class="fas fa-sun"></i> <strong>TX90p</strong> – I giorni con Tmax > 90° percentile sono in crescita costante. Questo peggiora la vivibilità estiva e aumenta i costi per la climatizzazione e irrigazione.
+          <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-burn"></i> <strong>HWF</strong> – Più eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
+          <span class="show-graph-link" data-graph-id="hwf_tx90_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-burn"></i> <strong>HWN</strong> – Più lunghi eventi di ondate di calore: impatti sanitari e produttivi su tutta la comunità, con effetti cumulativi che amplificano il danno.
+          <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-thermometer-full"></i> <strong>TXGE30</strong> – L’aumento dei giorni oltre i 30°C crea condizioni di caldo continuo che compromettono le fasi critiche di crescita agricola.
+          <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
+        </li>
       </ul>
-      <div class="graphs-section">
-        <h3>Grafici Indici Temperature Massime</h3>
-        <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi" class="enlargeable-graph">
-        <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore" class="enlargeable-graph">
-        <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore" class="enlargeable-graph">
-        <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C" class="enlargeable-graph">
-      </div>
     </div>
 
     <div id="precipitazioni" class="info-box">
       <h2>🌧️ Precipitazioni</h2>
       <ul>
-        <li><i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – I periodi consecutivi senza pioggia superano spesso i 30 giorni: questo indebolisce la resilienza idrica delle colture e aumenta il rischio di perdite nel riso.</li>
-        <li><i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.</li>
-        <li><i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.</li>
+        <li>
+          <i class="fas fa-cloud-sun-rain"></i> <strong>CDD</strong> – I periodi consecutivi senza pioggia superano spesso i 30 giorni: questo indebolisce la resilienza idrica delle colture e aumenta il rischio di perdite nel riso.
+          <span class="show-graph-link" data-graph-id="cdd_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-water"></i> <strong>PRCPTOT</strong> – Il totale annuale resta stabile, ma la distribuzione è più irregolare e meno utile all’agricoltura.
+          <span class="show-graph-link" data-graph-id="prcptot_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <i class="fas fa-cloud-showers-heavy"></i> <strong>R95p</strong> – Le piogge intense e concentrate causano allagamenti, erosione e inefficienza nella ricarica idrica dei terreni agricoli.
+          <span class="show-graph-link" data-graph-id="r95p_ANN">Mostra grafico</span>
+        </li>
       </ul>
-      <div class="graphs-section">
-        <h3>Grafici Indici Precipitazioni</h3>
-        <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi" class="enlargeable-graph">
-        <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali" class="enlargeable-graph">
-        <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme" class="enlargeable-graph">
-      </div>
     </div>
 
     <div id="impatto" class="info-box-socio">
@@ -571,8 +591,50 @@
   <div id="imageModal" class="modal">
     <span class="close-button">&times;</span>
     <img class="modal-content" id="img01">
-    <div id="caption" class="caption"></div>
+    <div id="caption"></div>
   </div>
+
+  <div class="graph-data-container" id="graph-tr_ANN">
+    <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tr_ANN.png" mostra l'andamento annuale del numero di notti tropicali (TR), definite come notti in cui la temperatura minima non scende sotto i 20°C. Si osserva un chiaro trend di aumento nel periodo 1994-2024. Questo incremento indica una riduzione del raffrescamento notturno, con implicazioni per il benessere umano (disturbi del sonno, aumento dello stress termico) e per l'agricoltura (stress termico per le colture che non riescono a recuperare durante la notte). Il trend è statisticamente significativo, evidenziando un riscaldamento delle minime estive.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tn10p_ANN">
+    <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn10p_ANN.png" illustra la frequenza annuale dei giorni con temperatura minima inferiore al 10° percentile (notti fredde). Si evidenzia una tendenza alla diminuzione di queste notti nel corso degli anni. Questo fenomeno implica una riduzione delle gelate, il che può essere positivo per alcune colture sensibili al gelo, ma può anche favorire la sopravvivenza e la proliferazione di parassiti e patogeni che normalmente sarebbero controllati dalle basse temperature invernali, richiedendo nuove strategie di difesa fitosanitaria.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tn90p_ANN">
+    <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tn90p_ANN.png" rappresenta l'andamento annuale delle notti estremamente calde (Tmin > 90° percentile). Si osserva una tendenza all'aumento di questi eventi. Notti calde persistenti stressano sia la popolazione che le colture, alterando i ritmi fisiologici, anticipando le fasi vegetative e aumentando il consumo idrico delle piante, con ripercussioni negative sulla produttività agricola e sul comfort termico.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tx90p_ANN">
+    <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_tx90p_ANN.png" mostra l'andamento annuale dei giorni con temperatura massima superiore al 90° percentile (giorni caldi estremi). Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali.</p>
+  </div>
+  <div class="graph-data-container" id="graph-hwf_tx90_ANN">
+    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwf_tx90_ANN.png" illustra la frequenza annuale delle ondate di calore, definite in base alla persistenza di temperature massime elevate (superiori al 90° percentile per almeno 6 giorni consecutivi). Il grafico evidenzia un aumento nella frequenza di questi eventi. Ciò implica che Vercelli è soggetta a un numero crescente di periodi con caldo intenso e prolungato, aumentando i rischi per la salute pubblica, la produttività lavorativa e il consumo di risorse.</p>
+  </div>
+  <div class="graph-data-container" id="graph-hwn_tx90_ANN">
+    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_hwn_tx90_ANN.png" rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo.</p>
+  </div>
+  <div class="graph-data-container" id="graph-txge30_ANN">
+    <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_txge30_ANN.png" mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento.</p>
+  </div>
+  <div class="graph-data-container" id="graph-cdd_ANN">
+    <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_cdd_ANN.png" rappresenta la durata massima annuale dei giorni secchi consecutivi (CDD), ovvero i giorni senza precipitazioni significative. Si osserva una tendenza all'aumento di questi periodi. Questo prolungamento delle siccità indebolisce la resilienza idrica delle colture, in particolare del riso che richiede molta acqua, e aumenta il rischio di perdite significative, richiedendo maggiori interventi irrigui e una gestione più accurata delle risorse idriche.</p>
+  </div>
+  <div class="graph-data-container" id="graph-prcptot_ANN">
+    <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_prcptot_ANN.png" mostra l'andamento annuale delle precipitazioni totali. Il grafico indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura.</p>
+  </div>
+  <div class="graph-data-container" id="graph-r95p_ANN">
+    <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
+    <p class="graph-commentary">Il grafico "Vercelli_94_24_r95p_ANN.png" illustra il contributo delle precipitazioni estreme (superiori al 95° percentile) al totale annuo. Si nota una tendenza all'aumento degli eventi di pioggia intensa e concentrata. Questo fenomeno aumenta il rischio di allagamenti, erosione del suolo e inefficienza nella ricarica idrica dei terreni agricoli, poiché l'acqua scorre via rapidamente invece di essere assorbita, causando danni alle infrastrutture e alle colture.</p>
+  </div>
+
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
@@ -618,12 +680,20 @@
     const captionText = document.getElementById("caption");
     const closeButton = document.getElementsByClassName("close-button")[0];
 
-    document.querySelectorAll('.graphs-section img').forEach(img => {
-      img.addEventListener('click', function(event){
+    document.querySelectorAll('.show-graph-link').forEach(link => {
+      link.addEventListener('click', function(event){
         event.stopPropagation();
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
+        const graphId = this.getAttribute('data-graph-id');
+        const graphContainer = document.getElementById('graph-' + graphId);
+        
+        if (graphContainer) {
+            const img = graphContainer.querySelector('img');
+            const commentary = graphContainer.querySelector('.graph-commentary');
+
+            modal.style.display = "block";
+            modalImg.src = img.src;
+            captionText.innerHTML = `<strong>${img.alt}</strong><br>${commentary.innerHTML}`;
+        }
       });
     });
 
@@ -703,15 +773,17 @@
       let agricultureImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)"; // Add data link reminder
         impactAgriculture.classList.add('positive');
       } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
         agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
         impactAgriculture.classList.add('warning');
       } else { // tempChange >= 1.5 or precipChange < -15 or precipChange > 15
         agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
         impactAgriculture.classList.add('negative');
       }
-      agricultureImpactText += "  <br> (Collegato a indici come CDD, R95p, TXGE30)"; // Add data link reminder
       impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
 
       // Impact on Economy
