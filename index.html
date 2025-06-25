@@ -222,6 +222,28 @@
     .impact-item.active .impact-item-header .toggle-icon {
         transform: rotate(180deg);
     }
+    .impact-item-content ul {
+      list-style: none; /* Remove default bullet */
+      padding: 0;
+      margin-top: 15px;
+    }
+    .impact-item-content ul li {
+      margin-bottom: 8px;
+      font-size: 1.05em;
+      line-height: 1.6em;
+      position: relative;
+      padding-left: 25px; /* Space for custom bullet */
+    }
+    .impact-item-content ul li:before {
+      content: '•'; /* Custom bullet point */
+      color: var(--accent-color); /* Color for bullet */
+      font-size: 1.2em;
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 1.6em;
+    }
+
 
     .chart {
       margin: 35px auto;
@@ -626,7 +648,17 @@
             <span class="toggle-icon">&#9660;</span>
           </div>
           <div class="impact-item-content">
-            <p>L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche. I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
+            <ul>
+                <li>Aumento siccità (CDD): 📈 Aumento significativo dei giorni secchi consecutivi.</li>
+                <li>Precipitazioni: 🌧️➡️💧❌ Stabili in totale, ma distribuite irregolarmente con eventi estremi (R95p) in aumento.</li>
+                <li>Conseguenze:
+                    <ul>
+                        <li>⬆️ Costi irrigui.</li>
+                        <li>⬇️ Margini di profitto per agricoltori (riso).</li>
+                        <li>⚠️ Maggiore pressione sulle risorse idriche.</li>
+                    </ul>
+                </li>
+            </ul>
           </div>
         </div>
         <div class="impact-item severity-high">
@@ -635,7 +667,17 @@
             <span class="toggle-icon">&#9660;</span>
           </div>
           <div class="impact-item-content">
-            <p>L'intensificarsi delle ondate di calore e delle notti tropicali rappresenta una seria minaccia per la salute pubblica e il benessere dei cittadini. L'incremento delle **Notti Tropicali (TR)**, dei giorni con **Temperature Massime estreme (TX90p)** e della **Frequenza/Durata delle Ondate di Calore (HWF/HWN)**, come evidenziato dai grafici, impedisce il recupero fisiologico durante le ore notturne. Questo porta a un aumento di colpi di calore, disidratazione e aggravamento di patologie cardiovascolari e respiratorie, specialmente tra anziani, bambini e lavoratori all'aperto. Le "isole di calore urbane" amplificano il problema, mettendo sotto pressione i servizi sanitari locali.</p>
+            <ul>
+                <li>Temperature: ⬆️⬆️ Notti Tropicali (TR), Giorni con Tmax estrema (TX90p).</li>
+                <li>Ondate di calore: 📈 Aumento frequenza (HWF) e durata (HWN).</li>
+                <li>Conseguenze:
+                    <ul>
+                        <li>🚨 Aumento rischi salute (colpi di calore, disidratazione).</li>
+                        <li>🏥 Pressione sui servizi sanitari.</li>
+                        <li>⬇️ Disagio urbano, specie per fasce vulnerabili.</li>
+                    </ul>
+                </li>
+            </ul>
           </div>
         </div>
         <div class="impact-item severity-medium">
@@ -644,7 +686,17 @@
             <span class="toggle-icon">&#9660;</span>
           </div>
           <div class="impact-item-content">
-            <p>Le piccole e medie imprese agricole faticano ad adattarsi ai rapidi cambiamenti climatici, compromettendo la loro sostenibilità economica e competitività. La minor frequenza di notti fredde (**TN10p**) altera il ciclo di vita dei parassiti, mentre le temperature costantemente elevate (**TXGE30**) e le notti calde (**TN90p**) stressano le colture durante le fasi critiche di crescita. Queste condizioni richiedono investimenti significativi in nuove tecnologie agricole, varietà resilienti e strategie di gestione integrate che spesso superano le capacità finanziarie delle piccole aziende. Ciò può portare a una riduzione della redditività, all'indebitamento e, nei casi peggiori, alla chiusura delle attività, con ripercussioni negative sull'occupazione e sul PIL locale.</p>
+            <ul>
+                <li>Notti fredde (TN10p): 📉 Riduzione, favorisce parassiti.</li>
+                <li>Giorni/Notti calde (TXGE30, TN90p): ⬆️ Stress per le colture in crescita.</li>
+                <li>Conseguenze:
+                    <ul>
+                        <li>💰 Necessari grandi investimenti (nuove tecnologie, varietà resilienti).</li>
+                        <li>📉 Riduzione redditività e competitività PMI agricole.</li>
+                        <li>❗ Rischio di chiusura attività, impatto su occupazione e PIL.</li>
+                    </ul>
+                </li>
+            </ul>
           </div>
         </div>
         <div class="impact-item severity-medium">
@@ -653,7 +705,22 @@
             <span class="toggle-icon">&#9660;</span>
           </div>
           <div class="impact-item-content">
-            <p>La riduzione delle rese e l'alterazione dei cicli colturali minacciano la competitività dei prodotti agricoli di Vercelli e la sicurezza alimentare locale. L'instabilità delle precipitazioni e le temperature estreme influenzano direttamente la quantità e la qualità dei raccolti. Ad esempio, periodi di siccità prolungata (**CDD**) possono compromettere la germinazione del riso, mentre piogge torrenziali (**R95p**) possono causare allettamento e danni fisici alle colture mature. Questi fattori si traducono in minori volumi di produzione, standard qualitativi inferiori e costi di recupero maggiori, rendendo i prodotti vercellesi meno attrattivi sui mercati nazionali e internazionali e potenzialmente compromising l'autosufficienza alimentare locale.</p>
+            <ul>
+                <li>Impatto su Produzione: ⬇️ Riduzione rese, alterazione cicli colturali.</li>
+                <li>Fattori chiave:
+                    <ul>
+                        <li>☀️ Siccità prolungata (CDD): compromette germinazione riso.</li>
+                        <li>🌊 Piogge torrenziali (R95p): causano danni fisici.</li>
+                    </ul>
+                </li>
+                <li>Conseguenze:
+                    <ul>
+                        <li>📉 Minori volumi di produzione, qualità inferiore.</li>
+                        <li>⬆️ Costi di recupero.</li>
+                        <li>⚠️ Perdita competitività prodotti vercellesi, rischio sicurezza alimentare locale.</li>
+                    </ul>
+                </li>
+            </ul>
           </div>
         </div>
         <div class="impact-item severity-medium">
@@ -662,7 +729,17 @@
             <span class="toggle-icon">&#9660;</span>
           </div>
           <div class="impact-item-content">
-            <p>La crescente frequenza di eventi climatici estremi impone una revisione urgente delle strategie di pianificazione urbana e rurale e degli investimenti infrastrutturali. L'aumento delle piogge intense (**R95p**) richiede sistemi di drenaggio più efficienti e nuove strategie per la gestione del rischio idrogeologico, inclusa la manutenzione di argini e canali. Le ondate di calore più intense e prolungate (**HWF/HWN**) sollecitano la necessità di "infrastrutture verdi" (parchi, alberi, tetti verdi) nelle aree urbane per mitigare l'effetto isola di calore. La pianificazione deve considerare la resilienza di strade, edifici e reti di servizio, implicando investimenti significativi e un approccio integrato tra settori.</p>
+            <ul>
+                <li>Eventi estremi: 📈 Frequenza in aumento (R95p, HWF/HWN).</li>
+                <li>Richieste:
+                    <ul>
+                        <li>💧 Sistemi drenaggio più efficienti, gestione rischio idrogeologico.</li>
+                        <li>🌳 "Infrastrutture verdi" (parchi, alberi) per mitigare isole di calore.</li>
+                        <li>🏗️ Pianificazione resiliente per strade, edifici, reti di servizio.</li>
+                    </ul>
+                </li>
+                <li>Conseguenze: 💰 Richiede investimenti significativi e approccio integrato.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -728,7 +805,7 @@
   </div>
   <div class="graph-data-container" id="graph-tx90p_ANN">
     <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
-    <p class="graph-commentary">Il grafico mostra l'andamento annuale dei giorni con temperatura massima superiore al 90° percentile (giorni caldi estremi). Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali. Il trend è statisticamente significativo. Il numero massimo di giorni caldi estremi è stato registrato nel 2022 con 50 giorni, mentre il minimo nel 1994 con 12 giorni.</p>
+    <p class="graph-commentary">Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali. Il trend è statisticamente significativo. Il numero massimo di giorni caldi estremi è stato registrato nel 2022 con 50 giorni, mentre il minimo nel 1994 con 12 giorni.</p>
   </div>
   <div class="graph-data-container" id="graph-hwf_tx90_ANN">
     <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
