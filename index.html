@@ -8,29 +8,29 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     :root {
-      --main-color: #2F4F4F; /* Dark Slate Gray - Professional, grounded */
-      --accent-color: #669999; /* Cadet Blue - Sophisticated contrast */
-      --light-gray: #F5F5F5; /* White Smoke - Clean background */
-      --warning-color: #DAA520; /* Goldenrod - Earthy warning */
-      --danger-color: #B22222; /* Firebrick - Strong alert */
-      --success-color: #2E8B57; /* Sea Green - Natural positive */
+      --main-color: #1A374D; /* Deep Blue/Teal - Modern, digital base */
+      --accent-color: #00BFFF; /* Deep Sky Blue - Vibrant, interactive highlight */
+      --light-gray: #F0F8FF; /* Alice Blue - Very light, fresh background */
+      --warning-color: #FFD700; /* Gold - Bright warning */
+      --danger-color: #FF4500; /* Orange Red - Strong alert */
+      --success-color: #32CD32; /* Lime Green - Lively positive */
     }
     body {
       margin: 0;
-      font-family: 'Open Sans', sans-serif; /* More professional, linear font */
+      font-family: 'Open Sans', sans-serif;
       background-color: var(--light-gray);
       color: #333;
-      text-align: left; /* Ensure overall linear text alignment */
+      text-align: left;
     }
     header {
       background: var(--main-color);
       color: white;
-      padding: 30px 0; /* More padding for a grander feel */
+      padding: 30px 0;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Stronger shadow */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     header h1 {
-      font-size: 2.8em; /* Larger heading */
+      font-size: 2.8em;
       margin-bottom: 10px;
     }
     header p {
@@ -38,7 +38,7 @@
       opacity: 0.9;
     }
     nav {
-      background: #364B4B; /* Slightly darker than main-color */
+      background: #2A4E6C; /* Slightly darker than main-color */
       display: flex;
       justify-content: center;
       padding: 15px 0;
@@ -47,33 +47,33 @@
     }
     nav a {
       color: white;
-      margin: 0 20px; /* More spacing */
+      margin: 0 20px;
       text-decoration: none;
-      font-weight: 600; /* Slightly bolder */
+      font-weight: 600;
       padding: 8px 0;
       transition: color 0.3s ease, text-decoration 0.3s ease;
     }
     nav a:hover {
-      color: var(--accent-color); /* Highlight with accent color */
+      color: var(--accent-color);
       text-decoration: underline;
     }
     #map {
-      height: 65vh; /* Taller map */
+      height: 65vh;
       width: 100%;
       margin-bottom: 40px;
-      border-bottom: 5px solid var(--accent-color); /* Subtle design element */
+      border-bottom: 5px solid var(--accent-color);
     }
     .content {
-      padding: 40px; /* More padding */
-      max-width: 1100px; /* Wider content area */
+      padding: 40px;
+      max-width: 1100px;
       margin: auto;
     }
     h2 {
       color: var(--main-color);
-      border-bottom: 3px solid var(--accent-color); /* Thicker border */
+      border-bottom: 3px solid var(--accent-color);
       padding-bottom: 10px;
-      margin-top: 50px; /* More top margin */
-      font-size: 2em; /* Larger headings */
+      margin-top: 50px;
+      font-size: 2em;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -81,14 +81,14 @@
     h2 i {
       color: var(--accent-color);
     }
-    .info-box, .info-block, .interactive-section { /* Renamed info-box-socio to info-block for consistency */
+    .info-box, .info-block, .interactive-section {
       background: white;
-      padding: 30px; /* More padding */
-      border-radius: 10px; /* More rounded corners */
+      padding: 30px;
+      border-radius: 10px;
       margin-bottom: 40px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Stronger shadow */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       overflow: hidden;
-      border-top: 5px solid var(--accent-color); /* New border element */
+      border-top: 5px solid var(--accent-color);
     }
     .info-box ul, .info-block ul {
       padding-left: 20px;
@@ -96,11 +96,11 @@
       margin-top: 20px;
     }
     .info-box ul li {
-      margin-bottom: 12px; /* More spacing between list items */
+      margin-bottom: 12px;
       line-height: 1.7em;
       display: flex;
       align-items: flex-start;
-      text-align: left; /* Ensure linear alignment for list items */
+      text-align: left;
     }
     .info-box ul li strong {
       color: var(--main-color);
@@ -113,9 +113,9 @@
         text-decoration: underline;
         font-weight: bold;
         transition: color 0.3s ease;
-        display: inline-block; /* Ensure linear display */
-        vertical-align: top; /* Align with top of text */
-        line-height: 1.7em; /* Match parent line-height for alignment */
+        display: inline-block;
+        vertical-align: top;
+        line-height: 1.7em;
     }
     .info-box ul li .show-graph-link:hover {
         color: var(--main-color);
@@ -123,11 +123,11 @@
     .info-box i {
       margin-right: 10px;
       color: var(--accent-color);
-      font-size: 1.2em; /* Larger icons */
+      font-size: 1.2em;
     }
-    .info-block { /* Styling for the renamed socio-economic impact section */
-      background: #F8F8F8; /* Lighter background for distinction */
-      border-top: 5px solid var(--warning-color); /* Warning color for this section */
+    .info-block {
+      background: #F8F8FF; /* Lighter background for distinction */
+      border-top: 5px solid var(--warning-color);
     }
     .info-block h2 {
         border-bottom-color: var(--warning-color);
@@ -140,19 +140,18 @@
       color: #555;
     }
 
-    /* New styles for impact categories - reintroducing accordion */
     .impact-category-list {
         display: flex;
         flex-direction: column;
-        gap: 15px; /* Spacing between new impact blocks */
+        gap: 15px;
     }
     .impact-item {
         background: white;
-        padding: 0; /* Remove padding from here, move to header/content */
-        border-left: 6px solid var(--warning-color); /* Default */
+        padding: 0;
+        border-left: 6px solid var(--warning-color);
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        overflow: hidden; /* For smooth collapse */
+        overflow: hidden;
     }
     .impact-item.severity-low { border-left-color: var(--success-color); }
     .impact-item.severity-low .impact-item-header i { color: var(--success-color); }
@@ -167,11 +166,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px 25px; /* Padding for header */
+        padding: 20px 25px;
         cursor: pointer;
         background-color: #fff;
         transition: background-color 0.2s ease;
-        border-bottom: 1px solid #eee; /* Separator */
+        border-bottom: 1px solid #eee;
     }
     .impact-item-header:hover {
         background-color: #f9f9f9;
@@ -187,7 +186,7 @@
     .impact-item-header h3 i {
         margin-right: 12px;
         font-size: 1.8em;
-        color: var(--warning-color); /* Default icon color */
+        color: var(--warning-color);
     }
     .impact-item-header .toggle-icon {
         font-size: 1.5em;
@@ -195,19 +194,18 @@
         transition: transform 0.3s ease;
     }
     .impact-item-content {
-        padding: 0 25px 25px; /* Padding for content when visible */
+        padding: 0 25px 25px;
         line-height: 1.7em;
         color: #555;
-        max-height: 0; /* Hidden by default */
+        max-height: 0;
         overflow: hidden;
         transition: max-height 0.4s ease-out, padding 0.4s ease-out;
     }
     .impact-item-content p {
-        margin-top: 20px; /* Margin for content paragraph */
+        margin-top: 20px;
     }
     .impact-item.active .impact-item-content {
-        max-height: 500px; /* Arbitrary large height for expansion */
-        /* padding-top: 20px; Not needed if p has margin-top */
+        max-height: 500px;
     }
     .impact-item.active .impact-item-header .toggle-icon {
         transform: rotate(180deg);
@@ -225,7 +223,6 @@
       font-size: 1em;
       margin-top: 50px;
     }
-    /* Hidden section to hold graph data */
     .graph-data-container {
         display: none;
     }
@@ -240,7 +237,6 @@
         color: #666;
         text-align: left;
     }
-    /* Modal (Lightbox) Styles */
     .modal {
       display: none;
       position: fixed;
@@ -260,33 +256,33 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: flex-start;
-      gap: 30px; /* More space */
+      gap: 30px;
       margin: auto;
       width: 90%;
-      max-width: 1300px; /* Wider modal */
+      max-width: 1300px;
       background-color: white;
-      padding: 40px; /* More padding */
-      border-radius: 12px; /* More rounded */
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35); /* Stronger shadow */
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
       animation-name: zoom;
       animation-duration: 0.6s;
     }
     .modal-body-container img#img01 {
-      flex: 1 1 50%; /* Image takes slightly more space */
+      flex: 1 1 50%;
       max-width: 100%;
       height: auto;
       object-fit: contain;
-      min-width: 350px; /* Larger min-width */
+      min-width: 350px;
     }
     .modal-body-container #caption {
-      flex: 1 1 40%; /* Caption takes less space */
+      flex: 1 1 40%;
       margin: 0;
       padding: 0;
       text-align: left;
       color: #333;
-      font-size: 1.15em; /* Slightly larger text */
+      font-size: 1.15em;
       line-height: 1.7;
-      min-width: 350px; /* Larger min-width */
+      min-width: 350px;
     }
     
     @keyframes zoom {
@@ -295,10 +291,10 @@
     }
     .close-button {
       position: absolute;
-      top: 20px; /* More from top */
-      right: 40px; /* More from right */
+      top: 20px;
+      right: 40px;
       color: #f1f1f1;
-      font-size: 45px; /* Larger close button */
+      font-size: 45px;
       font-weight: bold;
       transition: 0.3s;
     }
@@ -322,33 +318,32 @@
         min-width: unset;
       }
     }
-    /* Interactive Section Styles */
     .interactive-section {
-      background: #E8F5E9; /* Very light green for interactive section */
-      border-top: 5px solid var(--success-color); /* Green border */
+      background: #E0FFFF; /* Light Cyan - Very light, cool background */
+      border-top: 5px solid var(--success-color);
       padding: 35px;
       margin-top: 40px;
-      display: flex; /* Use flexbox for main layout */
-      flex-wrap: wrap; /* Allow wrapping on smaller screens */
-      gap: 30px; /* Gap between columns */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
     }
     .interactive-section h2 {
       color: var(--main-color);
-      border-bottom-color: var(--success-color); /* Green border for heading */
-      width: 100%; /* Full width for heading */
+      border-bottom-color: var(--success-color);
+      width: 100%;
       margin-bottom: 20px;
     }
     .interactive-section > p {
-        width: 100%; /* Full width for introductory paragraph */
+        width: 100%;
         margin-bottom: 30px;
     }
     .interactive-controls {
-      flex: 1; /* Take remaining space */
-      min-width: 300px; /* Minimum width before wrapping */
+      flex: 1;
+      min-width: 300px;
       display: flex;
       flex-direction: column;
-      gap: 25px; /* More spacing */
-      padding-right: 20px; /* Space from results */
+      gap: 25px;
+      padding-right: 20px;
     }
     .control-group {
       display: flex;
@@ -363,11 +358,11 @@
     .control-group input[type="range"] {
       width: 100%;
       -webkit-appearance: none;
-      height: 10px; /* Thicker track */
+      height: 10px;
       background: #ddd;
       border-radius: 50px;
       outline: none;
-      opacity: 0.9; /* More opaque */
+      opacity: 0.9;
       transition: opacity .2s;
     }
     .control-group input[type="range"]:hover {
@@ -376,13 +371,13 @@
     .control-group input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 28px; /* Larger thumb */
+      width: 28px;
       height: 28px;
       background: var(--accent-color);
       border-radius: 50%;
       cursor: pointer;
-      border: 4px solid white; /* Thicker border */
-      box-shadow: 0 0 10px rgba(0,0,0,0.4); /* Stronger shadow */
+      border: 4px solid white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
     .control-group input[type="range"]::-moz-range-thumb {
       width: 28px;
@@ -397,16 +392,16 @@
       text-align: center;
       font-weight: bold;
       color: var(--accent-color);
-      margin-top: 8px; /* More margin */
-      font-size: 1.2em; /* Larger */
+      margin-top: 8px;
+      font-size: 1.2em;
     }
     .impact-results {
-      flex: 2; /* Take more space on the right */
-      min-width: 400px; /* Minimum width before wrapping */
+      flex: 2;
+      min-width: 400px;
       background: white;
-      padding: 30px; /* More padding */
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.07); /* More pronounced inset shadow */
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.07);
     }
     .impact-results h3 {
       color: var(--main-color);
@@ -415,8 +410,8 @@
     }
     .impact-category {
       margin-bottom: 25px;
-      border-left: 5px solid; /* For colored stripe */
-      padding-left: 15px; /* Space for stripe */
+      border-left: 5px solid;
+      padding-left: 15px;
     }
     .impact-category h4 {
       color: var(--warning-color);
@@ -445,7 +440,6 @@
     .impact-category.negative h4 { color: var(--danger-color); }
     .impact-category.negative h4 i { color: var(--danger-color); }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       nav {
         flex-direction: column;
@@ -462,12 +456,12 @@
       }
       .info-box, .info-block, .interactive-section {
         padding: 20px;
-        flex-direction: column; /* Stack columns on small screens */
-        gap: 20px; /* Adjust gap for stacked layout */
+        flex-direction: column;
+        gap: 20px;
       }
       .interactive-controls, .impact-results {
-        min-width: unset; /* Remove min-width */
-        padding-right: 0; /* Remove padding */
+        min-width: unset;
+        padding-right: 0;
       }
       .impact-item-header {
         flex-direction: column;
@@ -555,7 +549,8 @@
         <div class="impact-item severity-high">
           <div class="impact-item-header">
             <h3><i class="fas fa-hand-holding-water"></i> Costi Irrigui e Stress Idrico</h3>
-            <span class="toggle-icon">&#9660;</span> </div>
+            <span class="toggle-icon">&#9660;</span>
+          </div>
           <div class="impact-item-content">
             <p>L'aumento dei periodi di siccità e la maggiore irregolarità delle precipitazioni incrementano drasticamente la domanda di irrigazione, con conseguente innalzamento dei costi e pressione sulle risorse idriche. I dati sugli indici climatici mostrano un aumento significativo dei **Giorni Secchi Consecutivi (CDD)** e una distribuzione anomala delle precipitazioni totali (**PRCPTOT**), con eventi estremi (**R95p**) che non permettono una ricarica efficace delle falde. Questo scenario costringe gli agricoltori vercellesi, in particolare quelli legati alla coltivazione del riso, ad affrontare spese maggiori per l'approvvigionamento e la gestione dell'acqua, riducendo i margini di profitto e rendendo l'attività più precaria. La dipendenza da fonti idriche stabili e la competizione per l'acqua potrebbero diventare criticità maggiori.</p>
           </div>
@@ -710,8 +705,8 @@
     ];
     layers.forEach(zona => {
       L.circle(zona.coords, {
-        color: '#B22222', /* Danger color for map markers */
-        fillColor: '#B22222',
+        color: '#FF4500', /* Danger color for map markers */
+        fillColor: '#FF4500',
         fillOpacity: 0.6,
         radius: 4000
       }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
@@ -719,7 +714,6 @@
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    // Lightbox functionality
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("img01");
     const captionText = document.getElementById("caption");
@@ -748,7 +742,6 @@
       }
     });
 
-    // Accordion for Impatti Socio-Economici
     document.querySelectorAll('.impact-item-header').forEach(header => {
         header.addEventListener('click', () => {
             const item = header.closest('.impact-item');
@@ -756,7 +749,6 @@
         });
     });
 
-    // Interactive Impact Simulator
     const tempSlider = document.getElementById('temp-slider');
     const tempValueSpan = document.getElementById('temp-value');
     const precipSlider = document.getElementById('precip-slider');
@@ -771,12 +763,10 @@
       tempValueSpan.textContent = tempChange.toFixed(1);
       precipValueSpan.textContent = precipChange;
 
-      // Reset classes
       impactPeople.className = 'impact-category';
       impactAgriculture.className = 'impact-category';
       impactEconomy.className = 'impact-category';
 
-      // Impact on People
       let peopleImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
@@ -784,13 +774,12 @@
       } else if (tempChange >= 0.5 && tempChange < 2) {
         peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
         impactPeople.classList.add('warning');
-      } else { // tempChange >= 2
+      } else {
         peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
         impactPeople.classList.add('negative');
       }
       impactPeople.querySelector('p').textContent = peopleImpactText;
 
-      // Impact on Agriculture
       let agricultureImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
@@ -800,14 +789,13 @@
         agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
         agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
         impactAgriculture.classList.add('warning');
-      } else { // tempChange >= 1.5 or precipChange < -15 or precipChange > 15
+      } else {
         agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
         agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
         impactAgriculture.classList.add('negative');
       }
       impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
 
-      // Impact on Economy
       let economyImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
@@ -817,7 +805,7 @@
         economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
         economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
         impactEconomy.classList.add('warning');
-      } else { // tempChange >= 1.5 or Math.abs(precipChange) > 15
+      } else {
         economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
         economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
         impactEconomy.classList.add('negative');
@@ -826,7 +814,6 @@
     }
     tempSlider.addEventListener('input', updateImpacts);
     precipSlider.addEventListener('input', updateImpacts);
-    // Initial update when the page loads
     updateImpacts();
   </script>
 </body>
