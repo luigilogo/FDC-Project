@@ -204,7 +204,7 @@
                     "descrizione": "Temperatura Massima Media",
                     "rilevanza_vercelli": "Dall'analisi del grafico, si conferma un andamento in crescita statisticamente significativo della Temperatura Massima Media. Il valore di Sen's Slope, pari a 0.04, con un intervallo di confidenza (lower bound = 0.012, upper bound = 0.067) e un p-value di 0.011, attesta la robustezza di questa tendenza. Nel trentennio di riferimento (1994-2024), si nota un aumento medio complessivo di circa 1°C nella temperatura massima media annuale. Sebbene l'andamento mostri oscillazioni interannuali (come evidente dalle fluttuazioni tra i valori minimi e massimi), la retta di regressione indica una chiara direzione verso l'alto. Si possono osservare anomalie, con un abbassamento delle temperature medie massime, in anni specifici come il 2010 e il periodo 2018-2019. Tali variazioni interannuali significative potrebbero essere influenzate da fenomeni climatici su larga scala, come le oscillazioni legate al El Niño/La Niña (ENSO) o ad altri teleconnessioni atmosferiche come la North Atlantic Oscillation (NAO) e l'Arctic Oscillation (AO), la cui correlazione necessiterebbe di un'analisi specifica.",
                     "impatto": "Water resources and food security, Cryosphere",
-                    "impatto_specifico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
+                    "impatto_specif ico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
                     "grafico": "Vercelli_94_24_txm_ANN.png"
                 }
             ],
@@ -270,13 +270,11 @@
                     indexDetails.innerHTML += `<p><strong>Impatto Generale:</strong> ${item.impatto}</p>`;
                     indexDetails.innerHTML += `<p><strong>Impatto Specifico:</strong> ${item.impatto_specifico}</p>`;
                     
-                    // Aggiungi i grafici. Gestisce sia stringhe singole che array di stringhe.
                     if (item.grafico) {
                         const graphicContainer = document.createElement('div');
                         graphicContainer.classList.add('graphic-container');
                         const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
                         graphicFiles.forEach(graphic => {
-                            // Assicurati che il percorso dell'immagine sia corretto
                             graphicContainer.innerHTML += `<img src="./images/${graphic}" alt="Grafico ${item.indice}">`;
                         });
                         indexDetails.appendChild(graphicContainer);
@@ -285,7 +283,6 @@
                     indexItem.appendChild(indexDetails);
                     categorySection.appendChild(indexItem);
 
-                    // Aggiungi la logica di click per espandere/comprimere
                     indexHeader.addEventListener('click', () => {
                         indexItem.classList.toggle('active');
                     });
