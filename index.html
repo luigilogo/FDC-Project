@@ -178,12 +178,20 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
+        #map-section {
+            max-width: 1200px;
+            margin: 50px auto; /* Centra la sezione mappa */
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
         #map {
             height: 500px; /* Altezza della mappa */
             width: 100%;
-            margin-top: 50px;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         footer {
@@ -240,9 +248,12 @@
     </header>
 
     <main id="climate-data-container">
-        <h2 data-aos="fade-up" data-aos-offset="150">Esplora i Rischi Climatici su Mappa</h2>
-        <div id="map" data-aos="fade-up" data-aos-delay="200"></div>
-    </main>
+        </main>
+
+    <section id="map-section" data-aos="fade-up" data-aos-offset="150">
+        <h2>Esplora i Rischi Climatici su Mappa</h2>
+        <div id="map"></div>
+    </section>
 
     <footer>
         <p>&copy; 2024 Dati Climatici Vercelli. Tutti i diritti riservati.</p>
@@ -428,35 +439,38 @@
             }
 
             // Inizializzazione della mappa Leaflet
-            // Verificare che il div #map sia presente e visibile quando questo script viene eseguito
-            const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
+            // Assicurarsi che il div #map sia stato renderizzato nel DOM prima di inizializzare la mappa
+            // Aggiungiamo un piccolo ritardo per essere sicuri che la sezione sia visibile
+            setTimeout(() => {
+                const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
 
-            // TODO: Aggiungi qui i tuoi dati sui rischi climatici (es. GeoJSON)
-            // Esempio (rimuovi o modifica questo blocco se non hai dati GeoJSON):
-            /*
-            fetch('path/to/your/climate_risk_data.geojson')
-                .then(response => response.json())
-                .then(data => {
-                    L.geoJson(data, {
-                        style: function(feature) {
-                            // Stile gli elementi in base alle proprietà del rischio
-                            return {color: '#ff0000', weight: 2, opacity: 0.8};
-                        },
-                        onEachFeature: function(feature, layer) {
-                            // Aggiungi un popup con le informazioni sul rischio
-                            if (feature.properties && feature.properties.name) {
-                                layer.bindPopup(feature.properties.name + ": " + feature.properties.risk_level);
+                // TODO: Aggiungi qui i tuoi dati sui rischi climatici (es. GeoJSON)
+                // Esempio (rimuovi o modifica questo blocco se non hai dati GeoJSON):
+                /*
+                fetch('path/to/your/climate_risk_data.geojson')
+                    .then(response => response.json())
+                    .then(data => {
+                        L.geoJson(data, {
+                            style: function(feature) {
+                                // Stile gli elementi in base alle proprietà del rischio
+                                return {color: '#ff0000', weight: 2, opacity: 0.8};
+                            },
+                            onEachFeature: function(feature, layer) {
+                                // Aggiungi un popup con le informazioni sul rischio
+                                if (feature.properties && feature.properties.name) {
+                                    layer.bindPopup(feature.properties.name + ": " + feature.properties.risk_level);
+                                }
                             }
-                        }
-                    }).addTo(map);
-                })
-                .catch(error => console.error('Errore nel caricamento dei dati GeoJSON:', error));
-            */
+                        }).addTo(map);
+                    })
+                    .catch(error => console.error('Errore nel caricamento dei dati GeoJSON:', error));
+                */
+            }, 100); // Piccolo ritardo per il caricamento completo del DOM e l'applicazione del CSS
         });
     </script>
 </body>
