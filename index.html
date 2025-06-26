@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clima Vercelli - Un'Esplorazione Interattiva</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoTJsAEvGu+hGhpEcM8pkmfYLmzS2jRlCoH1lGU="
+     crossorigin=""/>
     <style>
         /* Variabili CSS per facilitare la gestione dei colori */
         :root {
@@ -175,6 +178,14 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
+        #map {
+            height: 500px; /* Altezza della mappa */
+            width: 100%;
+            margin-top: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
         footer {
             text-align: center;
             padding: 30px;
@@ -216,6 +227,9 @@
                 min-width: unset; /* Rimuove min-width per schermi piccoli, lascia che flex lo gestisca */
                 width: 100%;
             }
+            #map {
+                height: 300px; /* Altezza mappa su schermi piccoli */
+            }
         }
     </style>
 </head>
@@ -226,7 +240,9 @@
     </header>
 
     <main id="climate-data-container">
-        </main>
+        <h2 data-aos="fade-up" data-aos-offset="150">Esplora i Rischi Climatici su Mappa</h2>
+        <div id="map" data-aos="fade-up" data-aos-delay="200"></div>
+    </main>
 
     <footer>
         <p>&copy; 2024 Dati Climatici Vercelli. Tutti i diritti riservati.</p>
@@ -234,6 +250,9 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjGwZZxgsFK+oHNNtpSd5EIsgVyewg="
+     crossorigin=""></script>
     <script>
         AOS.init({
             duration: 800, // Durata animazione in ms
@@ -269,7 +288,7 @@
                 {
                     "indice": "TNm",
                     "descrizione": "Temperatura Minima Media",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge un andamento in crescita statisticamente significativo. Il valore di Sen's Slope, pari a 0.036, con un p-value di 0.014, conferma questa tendenza positiva. Considerando il periodo dal 1995 al 2024, si osserva un aumento complessivo della Temperatura Minima Media di circa 2°C (passando da valori medi intorno ai 7.0-7.5°C nei primi anni a valori frequentemente superiori agli 8.5-9.0°C negli anni più recenti, con un picco oltre 9.0°C). Questo incremento delle temperature minime medie è in stretta correlazione con l'aumento del numero di notti tropicali (indice TR), confermando un riscaldamento generalizzato e persistente anche nelle ore notturne.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge un andamento in crescita statisticamente significativo. Il valore di Sen's Slope, pari=0.036, con un p-value di 0.014, conferma questa tendenza positiva. Considerando il periodo dal 1995 al 2024, si osserva un aumento complessivo della Temperatura Minima Media di circa 2°C (passando da valori medi intorno ai 7.0-7.5°C nei primi anni a valori frequentemente superiori agli 8.5-9.0°C negli anni più recenti, con un picco oltre 9.0°C). Questo incremento delle temperature minime medie è in stretta correlazione con l'aumento del numero di notti tropicali (indice TR), confermando un riscaldamento generalizzato e persistente anche nelle ore notturne.",
                     "impatto": "Cryosphere",
                     "impatto_specifico": "L'aumento generalizzato delle temperature minime a Vercelli si traduce in notti più calde che compromettono il recupero fisiologico della popolazione e delle colture, aumentando lo stress complessivo. Indirettamente influisce sulla fusione del manto nevoso alpino, fonte d'acqua per la provincia.",
                     "grafico": "Vercelli_94_24_tnm_ANN.png"
@@ -383,6 +402,10 @@
                         graphicContainer.classList.add('graphic-container');
                         const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
                         graphicFiles.forEach(graphic => {
+                            // Nonostante i grafici non vengano visualizzati, mantengo il percorso
+                            // e ti ricordo di verificare che le immagini siano nella cartella 'images/'
+                            // e che i nomi dei file siano esattamente come specificato qui.
+                            // Potrebbe anche essere un problema di cache del browser o di GitHub Pages.
                             graphicContainer.innerHTML += `<img src="./images/${graphic}" alt="Grafico ${item.indice}">`;
                         });
                         indexDetails.appendChild(graphicContainer);
@@ -403,6 +426,36 @@
                 });
                 container.appendChild(categorySection);
             }
+
+            // Inizializzazione della mappa Leaflet
+            const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // TODO: Aggiungi qui i tuoi dati sui rischi climatici (es. GeoJSON)
+            // Esempio (rimuovi o modifica questo blocco se non hai dati GeoJSON):
+            /*
+            fetch('path/to/your/climate_risk_data.geojson')
+                .then(response => response.json())
+                .then(data => {
+                    L.geoJson(data, {
+                        style: function(feature) {
+                            // Stile gli elementi in base alle proprietà del rischio
+                            return {color: '#ff0000', weight: 2, opacity: 0.8};
+                        },
+                        onEachFeature: function(feature, layer) {
+                            // Aggiungi un popup con le informazioni sul rischio
+                            if (feature.properties && feature.properties.name) {
+                                layer.bindPopup(feature.properties.name + ": " + feature.properties.risk_level);
+                            }
+                        }
+                    }).addTo(map);
+                })
+                .catch(error => console.error('Errore nel caricamento dei dati GeoJSON:', error));
+            */
         });
     </script>
 </body>
