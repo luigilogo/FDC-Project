@@ -399,7 +399,8 @@
             </div>
             <div class="modal-text-content">
                 <h3 id="modalGraphicTitle"></h3>
-                <p><strong>Rilevanza per Vercelli:</strong> <span id="modalRilevanzaVercelli"></span></p> <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
+                <p><strong>Rilevanza per Vercelli:</strong> <span id="modalRilevanzaVercelli"></span></p>
+                <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
                 <p><strong>Impatto per Vercelli:</strong> <span id="modalImpattoSpecifico"></span></p>
             </div>
         </div>
@@ -525,7 +526,7 @@
             const graphicModal = document.getElementById('graphicModal');
             const modalGraphicImage = document.getElementById('modalGraphicImage');
             const modalGraphicTitle = document.getElementById('modalGraphicTitle');
-            const modalRilevanzaVercelli = document.getElementById('modalRilevanzaVercelli'); // Nuovo elemento
+            const modalRilevanzaVercelli = document.getElementById('modalRilevanzaVercelli');
             const modalImpattoGenerale = document.getElementById('modalImpattoGenerale');
             const modalImpattoSpecifico = document.getElementById('modalImpattoSpecifico');
             const modalCloseButton = document.querySelector('.modal-close-button');
@@ -533,7 +534,7 @@
             function showGraphicModal(item, graphicSrc) {
                 modalGraphicImage.src = graphicSrc;
                 modalGraphicTitle.textContent = `Dettagli per ${item.indice}`;
-                modalRilevanzaVercelli.textContent = item.rilevanza_vercelli; // Popola il nuovo campo
+                modalRilevanzaVercelli.textContent = item.rilevanza_vercelli;
                 modalImpattoGenerale.textContent = item.impatto;
                 modalImpattoSpecifico.textContent = item.impatto_specifico;
                 graphicModal.classList.add('active');
@@ -620,16 +621,20 @@
             }
 
             // Inizializzazione della mappa Leaflet
-            setTimeout(() => {
-                const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
+            // Assicurati che l'elemento 'map' sia visibile e abbia dimensioni prima dell'inizializzazione
+            // Un breve ritardo o l'inizializzazione dopo che il DOM è completamente renderizzato
+            // può aiutare se la mappa non si carica correttamente all'inizio.
+            const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-                // TODO: Aggiungi qui i tuoi dati sui rischi climatici (es. GeoJSON)
-            }, 100);
+            // Aggiungi un marker generico per Vercelli
+            L.marker([45.3218, 8.4239]).addTo(map)
+                .bindPopup('Vercelli')
+                .openPopup();
         });
     </script>
 </body>
