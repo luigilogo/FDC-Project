@@ -81,7 +81,7 @@
 
         .index-details {
             display: none; /* Nascosto di default */
-            padding: 15px;
+            padding: 20px; /* Aumento il padding per più spazio */
             border-top: 1px solid #ccc;
             background-color: #f9f9f9;
         }
@@ -91,11 +91,15 @@
         }
 
         .index-details p {
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* Aumento il margine inferiore per una migliore separazione */
+            font-size: 0.95rem; /* Leggero aggiustamento della dimensione del testo */
         }
 
         .index-details strong {
             color: #2980b9;
+            display: block; /* Rende il testo in grassetto un blocco per andare a capo */
+            margin-bottom: 5px; /* Margine sotto l'etichetta forte */
+            font-size: 1rem; /* Dimensione leggermente più grande per le etichette */
         }
 
         .graphic-container {
@@ -103,7 +107,8 @@
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 25px; /* Aumento del margine superiore */
+            margin-bottom: 15px; /* Margine inferiore per separare dal testo successivo */
         }
 
         .graphic-container img {
@@ -186,7 +191,7 @@
                 {
                     "indice": "TX10P",
                     "descrizione": "Giorni con temperatura massima inferiore al 10°percentile",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza alla diminuzione del numero di giorni molto freddi. Il valore di Sen's Slope, pari a -0.139, con un intervallo di confidenza (lower bound = -0.266, upper bound = -0.024) e un p-value di 0.019, conferma la robustezza statistica di questo trend negativo. Questo decremento indica che le giornate invernali a Vercelli stanno diventando progressivamente meno rigide. Ad esempio, la percentuale di giorni molto freddi, che nei primi anni della serie oscillava frequentemente tra il 10% e il 15% (con picchi vicini al 20% nel 1995 e 2010), negli anni più recenti tende a mantenersi su valori inferiori, spesso sotto il 10%, e ha raggiunto un minimo intorno al 5% nel 2022. Questo rappresenta una significativa riduzione della frequenza delle giornate più fredde nel periodo di riferimento dal 1994 al 2024.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza alla diminuzione del numero di giorni molto freddi. Il valore di Sen's Slope, pari a -0.139, con un intervallo di confidenza (lower bound = -0.266, upper bound = -0.024) e un p-value di 0.019, conferma la robustezza statistica di questo trend negativo. Questo decremento indica che le giornate invernali a Vercelli stanno diventando progressivamente meno rigide. Ad esempio, la percentuale di giorni molto freddi, che nei primi anni della serie oscillava frequentemente tra il 10% e il 15% (con picchi vicini al 20% nel 1995 e 2010), negli anni più recenti tende a mantenervi su valori inferiori, spesso sotto il 10%, e ha raggiunto un minimo intorno al 5% nel 2022. Questo rappresenta una significativa riduzione della frequenza delle giornate più fredde nel periodo di riferimento dal 1994 al 2024.",
                     "impatto": "Energy",
                     "impatto_specifico": "Riduzione della domanda energetica per il riscaldamento diurno. Tuttavia, la minore incidenza di giorni freddi favorisce la sopravvivenza di parassiti e patogeni agricoli (es. nella risicoltura), riducendo il controllo naturale e potenzialmente aumentando la necessità di interventi fitosanitari.",
                     "grafico": "Vercelli_94_24_tx10p_ANN.png"
@@ -204,7 +209,7 @@
                     "descrizione": "Temperatura Massima Media",
                     "rilevanza_vercelli": "Dall'analisi del grafico, si conferma un andamento in crescita statisticamente significativo della Temperatura Massima Media. Il valore di Sen's Slope, pari a 0.04, con un intervallo di confidenza (lower bound = 0.012, upper bound = 0.067) e un p-value di 0.011, attesta la robustezza di questa tendenza. Nel trentennio di riferimento (1994-2024), si nota un aumento medio complessivo di circa 1°C nella temperatura massima media annuale. Sebbene l'andamento mostri oscillazioni interannuali (come evidente dalle fluttuazioni tra i valori minimi e massimi), la retta di regressione indica una chiara direzione verso l'alto. Si possono osservare anomalie, con un abbassamento delle temperature medie massime, in anni specifici come il 2010 e il periodo 2018-2019. Tali variazioni interannuali significative potrebbero essere influenzate da fenomeni climatici su larga scala, come le oscillazioni legate al El Niño/La Niña (ENSO) o ad altri teleconnessioni atmosferiche come la North Atlantic Oscillation (NAO) e l'Arctic Oscillation (AO), la cui correlazione necessiterebbe di un'analisi specifica.",
                     "impatto": "Water resources and food security, Cryosphere",
-                    "impatto_specif ico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
+                    "impatto_specifico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
                     "grafico": "Vercelli_94_24_txm_ANN.png"
                 }
             ],
@@ -266,6 +271,7 @@
                     const indexDetails = document.createElement('div');
                     indexDetails.classList.add('index-details');
 
+                    // Utilizzo di span per le etichette per miglior controllo dello stile
                     indexDetails.innerHTML += `<p><strong>Rilevanza per Vercelli:</strong> ${item.rilevanza_vercelli}</p>`;
                     indexDetails.innerHTML += `<p><strong>Impatto Generale:</strong> ${item.impatto}</p>`;
                     indexDetails.innerHTML += `<p><strong>Impatto Specifico:</strong> ${item.impatto_specifico}</p>`;
