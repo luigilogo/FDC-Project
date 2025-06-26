@@ -413,9 +413,8 @@
                         graphicContainer.classList.add('graphic-container');
                         const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
                         graphicFiles.forEach(graphic => {
-                            // Assicurati che il percorso delle immagini sia corretto e che i file esistano
-                            // nella cartella 'images/' sul tuo server/repository.
-                            graphicContainer.innerHTML += `<img src="./images/${graphic}" alt="Grafico ${item.indice}">`;
+                            // PERCORSO IMMAGINI AGGIUSTATO: ora cerca direttamente nella root
+                            graphicContainer.innerHTML += `<img src="./${graphic}" alt="Grafico ${item.indice}">`;
                         });
                         indexDetails.appendChild(graphicContainer);
                     }
@@ -463,6 +462,8 @@
                                 if (feature.properties && feature.properties.name) {
                                     layer.bindPopup(feature.properties.name + ": " + feature.properties.risk_level);
                                 }
+                            }
+                        }).addTo(map);
                             }
                         }).addTo(map);
                     })
