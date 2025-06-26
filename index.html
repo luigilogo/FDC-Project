@@ -583,16 +583,20 @@
       <h2><i class="fas fa-chart-bar"></i> Temperature Minime</h2>
       <ul>
         <li>
-          <span><strong>TR</strong> – Notti tropicali (> 20°C): in forte aumento, riducono raffrescamento notturno e aumentano stress termico.</span>
-          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
+          <span><strong>Tnm</strong> – Temperatura Minima Media Annuale: indica la tendenza generale del riscaldamento delle notti.</span>
+          <span class="show-graph-link" data-graph-id="tnm_ANN">Mostra grafico</span>
         </li>
         <li>
-          <span><strong>TN10p</strong> – Notti molto fredde (10° percentile): in riduzione, meno gelate ma anche meno controllo naturale di parassiti.</span>
+          <span><strong>Tn10p</strong> – Notti molto fredde (10° percentile): in riduzione, meno gelate ma anche meno controllo naturale di parassiti.</span>
           <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
         </li>
         <li>
-          <span><strong>TN90p</strong> – Notti estremamente calde: in aumento, alterano ritmi fisiologici colture e aumentano consumo idrico.</span>
+          <span><strong>Tn90p</strong> – Notti estremamente calde: in aumento, alterano ritmi fisiologici colture e aumentano consumo idrico.</span>
           <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <span><strong>TR</strong> – Notti tropicali (> 20°C): in forte aumento, riducono raffrescamento notturno e aumentano stress termico.</span>
+          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
         </li>
       </ul>
     </div>
@@ -600,7 +604,15 @@
       <h2><i class="fas fa-fire"></i> Temperature Massime</h2>
       <ul>
         <li>
-          <span><strong>TX90p</strong> – Giorni con Tmax > 90° percentile: in crescita, peggiorano vivibilità estiva e aumentano costi climatizzazione/irrigazione.</span>
+          <span><strong>Txm</strong> – Temperatura Massima Media Annuale: indica la tendenza generale del riscaldamento diurno.</span>
+          <span class="show-graph-link" data-graph-id="txm_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <span><strong>Tx10p</strong> – Giorni molto freddi (10° percentile): in riduzione, meno giorni di freddo intenso.</span>
+          <span class="show-graph-link" data-graph-id="tx10p_ANN">Mostra grafico</span>
+        </li>
+        <li>
+          <span><strong>Tx90p</strong> – Giorni con Tmax > 90° percentile: in crescita, peggiorano vivibilità estiva e aumentano costi climatizzazione/irrigazione.</span>
           <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
         </li>
         <li>
@@ -610,10 +622,6 @@
         <li>
           <span><strong>HWN</strong> – Durata ondate di calore: in aumento, impatti sanitari e produttivi amplificati.</span>
           <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>TXGE30</strong> – Giorni oltre i 30°C: in aumento, compromettono crescita agricola.</span>
-          <span class="show-graph-link" data-graph-id="txge30_ANN">Mostra grafico</span>
         </li>
       </ul>
     </div>
@@ -683,8 +691,8 @@
           </div>
           <div class="impact-item-content">
             <ul>
-                <li>Notti fredde (TN10p): 📉 Riduzione, favorisce parassiti.</li>
-                <li>Giorni/Notti calde (TXGE30, TN90p): ⬆️ Stress per le colture in crescita.</li>
+                <li>Notti fredde (Tn10p): 📉 Riduzione, favorisce parassiti.</li>
+                <li>Giorni/Notti calde (Txm, Tnm, Tx90p, Tn90p, TR): ⬆️ Stress per le colture in crescita.</li>
                 <li>Conseguenze:
                     <ul>
                         <li>💰 Necessari grandi investimenti (nuove tecnologie, varietà resilienti).</li>
@@ -780,6 +788,10 @@
         <div id="caption"></div>
     </div>
   </div>
+  <div class="graph-data-container" id="graph-tnm_ANN">
+    <img src="placeholder_tnm.png" alt="Grafico Tnm - Temperatura Minima Media Annuale">
+    <p class="graph-commentary">**Questo è un commento segnaposto.** Rappresenta l'andamento della temperatura minima media annuale. Un aumento di questo indice indica notti generalmente più calde, il che può avere impatti sul comfort termico e sullo stress fisiologico di piante e animali. Si prega di sostituire 'placeholder_tnm.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
+  </div>
   <div class="graph-data-container" id="graph-tr_ANN">
     <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
     <p class="graph-commentary">Il grafico mostra l'andamento annuale del numero di notti tropicali (TR), definite come notti in cui la temperatura minima non scende sotto i 20°C. Si osserva un chiaro trend di aumento nel periodo 1994-2024. Questo incremento indica una riduzione del raffrescamento notturno, con implicazioni per il benessere umano (disturbi del sonno, aumento dello stress termico) e per l'agricoltura (stress termico per le colture che non riescono a recuperare durante la notte). Il trend è statisticamente significativo. Il massimo è stato registrato nel 2022 con 35 notti, mentre il minimo è stato nel 1996 con 5 notti.</p>
@@ -789,8 +801,16 @@
     <p class="graph-commentary">Il grafico illustra la frequenza annuale dei giorni con temperatura minima inferiore al 10° percentile (notti fredde). Si evidenzia una tendenza alla diminuzione di queste notti nel corso degli anni. Questo fenomeno implica una riduzione delle gelate, il che può essere positivo per alcune colture sensibili al gelo, ma può anche favorire la sopravvivenza e la proliferazione di parassiti e patogeni che normalmente sarebbero controllati dalle basse temperature invernali, richiedendo nuove strategie di difesa fitosanitaria. Il trend è statisticamente significativo. Il massimo di notti fredde è stato osservato nel 1995 con 45 eventi, mentre il minimo è stato nel 2023 con 10 eventi.</p>
   </div>
   <div class="graph-data-container" id="graph-tn90p_ANN">
-    <img src="Vercelli_94_24_tn90p_ANN" alt="Grafico TN90p - Notti Calde Estive">
+    <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
     <p class="graph-commentary">Il grafico rappresenta l'andamento annuale delle notti estremamente calde (Tmin > 90° percentile). Si osserva una tendenza all'aumento di questi eventi. Notti calde persistenti stressano sia la popolazione che le colture, alterando i ritmi fisiologici, anticipando le fasi vegetative e aumentando il consumo idrico delle piante, con ripercussioni negative sulla produttività agricola e sul comfort termico. Il trend è statisticamente significativo. Il picco è stato nel 2023 con 28 notti, mentre il valore più basso è stato nel 1998 con 3 notti.</p>
+  </div>
+  <div class="graph-data-container" id="graph-txm_ANN">
+    <img src="placeholder_txm.png" alt="Grafico Txm - Temperatura Massima Media Annuale">
+    <p class="graph-commentary">**Questo è un commento segnaposto.** Rappresenta l'andamento della temperatura massima media annuale. Un aumento di questo indice indica un riscaldamento generale delle giornate, con implicazioni per il consumo energetico legato alla climatizzazione e allo stress termico diurno. Si prega di sostituire 'placeholder_txm.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
+  </div>
+  <div class="graph-data-container" id="graph-tx10p_ANN">
+    <img src="placeholder_tx10p.png" alt="Grafico Tx10p - Giorni Freddi">
+    <p class="graph-commentary">**Questo è un commento segnaposto.** Il grafico illustra la frequenza annuale dei giorni con temperatura massima inferiore al 10° percentile (giorni freddi). Una diminuzione di questi giorni indica inverni meno rigidi, con potenziali benefici per i costi di riscaldamento, ma anche alterazioni nei cicli naturali che dipendono dal freddo. Si prega di sostituire 'placeholder_tx10p.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
   </div>
   <div class="graph-data-container" id="graph-tx90p_ANN">
     <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
@@ -803,10 +823,6 @@
   <div class="graph-data-container" id="graph-hwn_tx90_ANN">
     <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
     <p class="graph-commentary">Il grafico rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo. Il trend è statisticamente significativo. La durata massima è stata registrata nel 2022 con 10 giorni medi per ondata, e la minima nel 1999 con 3 giorni medi.</p>
-  </div>
-  <div class="graph-data-container" id="graph-txge30_ANN">
-    <img src="Vercelli_94_24_txge30_ANN.png" alt="Grafico TXGE30 - Giorni oltre 30°C">
-    <p class="graph-commentary">Il grafico mostra il numero annuale di giorni in cui la temperatura massima supera i 30°C. Il grafico indica un chiaro trend di aumento di tali giorni. Questo significa che Vercelli sperimenta periodi più lunghi e intensi di caldo estivo, compromettendo le fasi critiche di crescita agricola, aumentando lo stress idrico e il fabbisogno energetico per il raffrescamento. Il trend è statisticamente significativo. Il massimo è stato osservato nel 2023 with 60 giorni, e il minimo nel 1995 with 15 giorni.</p>
   </div>
   <div class="graph-data-container" id="graph-cdd_ANN">
     <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
@@ -835,7 +851,7 @@
           <ul>
             <li><i class="fas fa-tint-slash"></i> Vulnerabile a siccità prolungata (CDD), che aumenta drasticamente i costi irrigui.</li>
             <li><i class="fas fa-cloud-showers-heavy"></i> Piogge intense e concentrate (R95p) possono causare allagamenti e danni alle colture.</li>
-            <li><i class="fas fa-thermometer-three-quarters"></i> Temperature minime elevate (TR, TN90p) influenzano negativamente la produttività e la qualità del riso.</li>
+            <li><i class="fas fa-thermometer-three-quarters"></i> Temperature minime elevate (TR, Tn90p) influenzano negativamente la produttività e la qualità del riso.</li>
           </ul>
         `
       },
@@ -845,7 +861,7 @@
         descrizione: `
           <h3><i class="fas fa-city"></i> Impatti sulla Vita Urbana</h3>
           <ul>
-            <li><i class="fas fa-thermometer-full"></i> Esposta a ondate di calore (TR, TXGE30, HWF, HWN) con forte disagio per la popolazione.</li>
+            <li><i class="fas fa-thermometer-full"></i> Esposta a ondate di calore (Tnm, Txm, TR, Tx90p, HWF, HWN) con forte disagio per la popolazione.</li>
             <li><i class="fas fa-hospital"></i> Aumento dello stress sui servizi sanitari dovuto a patologie correlate al calore.</li>
             <li><i class="fas fa-tree-city"></i> L'effetto 'isola di calore' urbano è amplificato, rendendo le notti meno rinfrescanti.</li>
           </ul>
@@ -858,8 +874,8 @@
           <h3><i class="fas fa-seedling"></i> Impatti su Mais e Frumento</h3>
           <ul>
             <li><i class="fas fa-cloud-sun"></i> Impattata da irregolarità delle precipitazioni (PRCPTOT) e periodi di siccità (CDD).</li>
-            <li><i class="fas fa-temperature-high"></i> Temperature massime elevate (TX90p) riducono la resa delle colture.</li>
-            <li><i class="fas fa-bug"></i> Meno notti fredde (TN10p) favoriscono la proliferazione di parassiti e patogeni.</li>
+            <li><i class="fas fa-temperature-high"></i> Temperature massime elevate (Txm, Tx90p) riducono la resa delle colture.</li>
+            <li><i class="fas fa-snowflake"></i> Meno giorni freddi (Tx10p, Tn10p) favoriscono la proliferazione di parassiti e patogeni.</li>
           </ul>
         `
       }
@@ -934,12 +950,12 @@
         peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
         impactPeople.classList.add('positive');
       } else if (tempChange >= 0.5 && tempChange < 2) {
-        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a TR, TX90p) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
-        peopleImpactText += " <br> (Collegato a indici come TR, TX90p, HWF, HWN)";
+        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a Tnm, Txm, TR, Tx90p, HWF, HWN) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
+        peopleImpactText += " <br> (Collegato a indici come Tnm, Txm, TR, Tx90p, HWF, HWN)";
         impactPeople.classList.add('warning');
       } else {
         peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
-        peopleImpactText += " <br> (Collegato a indici come TR, TX90p, HWF, HWN)";
+        peopleImpactText += " <br> (Collegato a indici come Tnm, Txm, TR, Tx90p, HWF, HWN)";
         impactPeople.classList.add('negative');
       }
       impactPeople.querySelector('p').innerHTML = peopleImpactText;
@@ -948,15 +964,15 @@
       let agricultureImpactText = "";
       if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
         agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm)";
         impactAgriculture.classList.add('positive');
       } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
         agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm, Tx90p, Tn90p)";
         impactAgriculture.classList.add('warning');
       } else {
-        agricultureImpactText = "Scenario critico: ondate di calore prolungate (TXGE30), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, TXGE30)";
+        agricultureImpactText = "Scenario critico: ondate di calore prolungate (Txm, Tx90p), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
+        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm, Tx90p, Tn90p, TR)";
         impactAgriculture.classList.add('negative');
       }
       impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
