@@ -276,6 +276,7 @@
                         graphicContainer.classList.add('graphic-container');
                         const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
                         graphicFiles.forEach(graphic => {
+                            // Assicurati che il percorso dell'immagine sia corretto
                             graphicContainer.innerHTML += `<img src="./images/${graphic}" alt="Grafico ${item.indice}">`;
                         });
                         indexDetails.appendChild(graphicContainer);
