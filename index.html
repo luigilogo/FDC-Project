@@ -399,8 +399,8 @@
             </div>
             <div class="modal-text-content">
                 <h3 id="modalGraphicTitle"></h3>
-                <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
-                <p><strong>Impatto Specifico:</strong> <span id="modalImpattoSpecifico"></span></p>
+                <p><strong>Rilevanza per Vercelli:</strong> <span id="modalRilevanzaVercelli"></span></p> <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
+                <p><strong>Impatto per Vercelli:</strong> <span id="modalImpattoSpecifico"></span></p>
             </div>
         </div>
     </div>
@@ -525,6 +525,7 @@
             const graphicModal = document.getElementById('graphicModal');
             const modalGraphicImage = document.getElementById('modalGraphicImage');
             const modalGraphicTitle = document.getElementById('modalGraphicTitle');
+            const modalRilevanzaVercelli = document.getElementById('modalRilevanzaVercelli'); // Nuovo elemento
             const modalImpattoGenerale = document.getElementById('modalImpattoGenerale');
             const modalImpattoSpecifico = document.getElementById('modalImpattoSpecifico');
             const modalCloseButton = document.querySelector('.modal-close-button');
@@ -532,6 +533,7 @@
             function showGraphicModal(item, graphicSrc) {
                 modalGraphicImage.src = graphicSrc;
                 modalGraphicTitle.textContent = `Dettagli per ${item.indice}`;
+                modalRilevanzaVercelli.textContent = item.rilevanza_vercelli; // Popola il nuovo campo
                 modalImpattoGenerale.textContent = item.impatto;
                 modalImpattoSpecifico.textContent = item.impatto_specifico;
                 graphicModal.classList.add('active');
