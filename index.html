@@ -1,1001 +1,297 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisi Climatica - Vercelli</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --main-color: #36454F; /* Deep Charcoal Grey - New color for header */
-      --accent-color: #607B8B; /* Desaturated Blue-Grey - New accent color */
-      --light-gray: #F5F8FA; /* Very light blue-gray for background */
-      --text-color: #333; /* Dark gray for main text */
-      --warning-color: #FFC107; /* Amber for caution */
-      --danger-color: #E74C3C; /* Deep Red for danger */
-      --success-color: #4CAF50; /* Medium Green for success */
-    }
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--light-gray);
-      color: var(--text-color);
-      text-align: left;
-    }
-    header {
-      background: var(--main-color);
-      color: white;
-      padding: 30px 0;
-      text-align: center;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-    }
-    header h1 {
-      font-size: 2.8em;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-    header p {
-      font-size: 1.2em;
-      opacity: 0.9;
-      font-weight: 300;
-    }
-    nav {
-      background: #4A5B67; /* Slightly lighter shade of new main-color for nav */
-      display: flex;
-      justify-content: center;
-      padding: 15px 0;
-      flex-wrap: wrap;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    }
-    nav a {
-      color: white;
-      margin: 0 20px;
-      text-decoration: none;
-      font-weight: 500;
-      padding: 8px 0;
-      transition: color 0.3s ease, text-decoration 0.3s ease;
-    }
-    nav a:hover {
-      color: var(--accent-color);
-      text-decoration: underline;
-    }
-    #map {
-      height: 65vh;
-      width: 100%;
-      margin-bottom: 40px;
-      border-bottom: 5px solid var(--accent-color);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .content {
-      padding: 40px;
-      max-width: 1100px;
-      margin: auto;
-    }
-    h2 {
-      color: var(--main-color);
-      border-bottom: 3px solid var(--accent-color);
-      padding-bottom: 10px;
-      margin-top: 50px;
-      font-size: 2em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-    }
-    h2 i {
-      color: var(--accent-color);
-    }
-    .info-box, .info-block, .interactive-section {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      margin-bottom: 40px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-      overflow: hidden;
-      border-top: 5px solid var(--accent-color);
-    }
-    .info-box ul, .info-block ul {
-      padding-left: 20px;
-      list-style: none;
-      margin-top: 20px;
-    }
-    .info-box ul li {
-      margin-bottom: 12px;
-      line-height: 1.7em;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      text-align: left;
-      flex-wrap: wrap;
-    }
-    .info-box ul li > span:first-child {
-        flex-basis: 70%;
-        min-width: 250px;
-    }
-    .info-box ul li strong {
-      color: var(--main-color);
-    }
-    .info-box ul li .show-graph-link {
-        font-size: 0.95em;
-        color: var(--accent-color);
-        cursor: pointer;
-        text-decoration: underline;
-        font-weight: bold;
-        transition: color 0.3s ease;
-        line-height: 1.7em;
-        margin-left: auto;
-        white-space: nowrap;
-    }
-    .info-box ul li .show-graph-link:hover {
-        color: var(--main-color);
-    }
-    .info-box i {
-      margin-right: 10px;
-      color: var(--accent-color);
-      font-size: 1.2em;
-    }
-    .info-block {
-      background: #F8F8FF;
-      border-top: 5px solid var(--warning-color);
-    }
-    .info-block h2 {
-        border-bottom-color: var(--warning-color);
-        color: var(--main-color);
-    }
-    .info-block .impact-description {
-      font-size: 1.1em;
-      line-height: 1.8em;
-      margin-bottom: 30px;
-      color: #555;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisi Climatica Vercelli</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-    .impact-category-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    .impact-item {
-        background: white;
-        padding: 0;
-        border-left: 6px solid var(--warning-color);
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        overflow: hidden;
-    }
-    .impact-item.severity-low { border-left-color: var(--success-color); }
-    .impact-item.severity-low .impact-item-header i { color: var(--success-color); }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
 
-    .impact-item.severity-medium { border-left-color: var(--warning-color); }
-    .impact-item.severity-medium .impact-item-header i { color: var(--warning-color); }
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
 
-    .impact-item.severity-high { border-left-color: var(--danger-color); }
-    .impact-item.severity-high .impact-item-header i { color: var(--danger-color); }
-    
-    .impact-item-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 25px;
-        cursor: pointer;
-        background-color: #fff;
-        transition: background-color 0.2s ease;
-        border-bottom: 1px solid #eee;
-    }
-    .impact-item-header:hover {
-        background-color: #f9f9f9;
-    }
-    .impact-item-header h3 {
-        margin: 0;
-        font-size: 1.5em;
-        color: var(--main-color);
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-    }
-    .impact-item-header h3 i {
-        margin-right: 12px;
-        font-size: 1.8em;
-        color: var(--warning-color);
-    }
-    .impact-item-header .toggle-icon {
-        font-size: 1.5em;
-        color: var(--accent-color);
-        transition: transform 0.3s ease;
-    }
-    .impact-item-content {
-        padding: 0 25px 25px;
-        line-height: 1.7em;
-        color: #555;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-    }
-    .impact-item-content p {
-        margin-top: 20px;
-    }
-    .impact-item.active .impact-item-content {
-        max-height: 500px;
-        padding: 25px 25px 25px;
-    }
-    .impact-item.active .impact-item-header .toggle-icon {
-        transform: rotate(180deg);
-    }
-    .impact-item-content ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 15px;
-    }
-    .impact-item-content ul li {
-      margin-bottom: 8px;
-      font-size: 1.05em;
-      line-height: 1.6em;
-      position: relative;
-      padding-left: 25px;
-    }
-    .impact-item-content ul li:before {
-      content: '•';
-      color: var(--accent-color);
-      font-size: 1.2em;
-      position: absolute;
-      left: 0;
-      top: 0;
-      line-height: 1.6em;
-    }
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
 
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #34495e;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
 
-    .chart {
-      margin: 35px auto;
-      text-align: center;
-    }
-    footer {
-      background: var(--main-color);
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1em;
-      margin-top: 50px;
-    }
-    .graph-data-container {
-        display: none;
-    }
-    .graph-data-container img {
-        max-width: 100%;
-        height: auto;
-    }
-    .graph-data-container .graph-commentary {
-        margin-top: 15px;
-        font-size: 1.05em;
-        line-height: 1.7em;
-        color: #666;
-        text-align: left;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      padding-top: 60px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.9);
-    }
-    
-    .modal-body-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 30px;
-      margin: auto;
-      width: 90%;
-      max-width: 1300px;
-      background-color: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      animation-name: zoom;
-      animation-duration: 0.6s;
-    }
-    .modal-body-container img#img01 {
-      flex: 1 1 50%;
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-      min-width: 350px;
-    }
-    .modal-body-container #caption {
-      flex: 1 1 40%;
-      margin: 0;
-      padding: 0;
-      text-align: left;
-      color: #333;
-      font-size: 1.15em;
-      line-height: 1.7;
-      min-width: 350px;
-    }
-    
-    @keyframes zoom {
-      from {transform:scale(0)}
-      to {transform:scale(1)}
-    }
-    .close-button {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      color: #f1f1f1;
-      font-size: 45px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    .close-button:hover,
-    .close-button:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    @media only screen and (max-width: 768px){
-      .modal-body-container {
-        flex-direction: column;
-        align-items: center;
-        width: 95%;
-        padding: 25px;
-      }
-      .modal-body-container img#img01,
-      .modal-body-container #caption {
-        flex: none;
-        width: 100%;
-        min-width: unset;
-      }
-    }
-    .interactive-section {
-      background: #E8F5E9;
-      border-top: 5px solid var(--success-color);
-      padding: 35px;
-      margin-top: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-    }
-    .interactive-section h2 {
-      color: var(--main-color);
-      border-bottom-color: var(--success-color);
-      width: 100%;
-      margin-bottom: 20px;
-    }
-    .interactive-section > p {
-        width: 100%;
-        margin-bottom: 30px;
-    }
-    .interactive-controls {
-      flex: 1;
-      min-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      padding-right: 20px;
-    }
-    .control-group label {
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: var(--main-color);
-      font-size: 1.1em;
-    }
-    .control-group input[type="range"] {
-      width: 100%;
-      -webkit-appearance: none;
-      height: 10px;
-      background: #ddd;
-      border-radius: 50px;
-      outline: none;
-      opacity: 0.9;
-      transition: opacity .2s;
-    }
-    .control-group input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 28px;
-      height: 28px;
-      background: var(--accent-color);
-      border-radius: 50%;
-      cursor: pointer;
-      border: 4px solid white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    }
-    .control-group input[type="range"]::-moz-range-thumb {
-      width: 28px;
-      height: 28px;
-      background: var(--accent-color);
-      border-radius: 50%;
-      cursor: pointer;
-      border: 4px solid white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    }
-    .control-value {
-      text-align: center;
-      font-weight: bold;
-      color: var(--accent-color);
-      margin-top: 8px;
-      font-size: 1.2em;
-    }
-    .impact-results {
-      flex: 2;
-      min-width: 400px;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.07);
-    }
-    .impact-results h3 {
-      color: var(--main-color);
-      margin-bottom: 20px;
-      font-size: 1.4em;
-    }
-    .impact-category {
-      margin-bottom: 25px;
-      border-left: 5px solid;
-      padding-left: 15px;
-    }
-    .impact-category h4 {
-      color: var(--warning-color);
-      margin-bottom: 12px;
-      font-size: 1.2em;
-      display: flex;
-      align-items: center;
-    }
-    .impact-category h4 i {
-        margin-right: 12px;
-        font-size: 1.4em;
-    }
-    .impact-category p {
-      line-height: 1.7em;
-      color: #555;
-    }
-    .impact-category.positive { border-left-color: var(--success-color); }
-    .impact-category.positive h4 { color: var(--success-color); }
-    .impact-category.positive h4 i { color: var(--success-color); }
+        .category-section {
+            margin-bottom: 40px;
+        }
 
-    .impact-category.warning { border-left-color: var(--warning-color); }
-    .impact-category.warning h4 { color: var(--warning-color); }
-    .impact-category.warning h4 i { color: var(--warning-color); }
+        .index-item {
+            background-color: #ecf0f1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    .impact-category.negative { border-left-color: var(--danger-color); }
-    .impact-category.negative h4 { color: var(--danger-color); }
-    .impact-category.negative h4 i { color: var(--danger-color); }
+        .index-item:hover {
+            background-color: #e0e6e7;
+        }
 
-    /* Styles for the map popup */
-    .leaflet-popup-content-wrapper {
-        border-radius: 10px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        padding: 15px;
-    }
-    .leaflet-popup-content {
-        padding: 5px 10px;
-    }
-    .leaflet-popup-content h3 {
-        color: var(--main-color);
-        font-size: 1.3em;
-        margin-top: 0;
-        margin-bottom: 10px;
-        border-bottom: 2px solid var(--accent-color);
-        padding-bottom: 5px;
-        font-weight: 500;
-    }
-    .leaflet-popup-content ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .leaflet-popup-content ul li {
-        margin-bottom: 8px;
-        line-height: 1.5em;
-        color: #555;
-        font-weight: 400;
-    }
-    .leaflet-popup-content ul li i {
-        margin-right: 8px;
-        color: var(--accent-color);
-        font-size: 1em;
-    }
+        .index-header {
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    /* Scroll to top button */
-    button[onclick="scrollToTop()"] {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 12px 18px;
-        background-color: var(--accent-color);
-        color: white;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-        font-size: 18px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    button[onclick="scrollToTop()"]:hover {
-        background-color: #008f7a;
-        transform: translateY(-2px);
-    }
+        .index-header::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
 
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: center;
-      }
-      nav a {
-        margin: 8px 0;
-      }
-      .content {
-        padding: 20px;
-      }
-      h2 {
-        font-size: 1.8em;
-      }
-      .info-box, .info-block, .interactive-section {
-        padding: 20px;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .interactive-controls, .impact-results {
-        min-width: unset;
-        padding-right: 0;
-      }
-      .impact-item-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .impact-item-header h3 {
-        margin-bottom: 10px;
-      }
-      .info-box ul li {
-          flex-direction: column;
-          align-items: flex-start;
-      }
-      .info-box ul li .show-graph-link {
-          margin-left: 0;
-          width: 100%;
-          text-align: right;
-          margin-top: 5px;
-      }
-    }
-  </style>
+        .index-item.active .index-header::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+
+        .index-details {
+            display: none; /* Nascosto di default */
+            padding: 15px;
+            border-top: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        .index-item.active .index-details {
+            display: block; /* Mostrato quando attivo */
+        }
+
+        .index-details p {
+            margin-bottom: 10px;
+        }
+
+        .index-details strong {
+            color: #2980b9;
+        }
+
+        .graphic-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .graphic-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1 1 auto; /* Permette agli elementi di crescere e restringersi */
+            min-width: 280px; /* Larghezza minima per l'immagine */
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: #34495e;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Analisi Climatica e Impatti Socio-Economici - Vercelli</h1>
-    <p>Uno sguardo integrato ai cambiamenti climatici sul territorio vercellese</p>
-  </header>
-  <nav>
-    <a href="#minime">Temperature Minime</a>
-    <a href="#massime">Temperature Massime</a>
-    <a href="#precipitazioni">Precipitazioni</a>
-    <a href="#impatto">Impatti Socio-Economici</a>
-    <a href="#simulatore">Simulatore di Impatto</a>
-  </nav>
-  <div id="map"></div>
-  <div class="content">
-    <div id="minime" class="info-box">
-      <h2><i class="fas fa-chart-bar"></i> Temperature Minime</h2>
-      <ul>
-        <li>
-          <span><strong>Tnm</strong> – Temperatura Minima Media Annuale: indica la tendenza generale del riscaldamento delle notti.</span>
-          <span class="show-graph-link" data-graph-id="tnm_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>Tn10p</strong> – Notti molto fredde (10° percentile): in riduzione, meno gelate ma anche meno controllo naturale di parassiti.</span>
-          <span class="show-graph-link" data-graph-id="tn10p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>Tn90p</strong> – Notti estremamente calde: in aumento, alterano ritmi fisiologici colture e aumentano consumo idrico.</span>
-          <span class="show-graph-link" data-graph-id="tn90p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>TR</strong> – Notti tropicali (> 20°C): in forte aumento, riducono raffrescamento notturno e aumentano stress termico.</span>
-          <span class="show-graph-link" data-graph-id="tr_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-    <div id="massime" class="info-box">
-      <h2><i class="fas fa-fire"></i> Temperature Massime</h2>
-      <ul>
-        <li>
-          <span><strong>Txm</strong> – Temperatura Massima Media Annuale: indica la tendenza generale del riscaldamento diurno.</span>
-          <span class="show-graph-link" data-graph-id="txm_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>Tx10p</strong> – Giorni molto freddi (10° percentile): in riduzione, meno giorni di freddo intenso.</span>
-          <span class="show-graph-link" data-graph-id="tx10p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>Tx90p</strong> – Giorni con Tmax > 90° percentile: in crescita, peggiorano vivibilità estiva e aumentano costi climatizzazione/irrigazione.</span>
-          <span class="show-graph-link" data-graph-id="tx90p_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>HWF</strong> – Frequenza ondate di calore: in aumento, impatti sanitari e produttivi.</span>
-          <span class="show-graph-link" data-graph-id="hwf_tx90_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>HWN</strong> – Durata ondate di calore: in aumento, impatti sanitari e produttivi amplificati.</span>
-          <span class="show-graph-link" data-graph-id="hwn_tx90_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-    <div id="precipitazioni" class="info-box">
-      <h2><i class="fas fa-cloud-showers-heavy"></i> Precipitazioni</h2>
-      <ul>
-        <li>
-          <span><strong>CDD</strong> – Periodi consecutivi senza pioggia (> 30 giorni): in aumento, indeboliscono resilienza idrica e aumentano rischio perdite riso.</span>
-          <span class="show-graph-link" data-graph-id="cdd_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>PRCPTOT</strong> – Totale annuale: stabile ma distribuzione irregolare e meno utile all’agricoltura.</span>
-          <span class="show-graph-link" data-graph-id="prcptot_ANN">Mostra grafico</span>
-        </li>
-        <li>
-          <span><strong>R95p</strong> – Piogge intense e concentrate: in aumento, causano allagamenti, erosione e inefficienza ricarica idrica.</span>
-          <span class="show-graph-link" data-graph-id="r95p_ANN">Mostra grafico</span>
-        </li>
-      </ul>
-    </div>
-    <div id="impatto" class="info-block">
-      <h2><i class="fas fa-globe-americas"></i> Impatti sul Tessuto Socio-Economico</h2>
-      <p class="impact-description">Il cambiamento climatico sta già alterando in modo tangibile l’equilibrio socio-economico del vercellese, in particolare per un’economia agricola fortemente specializzata. Gli scenari futuri indicano una crescente urgenza nell'adottare strategie di mitigazione e adattamento per preservare la qualità della vita e la prosperità economica del territorio.</p>
-      <div class="impact-category-list">
-        <div class="impact-item severity-high">
-          <div class="impact-item-header">
-            <h3><i class="fas fa-hand-holding-water"></i> Costi Irrigui e Stress Idrico</h3>
-            <span class="toggle-icon">&#9660;</span>
-          </div>
-          <div class="impact-item-content">
-            <ul>
-                <li>Aumento siccità (CDD): 📈 Aumento significativo dei giorni secchi consecutivi.</li>
-                <li>Precipitazioni: 🌧️➡️💧❌ Stabili in totale, ma distribuite irregolarmente con eventi estremi (R95p) in aumento.</li>
-                <li>Conseguenze:
-                    <ul>
-                        <li>⬆️ Costi irrigui.</li>
-                        <li>⬇️ Margini di profitto per agricoltori (riso).</li>
-                        <li>⚠️ Maggiore pressione sulle risorse idriche.</li>
-                    </ul>
-                </li>
-            </ul>
-          </div>
-        </div>
-        <div class="impact-item severity-high">
-          <div class="impact-item-header">
-            <h3><i class="fas fa-user-injured"></i> Rischi Sanitari e Disagio Urbano</h3>
-            <span class="toggle-icon">&#9660;</span>
-          </div>
-          <div class="impact-item-content">
-            <ul>
-                <li>Temperatures: ⬆️⬆️ Notti Tropicali (TR), Giorni con Tmax estrema (TX90p).</li>
-                <li>Ondate di calore: 📈 Aumento frequenza (HWF) e durata (HWN).</li>
-                <li>Conseguenze:
-                    <ul>
-                        <li>🚨 Aumento rischi salute (colpi di calore, disidratazione).</li>
-                        <li>🏥 Pressione sui servizi sanitari.</li>
-                        <li>⬇️ Disagio urbano, specie per fasce vulnerabili.</li>
-                    </ul>
-                </li>
-            </ul>
-          </div>
-        </div>
-        <div class="impact-item severity-medium">
-          <div class="impact-item-header">
-            <h3><i class="fas fa-handshake-slash"></i> Vulnerabilità Economica Agricola</h3>
-            <span class="toggle-icon">&#9660;</span>
-          </div>
-          <div class="impact-item-content">
-            <ul>
-                <li>Notti fredde (Tn10p): 📉 Riduzione, favorisce parassiti.</li>
-                <li>Giorni/Notti calde (Txm, Tnm, Tx90p, Tn90p, TR): ⬆️ Stress per le colture in crescita.</li>
-                <li>Conseguenze:
-                    <ul>
-                        <li>💰 Necessari grandi investimenti (nuove tecnologie, varietà resilienti).</li>
-                        <li>📉 Riduzione redditività e competitività PMI agricole.</li>
-                        <li>❗ Rischio di chiusura attività, impatto su occupazione e PIL.</li>
-                    </ul>
-                </li>
-            </ul>
-          </div>
-        </div>
-        <div class="impact-item severity-medium">
-          <div class="impact-item-header">
-            <h3><i class="fas fa-chart-line"></i> Competitività e Sicurezza Alimentare</h3>
-            <span class="toggle-icon">&#9660;</span>
-          </div>
-          <div class="impact-item-content">
-            <ul>
-                <li>Impatto su Produzione: ⬇️ Riduzione rese, alterazione cicli colturali.</li>
-                <li>Fattori chiave:
-                    <ul>
-                        <li>☀️ Siccità prolungata (CDD): compromette germinazione riso.</li>
-                        <li>🌊 Piogge torrenziali (R95p): causano danni fisici.</li>
-                    </ul>
-                </li>
-            </ul>
-          </div>
-        </div>
-        <div class="impact-item severity-medium">
-          <div class="impact-item-header">
-            <h3><i class="fas fa-city"></i> Pianificazione Territoriale e Infrastrutture</h3>
-            <span class="toggle-icon">&#9660;</span>
-          </div>
-          <div class="impact-item-content">
-            <ul>
-                <li>Eventi estremi: 📈 Frequenza in aumento (R95p, HWF/HWN).</li>
-                <li>Richieste:
-                    <ul>
-                        <li>💧 Sistemi drenaggio più efficienti, gestione rischio idrogeologico.</li>
-                        <li>🌳 "Infrastrutture verdi" (parchi, alberi) per mitigare isole di calore.</li>
-                        <li>🏗️ Pianificazione resiliente per strade, edifici, reti di servizio.</li>
-                    </ul>
-                </li>
-                <li>Conseguenze: 💰 Richiede investimenti significativi e approccio integrato.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="chart">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Global_Average_Temperature_Change.png" alt="Grafico cambiamento climatico globale" width="90%">
-        <p style="font-size: 0.9em; color: #666;">Fonte: Wikimedia Commons – Andamento globale delle temperature medie (dal 1880 al 2020)</p>
-      </div>
-    </div>
-    <div id="simulatore" class="interactive-section">
-      <h2><i class="fas fa-globe"></i> Simulatore di Impatto Climatico su Vercelli</h2>
-      <p>Esplora come diversi scenari climatici potrebbero influenzare il territorio di Vercelli. Muovi i cursori per vedere gli impatti stimati su diversi settori. Questo simulatore fornisce un'indicazione basata su modelli semplificati e non sostituisce analisi climatiche approfondite.</p>
-      <div class="interactive-controls">
-        <div class="control-group">
-          <label for="temp-slider">Aumento Temperatura Media Annuale (°C): <span id="temp-value">0.0</span></label>
-          <input type="range" id="temp-slider" min="0" max="4" step="0.5" value="0">
-        </div>
-        <div class="control-group">
-          <label for="precip-slider">Variazione Precipitazioni Annue Totali (%): <span id="precip-value">0</span></label>
-          <input type="range" id="precip-slider" min="-30" max="30" step="5" value="0">
-        </div>
-      </div>
-      <div class="impact-results">
-        <h3>Impatti Stimati sul Futuro di Vercelli:</h3>
-        <div class="impact-category" id="impact-people">
-          <h4><i class="fas fa-users"></i> Impatto sulle Persone e la Salute</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-        <div class="impact-category" id="impact-agriculture">
-          <h4><i class="fas fa-seedling"></i> Impatto sul Settore Agricolo e l'Ambiente</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-        <div class="impact-category" id="impact-economy">
-          <h4><i class="fas fa-chart-line"></i> Impatto Economico e Sociale</h4>
-          <p>Seleziona i parametri per visualizzare l'impatto.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer>
-    Progetto realizzato per analisi territoriale climatica | Master 2025 - Vercelli
-  </footer>
-  <button onclick="scrollToTop()" style="position: fixed; bottom: 20px; left: 20px; padding: 12px 18px; background-color: var(--accent-color); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.3); font-size: 18px; transition: background-color 0.3s ease;">
-     ⬆  Torna su
-  </button>
-  <div id="imageModal" class="modal">
-    <span class="close-button">&times;</span>
-    <div class="modal-body-container">
-        <img id="img01" />
-        <div id="caption"></div>
-    </div>
-  </div>
-  <div class="graph-data-container" id="graph-tnm_ANN">
-    <img src="Vercelli_94_24_tnm_ANN.png" alt="Grafico Tnm - Temperatura Minima Media Annuale">
-    <p class="graph-commentary">**Questo è un commento segnaposto.** Rappresenta l'andamento della temperatura minima media annuale. Un aumento di questo indice indica notti generalmente più calde, il che può avere impatti sul comfort termico e sullo stress fisiologico di piante e animali. Si prega di sostituire 'Vercelli_94_24_tnm_ANN.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tr_ANN">
-    <img src="Vercelli_94_24_tr_ANN.png" alt="Grafico TR - Notti Tropicali">
-    <p class="graph-commentary">Il grafico mostra l'andamento annuale del numero di notti tropicali (TR), definite come notti in cui la temperatura minima non scende sotto i 20°C. Si osserva un chiaro trend di aumento nel periodo 1994-2024. Questo incremento indica una riduzione del raffrescamento notturno, con implicazioni per il benessere umano (disturbi del sonno, aumento dello stress termico) e per l'agricoltura (stress termico per le colture che non riescono a recuperare durante la notte). Il trend è statisticamente significativo. Il massimo è stato registrato nel 2022 con 35 notti, mentre il minimo è stato nel 1996 con 5 notti.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tn10p_ANN">
-    <img src="Vercelli_94_24_tn10p_ANN.png" alt="Grafico TN10p - Notti Fredde">
-    <p class="graph-commentary">Il grafico illustra la frequenza annuale dei giorni con temperatura minima inferiore al 10° percentile (notti fredde). Si evidenzia una tendenza alla diminuzione di queste notti nel corso degli anni. Questo fenomeno implica una riduzione delle gelate, il che può essere positivo per alcune colture sensibili al gelo, ma può anche favorire la sopravvivenza e la proliferazione di parassiti e patogeni che normalmente sarebbero controllati dalle basse temperature invernali, richiedendo nuove strategie di difesa fitosanitaria. Il trend è statisticamente significativo. Il massimo di notti fredde è stato osservato nel 1995 con 45 eventi, mentre il minimo è stato nel 2023 con 10 eventi.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tn90p_ANN">
-    <img src="Vercelli_94_24_tn90p_ANN.png" alt="Grafico TN90p - Notti Calde Estive">
-    <p class="graph-commentary">Il grafico rappresenta l'andamento annuale delle notti estremamente calde (Tmin > 90° percentile). Si osserva una tendenza all'aumento di questi eventi. Notti calde persistenti stressano sia la popolazione che le colture, alterando i ritmi fisiologici, anticipando le fasi vegetative e aumentando il consumo idrico delle piante, con ripercussioni negative sulla produttività agricola e sul comfort termico. Il trend è statisticamente significativo. Il picco è stato nel 2023 con 28 notti, mentre il valore più basso è stato nel 1998 con 3 notti.</p>
-  </div>
-  <div class="graph-data-container" id="graph-txm_ANN">
-    <img src="Vercelli_94_24_txm_ANN.png" alt="Grafico Txm - Temperatura Massima Media Annuale">
-    <p class="graph-commentary">**Questo è un commento segnaposto.** Rappresenta l'andamento della temperatura massima media annuale. Un aumento di questo indice indica un riscaldamento generale delle giornate, con implicazioni per il consumo energetico legato alla climatizzazione e allo stress termico diurno. Si prega di sostituire 'Vercelli_94_24_txm_ANN.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tx10p_ANN">
-    <img src="Vercelli_94_24_tx10p_ANN.png" alt="Grafico Tx10p - Giorni Freddi">
-    <p class="graph-commentary">Il grafico illustra la frequenza annuale dei giorni con temperatura massima inferiore al 10° percentile (giorni freddi). Una diminuzione di questi giorni indica inverni meno rigidi, con potenziali benefici per i costi di riscaldamento, ma anche alterazioni nei cicli naturali che dipendono dal freddo. Si prega di sostituire 'Vercelli_94_24_tx10p_ANN.png' con l'immagine reale del grafico e aggiornare questo commento con i dati e le analisi specifiche del grafico.</p>
-  </div>
-  <div class="graph-data-container" id="graph-tx90p_ANN">
-    <img src="Vercelli_94_24_tx90p_ANN.png" alt="Grafico TX90p - Giorni Caldi Estremi">
-    <p class="graph-commentary">Il grafico indica un aumento significativo di questi giorni nel periodo analizzato. Questo trend contribuisce al peggioramento della vivibilità estiva, all'incremento dei costi energetici per la climatizzazione e alla maggiore domanda di irrigazione in agricoltura, con stress termico per persone e animali. Il trend è statisticamente significativo. Il numero massimo di giorni caldi estremi è stato registrato nel 2022 con 50 giorni, mentre il minimo nel 1994 con 12 giorni.</p>
-  </div>
-  <div class="graph-data-container" id="graph-hwf_tx90_ANN">
-    <img src="Vercelli_94_24_hwf_tx90_ANN.png" alt="Grafico HWF-Tx90 - Frequenza Ondate di Calore">
-    <p class="graph-commentary">Il grafico illustra la frequenza annuale delle ondate di calore, definite in base alla persistenza di temperature massime elevate (superiori al 90° percentile per almeno 6 giorni consecutivi). Il grafico evidenzia un aumento nella frequenza di questi eventi. Ciò implica che Vercelli è soggetta a un numero crescente di periodi con caldo intenso e prolungato, aumentando i rischi per la salute pubblica, la produttività lavorativa e il consumo di risorse. Il trend è statisticamente significativo. Il picco di frequenza è stato nel 2023 con 7 ondate, e il minimo nel 1997 con 1 ondata.</p>
-  </div>
-  <div class="graph-data-container" id="graph-hwn_tx90_ANN">
-    <img src="Vercelli_94_24_hwn_tx90_ANN.png" alt="Grafico HWN-Tx90 - Durata Ondate di Calore">
-    <p class="graph-commentary">Il grafico rappresenta la durata media annuale delle ondate di calore. Similmente alla frequenza, si osserva una tendenza all'aumento della durata di questi eventi. Ondate di calore più lunghe amplificano gli impatti negativi su salute, agricoltura ed ecosistemi, non permettendo un adeguato recupero e incrementando il danno cumulativo. Il trend è statisticamente significativo. La durata massima è stata registrata nel 2022 con 10 giorni medi per ondata, e la minima nel 1999 con 3 giorni medi.</p>
-  </div>
-  <div class="graph-data-container" id="graph-cdd_ANN">
-    <img src="Vercelli_94_24_cdd_ANN.png" alt="Grafico CDD - Giorni Secchi Consecutivi">
-    <p class="graph-commentary">Il grafico rappresenta la durata massima annuale dei giorni secchi consecutivi (CDD), ovvero i giorni senza precipitazioni significative. Si osserva una tendenza all'aumento di questi periodi. Questo prolungamento delle siccità indebolisce la resilienza idrica delle colture, in particolare del riso che richiede molta acqua, e aumenta il rischio di perdite significative, richiedendo maggiori interventi irrigui e una gestione più accurata delle risorse idriche. Il trend è statisticamente significativo. Il picco massimo è stato nel 2022 con 70 giorni, e il minimo nel 1996 con 10 giorni.</p>
-  </div>
-  <div class="graph-data-container" id="graph-prcptot_ANN">
-    <img src="Vercelli_94_24_prcptot_ANN.png" alt="Grafico PRCPTOT - Precipitazioni Totali Annuali">
-    <p class="graph-commentary">Il grafico indica che, sebbene il quantitativo totale annuo possa rimanere relativamente stabile o mostrare lievi variazioni, la problematica principale risiede nella sua distribuzione. Spesso, le precipitazioni sono concentrate in eventi intensi e brevi, rendendole meno efficaci per la ricarica delle falde acquifere e più propense a causare ruscellamento superficiale, piuttosto che essere distribuite in modo uniforme e utile all'agricoltura. Il trend generale del totale annuo non è statisticamente significativo, ma si notano variazioni annuali significative. Il massimo di precipitazioni è stato nel 2014 con 1200 mm, mentre il minimo nel 2003 con 650 mm.</p>
-  </div>
-  <div class="graph-data-container" id="graph-r95p_ANN">
-    <img src="Vercelli_94_24_r95p_ANN.png" alt="Grafico R95p - Precipitazioni Estreme">
-    <p class="graph-commentary">Il grafico illustra il contributo delle precipitazioni estreme (superiori al 95° percentile) al totale annuo. Si nota una tendenza all'aumento degli eventi di pioggia intensa e concentrata. Questo fenomeno aumenta il rischio di allagamenti, erosione del suolo e inefficienza nella ricarica idrica dei terreni agricoli, poiché l'acqua scorre via rapidamente invece di essere assorbita, causando danni alle infrastrutture e alle colture. Il trend è statisticamente significativo. Il massimo di precipitazioni estreme è stato registrato nel 2018 con 250 mm, e il minimo nel 1999 con 30 mm.</p>
-  </div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([45.32, 8.42], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-    const layers = [
-      {
-        name: "Zona Risaie",
-        coords: [45.25, 8.52],
-        descrizione: `
-          <h3><i class="fas fa-hand-holding-water"></i> Impatti sull'Agricoltura del Riso</h3>
-          <ul>
-            <li><i class="fas fa-tint-slash"></i> Vulnerabile a siccità prolungata (CDD), che aumenta drasticamente i costi irrigui.</li>
-            <li><i class="fas fa-cloud-showers-heavy"></i> Piogge intense e concentrate (R95p) possono causare allagamenti e danni alle colture.</li>
-            <li><i class="fas fa-thermometer-three-quarters"></i> Temperature minime elevate (TR, Tn90p) influenzano negativamente la produttività e la qualità del riso.</li>
-          </ul>
-        `
-      },
-      {
-        name: "Area Urbana di Vercelli",
-        coords: [45.32, 8.42],
-        descrizione: `
-          <h3><i class="fas fa-city"></i> Impatti sulla Vita Urbana</h3>
-          <ul>
-            <li><i class="fas fa-thermometer-full"></i> Esposta a ondate di calore (Tnm, Txm, TR, Tx90p, HWF, HWN) con forte disagio per la popolazione.</li>
-            <li><i class="fas fa-hospital"></i> Aumento dello stress sui servizi sanitari dovuto a patologie correlate al calore.</li>
-            <li><i class="fas fa-tree-city"></i> L'effetto 'isola di calore' urbano è amplificato, rendendo le notti meno rinfrescanti.</li>
-          </ul>
-        `
-      },
-      {
-        name: "Zona Mais e Frumento",
-        coords: [45.35, 8.30],
-        descrizione: `
-          <h3><i class="fas fa-seedling"></i> Impatti su Mais e Frumento</h3>
-          <ul>
-            <li><i class="fas fa-cloud-sun"></i> Impattata da irregolarità delle precipitazioni (PRCPTOT) e periodi di siccità (CDD).</li>
-            <li><i class="fas fa-temperature-high"></i> Temperature massime elevate (Txm, Tx90p) riducono la resa delle colture.</li>
-            <li><i class="fas fa-snowflake"></i> Meno giorni freddi (Tx10p, Tn10p) favoriscono la proliferazione di parassiti e patogeni.</li>
-          </ul>
-        `
-      }
-    ];
-    layers.forEach(zona => {
-      L.circle(zona.coords, {
-        color: 'var(--accent-color)',
-        fillColor: 'var(--accent-color)',
-        fillOpacity: 0.6,
-        radius: 4000,
-        weight: 2
-      }).addTo(map).bindPopup(`<b>${zona.name}</b><br>${zona.descrizione}`);
-    });
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("img01");
-    const captionText = document.getElementById("caption");
-    const closeButton = document.getElementsByClassName("close-button")[0];
-    document.querySelectorAll('.show-graph-link').forEach(link => {
-      link.addEventListener('click', function(event){
-        event.stopPropagation();
-        const graphId = this.getAttribute('data-graph-id');
-        const graphContainer = document.getElementById('graph-' + graphId);
-        
-        if (graphContainer) {
-            const img = graphContainer.querySelector('img');
-            const commentary = graphContainer.querySelector('.graph-commentary');
-            modal.style.display = "block";
-            modalImg.src = img.src;
-            captionText.innerHTML = `<strong>${img.alt}</strong><br>${commentary.innerHTML}`;
-        }
-      });
-    });
-    closeButton.onclick = function() {
-      modal.style.display = "none";
-    }
-    modal.addEventListener('click', function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    });
+    <header>
+        <h1>Analisi degli Indici Climatici per Vercelli (1994-2024)</h1>
+    </header>
 
-    document.querySelectorAll('.impact-item-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const item = header.closest('.impact-item');
-            item.classList.toggle('active');
+    <main id="climate-data-container">
+        </main>
+
+    <footer>
+        <p>&copy; 2024 Dati Climatici Vercelli. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        const climateData = {
+            "Temperature Minime": [
+                {
+                    "indice": "TR",
+                    "descrizione": "Numero di notti con temperatura minima superiore a 20°C.",
+                    "rilevanza_vercelli": "Dall'analisi visiva del grafico, emerge una chiara e statisticamente significativa tendenza all'aumento nel numero di notti tropicali nel corso del periodo considerato. Sebbene l'andamento annuale presenti delle oscillazioni, indicando una certa variabilità e varianza nel dato, questa varianza risulta proporzionale al passare del tempo, riflettendo una relazione positiva con l'aumento delle temperature globali. È particolarmente rilevante notare che, mentre nell'arco temporale compreso tra il 1995 e il 2015 i valori delle notti tropicali oscillavano prevalentemente tra 0 e 10 giorni, senza una pendenza significativa della retta di regressione, la tendenza positiva complessiva della serie è fortemente influenzata e accentuata negli ultimi 9 anni del periodo di analisi (post-2015). Durante questi anni più recenti, si sono registrati i picchi più elevati, raggiungendo circa 28 notti tropicali nel 2022 e quasi 30 notti tropicali nel 2023. Questo suggerisce un'accelerazione del fenomeno del riscaldamento notturno nel decennio più recente.",
+                    "impatto": "Health, Agricolture and food security, Disaster Risk Reduction, Forestry/GHGs",
+                    "impatto_specifico": "Aumento dello stress termico sulla popolazione vercellese (disturbi del sonno, rischi per anziani). Per l’agricoltura (es. riso), il mancato raffrescamento notturno compromette la crescita e la resa, aumentando il fabbisogno idrico.",
+                    "grafico": "Vercelli_94_24_tr_ANN.png"
+                },
+                {
+                    "indice": "TN10p",
+                    "descrizione": "% di giorni con temperature minime inferiori al 10° percentile.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza al forte calo del numero di notti molto fredde nel corso del trentennio considerato. Questo decremento è evidente nel passaggio da una percentuale annua che oscillava intorno al 15% nei primi anni della serie (ad esempio, circa 15% nel 1994-1996) a un dato medio di circa il 5% negli anni più recenti (es. 2020-2023). Questa riduzione di circa due terzi della frequenza delle notti più rigide è un segnale inequivocabile del mitigarsi degli inverni sul territorio vercellese. Tale andamento è inoltre coerente con la diminuzione complessiva dei periodi di freddo prolungato, come indicato dal trend in calo dell'indice CSDI (Consecutive Cold Days Index), se disponibile per l'analisi.",
+                    "impatto": "Energy",
+                    "impatto_specifico": "Ridotto fabbisogno energetico per il riscaldamento invernale. Tuttavia, per l'agricoltura vercellese, la minore mortalità invernale di parassiti e patogeni (es. sul riso) può comportare un maggiore uso di fitofarmaci nella stagione successiva.",
+                    "grafico": "Vercelli_94_24_tn10p_ANN.png"
+                },
+                {
+                    "indice": "TN90p",
+                    "descrizione": "% di giorni con temperature minime superiori al 90°p.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva una chiara tendenza all'aumento della percentuale di notti considerate \"molto calde\". Il trend lineare di Sen's Slope, pari a 0.207, con un p-value di 0.005, indica che questo incremento è statisticamente significativo. Questo dato conferma inequivocabilmente il progressivo riscaldamento delle temperature minime notturne, particolarmente evidente durante la stagione estiva. Sebbene l'andamento mostri fluttuazioni interannuali, la direzione generale è verso un numero crescente di notti con minime elevate. Ad esempio, i valori passano da una media iniziale intorno al 5-8% negli anni '90 a picchi superiori al 15% e persino al 20% in anni più recenti (come nel 2014 e 2022).",
+                    "impatto": "Energy",
+                    "impatto_specifico": "Maggiore disagio termico notturno per i residenti di Vercelli. Aumento del consumo di energia elettrica per la climatizzazione notturna, con maggior stress sulle reti elettriche locali. Aumenta lo stress idrico per le risaie e altre colture.",
+                    "grafico": "Vercelli_94_24_tn90p_ANN.png"
+                },
+                {
+                    "indice": "TNm",
+                    "descrizione": "Temperatura Minima Media",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge un andamento in crescita statisticamente significativo. Il valore di Sen's Slope, pari a 0.036, con un p-value di 0.014, conferma questa tendenza positiva. Considerando il periodo dal 1995 al 2024, si osserva un aumento complessivo della Temperatura Minima Media di circa 2°C (passando da valori medi intorno ai 7.0-7.5°C nei primi anni a valori frequentemente superiori agli 8.5-9.0°C negli anni più recenti, con un picco oltre 9.0°C). Questo incremento delle temperature minime medie è in stretta correlazione con l'aumento del numero di notti tropicali (indice TR), confermando un riscaldamento generalizzato e persistente anche nelle ore notturne.",
+                    "impatto": "Cryosphere",
+                    "impatto_specifico": "L'aumento generalizzato delle temperature minime a Vercelli si traduce in notti più calde che compromettono il recupero fisiologico della popolazione e delle colture, aumentando lo stress complessivo. Indirettamente influisce sulla fusione del manto nevoso alpino, fonte d'acqua per la provincia.",
+                    "grafico": "Vercelli_94_24_tnm_ANN.png"
+                }
+            ],
+            "Temperature Massime": [
+                {
+                    "indice": "TX90p",
+                    "descrizione": "Giorni con temperatura massima superiore al 90°percentile",
+                    "rilevanza_vercelli": "Dall'osservazione del grafico, emerge una netta e statisticamente significativa tendenza all'aumento del numero di giorni estremamente caldi a Vercelli. Il valore di Sen's Slope, pari a 0.228, con un intervallo di confidenza (lower bound = 0.075, upper bound = 0.384) e un p-value di 0.019, conferma la robustezza statistica di questo incremento. Questo dato indica che le estati a Vercelli stanno diventando più lunghe e intense, caratterizzate da un maggior numero di giornate con temperature massime eccezionalmente elevate. Si nota un aumento evidente e costante dei giorni TX90p nel corso del trentennio. Un picco significativo è stato registrato, ad esempio, nel 2015, dove l'indice ha superato il 20%. Questo incremento degli eventi estremi, con temperature che frequentemente superano i 35°C, è strettamente correlato all'occorrenza delle ondate di calore sul territorio.",
+                    "impatto": "Energy",
+                    "impatto_specifico": "Aumento del rischio di colpi di calore e disidratazione per la popolazione di Vercelli. Maggiore stress idrico per il riso e altre colture agricole. Aumenta il consumo energetico per la climatizzazione, con potenziale sovraccarico della rete elettrica locale. Danni a infrastrutture urbane.",
+                    "grafico": "Vercelli_94_24_tx90p_ANN.png"
+                },
+                {
+                    "indice": "TX10P",
+                    "descrizione": "Giorni con temperatura massima inferiore al 10°percentile",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza alla diminuzione del numero di giorni molto freddi. Il valore di Sen's Slope, pari a -0.139, con un intervallo di confidenza (lower bound = -0.266, upper bound = -0.024) e un p-value di 0.019, conferma la robustezza statistica di questo trend negativo. Questo decremento indica che le giornate invernali a Vercelli stanno diventando progressivamente meno rigide. Ad esempio, la percentuale di giorni molto freddi, che nei primi anni della serie oscillava frequentemente tra il 10% e il 15% (con picchi vicini al 20% nel 1995 e 2010), negli anni più recenti tende a mantenersi su valori inferiori, spesso sotto il 10%, e ha raggiunto un minimo intorno al 5% nel 2022. Questo rappresenta una significativa riduzione della frequenza delle giornate più fredde nel periodo di riferimento dal 1994 al 2024.",
+                    "impatto": "Energy",
+                    "impatto_specifico": "Riduzione della domanda energetica per il riscaldamento diurno. Tuttavia, la minore incidenza di giorni freddi favorisce la sopravvivenza di parassiti e patogeni agricoli (es. nella risicoltura), riducendo il controllo naturale e potenzialmente aumentando la necessità di interventi fitosanitari.",
+                    "grafico": "Vercelli_94_24_tx10p_ANN.png"
+                },
+                {
+                    "indice": "HWN-TX90/HWF-TX90 (Accorpati)",
+                    "descrizione": "Numero di ondate di calore e Numero di giorni totali all’interno delle ondate di calore.",
+                    "rilevanza_vercelli": "Il grafico Vercelli_94_24_hwf_tx90_ANN.png mostra una chiara tendenza all'aumento dei giorni totali all'interno delle ondate di calore. Il valore di Sen's Slope è di 0.143, con un p-value di 0.07. Sebbene il p-value sia leggermente superiore alla soglia tipica di 0.05 per la piena significatività statistica, il trend positivo è visibile. Si notano picchi significativi nella frequenza cumulativa, con ad esempio circa 15 giorni nel 2010 e nel 2015, e un ulteriore aumento dopo il 2015, con valori costantemente più alti rispetto al periodo precedente al 2010. Il grafico Vercelli_94_24_hwn_tx90_ANN.png indica anch'esso una tendenza all'aumento nel numero di eventi discreti di ondate di calore. Il Sen's Slope è di 0.038, con un p-value di 0.063. Anche qui, nonostante il p-value sia marginale, la direzione del trend è positiva. Si osservano anni con un numero di eventi significativamente superiore, raggiungendo ad esempio 4 ondate nel 2010 e nel 2018, in contrasto con i numerosi anni precedenti al 2005 in cui non si registrava alcuna ondata di calore.",
+                    "impatto": "Health, Agricolture and food security, Water resources and food security, Coasts, Disaster Risk Reduction, Energy, Fisheries, Forestry/GHGs, Cryosphere",
+                    "impatto_specifico": "L'analisi congiunta di questi due indici rivela un quadro coerente e amplificato per il territorio di Vercelli: non solo le ondate di calore stanno diventando più frequenti (aumento di HWN-TX90), ma tendono anche a durare più a lungo e a contribuire a un maggior numero di giorni cumulativi di caldo estremo (aumento di HWF-TX90). Ciò significa che Vercelli è esposta a un numero crescente di eventi di caldo estremo, e ciascuno di questi eventi persiste per un periodo più esteso.",
+                    "grafico": ["Vercelli_94_24_hwn_tx90_ANN.png", "Vercelli_94_24_hwf_tx90_ANN.png"]
+                },
+                {
+                    "indice": "TXm",
+                    "descrizione": "Temperatura Massima Media",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si conferma un andamento in crescita statisticamente significativo della Temperatura Massima Media. Il valore di Sen's Slope, pari a 0.04, con un intervallo di confidenza (lower bound = 0.012, upper bound = 0.067) e un p-value di 0.011, attesta la robustezza di questa tendenza. Nel trentennio di riferimento (1994-2024), si nota un aumento medio complessivo di circa 1°C nella temperatura massima media annuale. Sebbene l'andamento mostri oscillazioni interannuali (come evidente dalle fluttuazioni tra i valori minimi e massimi), la retta di regressione indica una chiara direzione verso l'alto. Si possono osservare anomalie, con un abbassamento delle temperature medie massime, in anni specifici come il 2010 e il periodo 2018-2019. Tali variazioni interannuali significative potrebbero essere influenzate da fenomeni climatici su larga scala, come le oscillazioni legate al El Niño/La Niña (ENSO) o ad altri teleconnessioni atmosferiche come la North Atlantic Oscillation (NAO) e l'Arctic Oscillation (AO), la cui correlazione necessiterebbe di un'analisi specifica.",
+                    "impatto": "Water resources and food security, Cryosphere",
+                    "impatto_specifico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
+                    "grafico": "Vercelli_94_24_txm_ANN.png"
+                }
+            ],
+            "Precipitazioni": [
+                {
+                    "indice": "PRCPTOT",
+                    "descrizione": "Totale annuale delle precipitazioni ≥1 mm",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che il totale annuale delle precipitazioni a Vercelli non presenta un trend statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è di -0.697, con un p-value di 0.837. Questo elevato p-value indica che la retta di regressione non mostra una tendenza lineare robusta né in aumento né in diminuzione. Nonostante l'assenza di un trend quantitativo significativo, il grafico evidenzia una notevole variabilità interannuale. Il 2014 si distingue come l'anno in cui è stata registrata la maggiore concentrazione di pioggia, con un valore che supera i 1400 mm. Al contrario, si osservano anni con totali di precipitazione notevolmente inferiori, come nel 2020 e 2022, quando i valori sono scesi a circa 400 mm. Indipendentemente dal dato quantitativo complessivamente poco significativo per quanto riguarda un trend lineare, l'osservazione qualitativa suggerisce una diversa distribuzione delle precipitazioni durante le ultime annate. Il livello quantitativo di pioggia annua, pur rimanendo più o meno stabile nel tempo in termini di media, è caratterizzato da una tendenza a un aumento dei giorni piovosi estremi. Questo significa che la stessa quantità di pioggia annuale può cadere in un numero minore di giorni ma con maggiore intensità.",
+                    "impatto": "Agricolture and food security, Water resources and food security, Forestry/GHGs",
+                    "impatto_specifico": "A Vercelli, pur con un totale annuo stabile, l'aumento dei giorni piovosi estremi implica un maggior rischio di allagamenti localizzati, problemi di drenaggio nei campi agricoli (es. risaie) e sovraccarico dei sistemi fognari urbani, compromettendo la gestione delle risorse idriche e la viabilità.",
+                    "grafico": "Vercelli_94_24_prcptot_ANN.png"
+                },
+                {
+                    "indice": "CDD",
+                    "descrizione": "Indica il numero dei giorni secchi consecutivi.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che l'indice CDD non è statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è pari a 0, con un p-value di 1. Questo indica l'assenza di un trend lineare definito, sia in aumento che in diminuzione, per la durata massima dei periodi secchi consecutivi a Vercelli. Nonostante l'assenza di un trend significativo, il grafico evidenzia una notevole variabilità interannuale e la presenza di anomalie estreme. In particolare, si è verificato un evento eccezionale nel 1997, quando si è registrata un'anomalia con circa 100 giorni di CDD. Questo valore rappresenta il picco massimo della serie storica, molto al di sopra della media e degli altri anni. Oltre a questa anomalia, gli anni presentano una fluttuazione dei giorni secchi consecutivi che generalmente si mantiene tra i 20 e i 60 giorni, con valori come circa 65 giorni nel 2016 e circa 45 giorni nel 2021..",
+                    "impatto": "Health, Agricolture and food security, Water resources and food security, Disaster Risk Reduction, Forestry/GHGs",
+                    "impatto_specifico": "Anche se senza trend significativo, la presenza di eventi estremi come i 100 giorni secchi nel 1997 dimostra la vulnerabilità di Vercelli a periodi di siccità prolungata. Questo minaccia direttamente la disponibilità idrica per l'agricoltura (in primis il riso) e l'approvvigionamento civile.",
+                    "grafico": "Vercelli_94_24_cdd_ANN.png"
+                },
+                {
+                    "indice": "R95p",
+                    "descrizione": "Somma delle precipitazioni giornaliere di tutti i giorni in cui la quantità di pioggia è stata superiore al 95° percentile",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che l'indice R95p non è statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è pari a -0.106, con un p-value di 0.925. Questo elevato p-value conferma che non esiste una relazione lineare robusta o una tendenza definita (né in aumento né in diminuzione) nella somma cumulativa delle precipitazioni derivanti dai giorni più intensi. La retta di regressione appare infatti sostanzialmente \"piatta\", riflettendo questa assenza di trend. Nonostante la mancanza di un trend significativo, il grafico mostra una notevole variabilità interannuale nell'apporto pluviometrico dai giorni estremi. Si osservano anni con valori molto elevati, come nel 2003 (circa 400 mm da eventi >95° percentile) e nel 2014 (circa 340 mm), in contrasto con anni in cui tale somma è stata estremamente bassa, come il 1997 e il 2004 (intorno ai 50 mm). Questa variabilità indica che, pur non essendoci un aumento costante nel tempo della somma di queste piogge estreme, il territorio è comunque soggetto a singoli anni con precipitazioni molto intense e concentrate.",
+                    "impatto": "Health, Agricolture and food security, Water resources and food security, Forestry/GHGs",
+                    "impatto_specifico": "A Vercelli, pur non essendoci un trend chiaro nella quantità totale di pioggia da eventi estremi, l'occorrenza di singole precipitazioni molto intense (anche se non sempre cumulativamente crescenti anno su anno) può causare rapidi allagamenti e stress ai sistemi di drenaggio urbani e rurali.",
+                    "grafico": "Vercelli_94_24_r95p_ANN.png"
+                },
+                {
+                    "indice": "SPEI (24 mesi)",
+                    "descrizione": "Standardised Precipitation Evapotranspiration Index su scala temporale di 24 mesi.",
+                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge una chiara e statisticamente significativa tendenza alla diminuzione dei valori di SPEI a 24 mesi, indicando una crescente propensione alla siccità idrologica a lungo termine nel territorio vercellese. Il valore di Sen's Slope è di -0.002, con un intervallo di confidenza (lower bound = -0.003, upper bound = 0) e un p-value di 0.017. Questa significatività statistica conferma che il trend di inaridimento non è dovuto a casualità ma rappresenta una tendenza consolidata. Si osserva un'alternanza tra periodi di maggiore umidità (barre blu, come tra il 2008 e il 2010, e un picco nel 2014-2015) e periodi prolungati e intensi di siccità (barre rosse). È evidente come, a partire all'incirca dal 2017-2018, si sia manifestata una fase di siccità particolarmente severa e persistente, con valori negativi dello SPEI che raggiungono e talvolta superano i -2. Questa fase è caratterizzata da una maggiore profondità e durata degli eventi di siccità rispetto ai periodi precedenti, come quelli tra il 1998 e il 2000.",
+                    "impatto": "Health, Agricolture and food security, Water resources and food security, Disaster Risk Reduction, Forestry/GHGs",
+                    "impatto_specifico": "Per Vercelli, lo SPEI evidenzia una crescente e persistente siccità idrologica a lungo termine. Questo si traduce in una ridotta disponibilità d'acqua per la risicoltura e per l'approvvigionamento idrico generale, con aumento dei costi e potenziali conflitti per le risorse idriche.",
+                    "grafico": "Vercelli_94_24_24month_spei_MON.png"
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('climate-data-container');
+
+            for (const category in climateData) {
+                const categorySection = document.createElement('section');
+                categorySection.classList.add('category-section');
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.textContent = category;
+                categorySection.appendChild(categoryTitle);
+
+                climateData[category].forEach(item => {
+                    const indexItem = document.createElement('div');
+                    indexItem.classList.add('index-item');
+
+                    const indexHeader = document.createElement('div');
+                    indexHeader.classList.add('index-header');
+                    indexHeader.textContent = item.indice + " - " + item.descrizione;
+                    indexItem.appendChild(indexHeader);
+
+                    const indexDetails = document.createElement('div');
+                    indexDetails.classList.add('index-details');
+
+                    indexDetails.innerHTML += `<p><strong>Rilevanza per Vercelli:</strong> ${item.rilevanza_vercelli}</p>`;
+                    indexDetails.innerHTML += `<p><strong>Impatto Generale:</strong> ${item.impatto}</p>`;
+                    indexDetails.innerHTML += `<p><strong>Impatto Specifico:</strong> ${item.impatto_specifico}</p>`;
+                    
+                    // Aggiungi i grafici. Gestisce sia stringhe singole che array di stringhe.
+                    if (item.grafico) {
+                        const graphicContainer = document.createElement('div');
+                        graphicContainer.classList.add('graphic-container');
+                        const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
+                        graphicFiles.forEach(graphic => {
+                            graphicContainer.innerHTML += `<img src="./images/${graphic}" alt="Grafico ${item.indice}">`;
+                        });
+                        indexDetails.appendChild(graphicContainer);
+                    }
+
+                    indexItem.appendChild(indexDetails);
+                    categorySection.appendChild(indexItem);
+
+                    // Aggiungi la logica di click per espandere/comprimere
+                    indexHeader.addEventListener('click', () => {
+                        indexItem.classList.toggle('active');
+                    });
+                });
+                container.appendChild(categorySection);
+            }
         });
-    });
-
-    const tempSlider = document.getElementById('temp-slider');
-    const tempValueSpan = document.getElementById('temp-value');
-    const precipSlider = document.getElementById('precip-slider');
-    const precipValueSpan = document.getElementById('precip-value');
-    const impactPeople = document.getElementById('impact-people');
-    const impactAgriculture = document.getElementById('impact-agriculture');
-    const impactEconomy = document.getElementById('impact-economy');
-
-    function updateImpacts() {
-      const tempChange = parseFloat(tempSlider.value);
-      const precipChange = parseInt(precipSlider.value);
-      tempValueSpan.textContent = tempChange.toFixed(1);
-      precipValueSpan.textContent = precipChange;
-
-      impactPeople.className = 'impact-category';
-      impactAgriculture.className = 'impact-category';
-      impactEconomy.className = 'impact-category';
-
-      let peopleImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        peopleImpactText = "In uno scenario di cambiamenti minimi, l'impatto sulla salute pubblica rimane gestibile, con condizioni di benessere simili a quelle attuali, sebbene con attenzione alle fasce più sensibili.";
-        impactPeople.classList.add('positive');
-      } else if (tempChange >= 0.5 && tempChange < 2) {
-        peopleImpactText = "L'aumento delle temperature medie e la maggiore frequenza di ondate di calore (legate a Tnm, Txm, TR, Tx90p, HWF, HWN) porta a un moderato stress termico. Aumentano i disagi estivi e i rischi per la salute delle categorie vulnerabili, richiedendo un potenziamento dei servizi di supporto.";
-        peopleImpactText += " <br> (Collegato a indici come Tnm, Txm, TR, Tx90p, HWF, HWN)";
-        impactPeople.classList.add('warning');
-      } else {
-        peopleImpactText = "Un aumento significativo delle temperature e ondate di calore prolungate (HWF/HWN) causano un elevato stress termico e un forte incremento di patologie correlate al calore. La qualità della vita urbana diminuisce e i sistemi sanitari sono messi a dura prova, con impatti estesi su tutta la popolazione.";
-        peopleImpactText += " <br> (Collegato a indici come Tnm, Txm, TR, Tx90p, HWF, HWN)";
-        impactPeople.classList.add('negative');
-      }
-      impactPeople.querySelector('p').innerHTML = peopleImpactText;
-
-
-      let agricultureImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        agricultureImpactText = "Le condizioni climatiche rimangono favorevoli all'agricoltura locale, con rese stabili e costi di gestione idrica contenuti. Potrebbero essere necessarie solo lievi modifiche alle pratiche agricole.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm)";
-        impactAgriculture.classList.add('positive');
-      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (precipChange < -5 && precipChange >= -15) || (precipChange > 5 && precipChange <= 15)) {
-        agricultureImpactText = "L'aumento dei periodi di siccità (CDD) o le precipitazioni più intense (R95p) mettono a rischio le colture tipiche come il riso e il mais. Richiede maggiori investimenti in sistemi di irrigazione efficienti e l'introduzione di varietà più resilienti, con costi operativi in aumento e potenziale impatto sulle rese.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm, Tx90p, Tn90p)";
-        impactAgriculture.classList.add('warning');
-      } else {
-        agricultureImpactText = "Scenario critico: ondate di calore prolungate (Txm, Tx90p), siccità estreme e piogge torrenziali causano gravi perdite di raccolto e danni infrastrutturali. L'agricoltura vercellese subisce un forte stress, con costi esorbitanti e la necessità di una radicale riconversione o abbandono di alcune produzioni.";
-        agricultureImpactText += " <br> (Collegato a indici come CDD, R95p, Txm, Tnm, Tx90p, Tn90p, TR)";
-        impactAgriculture.classList.add('negative');
-      }
-      impactAgriculture.querySelector('p').innerHTML = agricultureImpactText;
-
-      let economyImpactText = "";
-      if (tempChange < 0.5 && precipChange >= -5 && precipChange <= 5) {
-        economyImpactText = "L'economia locale mantiene la sua resilienza, con impatti climatici minimi che non alterano significativamente i settori chiave. Potrebbero emergere opportunità legate a investimenti in sostenibilità.";
-        economyImpactText += " <br> (Collegato a scenari globali di resilienza economica)";
-        impactEconomy.classList.add('positive');
-      } else if ((tempChange >= 0.5 && tempChange < 1.5) || (Math.abs(precipChange) > 5 && Math.abs(precipChange) <= 15)) {
-        economyImpactText = "Costi crescenti per l'adattamento in agricoltura e infrastrutture. L'aumento dei costi energetici per il raffrescamento e i potenziali danni da eventi estremi (R95p) impongono una maggiore spesa pubblica e privata, con un impatto moderato sulla crescita economica locale.";
-        economyImpactText += " <br> (Collegato a R95p, costi di adattamento)";
-        impactEconomy.classList.add('warning');
-      } else {
-        economyImpactText = "Rischio economico elevato. La diminuzione della produttività agricola, i costi sanitari elevati e i danni estesi alle infrastrutture causano significative perdite economiche. La competitività del territorio è compromessa e si verifica una potenziale perdita di posti di lavoro, influenzando negativamente il benessere sociale.";
-        economyImpactText += " <br> (Collegato a impatti agricoli e sanitari amplificati)";
-        impactEconomy.classList.add('negative');
-      }
-      impactEconomy.querySelector('p').innerHTML = economyImpactText;
-    }
-    tempSlider.addEventListener('input', updateImpacts);
-    precipSlider.addEventListener('input', updateImpacts);
-    updateImpacts();
-  </script>
+    </script>
 </body>
 </html>
