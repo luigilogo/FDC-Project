@@ -155,27 +155,37 @@
         .graphic-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px; /* Aumento il gap tra le immagini */
+            gap: 20px; /* Gap tra i contenitori delle immagini */
             justify-content: center;
             margin-top: 35px;
             margin-bottom: 25px;
         }
 
-        .graphic-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+        .graphic-wrapper { /* Nuovo wrapper per ogni immagine */
+            flex: 0 0 auto; /* Non cresce, non si restringe, dimensione basata sul contenuto */
+            width: 250px; /* Larghezza fissa per la visualizzazione iniziale */
+            height: 180px; /* Altezza fissa per mantenere le proporzioni iniziali */
+            overflow: hidden; /* Nasconde l'eccesso se l'immagine è più grande */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border: 2px solid var(--border-color);
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease-in-out;
-            flex: 1 1 auto;
-            min-width: 300px; /* Larghezza minima per l'immagine */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
         }
 
-        .graphic-container img:hover {
-            transform: scale(1.03); /* Ingrandimento all'hover dell'immagine */
+        .graphic-wrapper:hover {
+            transform: translateY(-3px) scale(1.02); /* Leggero sollevamento e ingrandimento */
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .graphic-wrapper img {
+            max-width: 100%;
+            max-height: 100%; /* L'immagine si adatta al wrapper */
+            display: block;
+            object-fit: contain; /* Assicura che l'intera immagine sia visibile senza ritagliarsi */
         }
 
         #map-section {
@@ -210,6 +220,108 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Sopra tutto */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column; /* Organizza immagine e testo in colonna */
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-button:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-image-container {
+            flex-shrink: 0; /* Impedisce che l'immagine si rimpicciolisca */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Spazio tra immagine e testo */
+            max-width: 100%;
+            max-height: 60vh; /* Limita l'altezza dell'immagine nel modale */
+        }
+
+        .modal-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal-text-content {
+            flex-grow: 1; /* Permette al testo di occupare lo spazio rimanente */
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .modal-text-content h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-text-content p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .modal-text-content strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
         /* Media Queries per la responsività */
         @media (max-width: 768px) {
             h1 {
@@ -231,12 +343,31 @@
             .graphic-container {
                 gap: 15px;
             }
-            .graphic-container img {
-                min-width: unset; /* Rimuove min-width per schermi piccoli, lascia che flex lo gestisca */
-                width: 100%;
+            .graphic-wrapper {
+                width: 180px; /* Larghezza più piccola su mobile */
+                height: 120px; /* Altezza più piccola su mobile */
             }
             #map {
                 height: 300px; /* Altezza mappa su schermi piccoli */
+            }
+            .modal-content {
+                padding: 20px;
+                max-width: 95%;
+                max-height: 95%;
+            }
+            .modal-close-button {
+                font-size: 1.5rem;
+                top: 10px;
+                right: 10px;
+            }
+            .modal-image-container {
+                max-height: 40vh;
+            }
+            .modal-text-content h3 {
+                font-size: 1.2rem;
+            }
+            .modal-text-content p {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -259,6 +390,20 @@
         <p>&copy; 2024 Dati Climatici Vercelli. Tutti i diritti riservati.</p>
         <p>Realizzato per un'esperienza divertente e informativa.</p>
     </footer>
+
+    <div id="graphicModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-button">&times;</button>
+            <div class="modal-image-container">
+                <img id="modalGraphicImage" src="" alt="Grafico Dettagliato">
+            </div>
+            <div class="modal-text-content">
+                <h3 id="modalGraphicTitle"></h3>
+                <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
+                <p><strong>Impatto Specifico:</strong> <span id="modalImpattoSpecifico"></span></p>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -285,7 +430,7 @@
                     "descrizione": "% di giorni con temperature minime inferiori al 10° percentile.",
                     "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza al forte calo del numero di notti molto fredde nel corso del trentennio considerato. Questo decremento è evidente nel passaggio da una percentuale annua che oscillava intorno al 15% nei primi anni della serie (ad esempio, circa 15% nel 1994-1996) a un dato medio di circa il 5% negli anni più recenti (es. 2020-2023). Questa riduzione di circa due terzi della frequenza delle notti più rigide è un segnale inequivocabile del mitigarsi degli inverni sul territorio vercellese. Tale andamento è inoltre coerente con la diminuzione complessiva dei periodi di freddo prolungato, come indicato dal trend in calo dell'indice CSDI (Consecutive Cold Days Index), se disponibile per l'analisi.",
                     "impatto": "Energy",
-                    "impatto_specifico": "Ridotto fabbisogno energetico per il riscaldamento invernale. Tuttavia, per l'agricoltura vercellese, la minore mortalità invernale di parassiti e patogeni (es. sul riso) può comportare un maggiore uso di fitofarmaci nella stagione successiva.",
+                    "impatto_specifico": "Ridotto fabbisogno energetico per il riscaldamento invernale. Tuttavia, per l'agricoltura (es. riso), la minore mortalità invernale di parassiti e patogeni può comportare un maggiore uso di fitofarmaci nella stagione successiva.",
                     "grafico": "Vercelli_94_24_tn10p_ANN.png"
                 },
                 {
@@ -377,13 +522,39 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('climate-data-container');
+            const graphicModal = document.getElementById('graphicModal');
+            const modalGraphicImage = document.getElementById('modalGraphicImage');
+            const modalGraphicTitle = document.getElementById('modalGraphicTitle');
+            const modalImpattoGenerale = document.getElementById('modalImpattoGenerale');
+            const modalImpattoSpecifico = document.getElementById('modalImpattoSpecifico');
+            const modalCloseButton = document.querySelector('.modal-close-button');
+
+            function showGraphicModal(item, graphicSrc) {
+                modalGraphicImage.src = graphicSrc;
+                modalGraphicTitle.textContent = `Dettagli per ${item.indice}`;
+                modalImpattoGenerale.textContent = item.impatto;
+                modalImpattoSpecifico.textContent = item.impatto_specifico;
+                graphicModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Blocca lo scroll del body
+            }
+
+            function hideGraphicModal() {
+                graphicModal.classList.remove('active');
+                document.body.style.overflow = ''; // Ripristina lo scroll del body
+            }
+
+            modalCloseButton.addEventListener('click', hideGraphicModal);
+            graphicModal.addEventListener('click', (event) => {
+                if (event.target === graphicModal) { // Chiudi solo se clicchi sull'overlay, non sul contenuto
+                    hideGraphicModal();
+                }
+            });
 
             for (const category in climateData) {
                 const categorySection = document.createElement('section');
                 categorySection.classList.add('category-section');
-                // Aggiungiamo data-aos per l'animazione della sezione
                 categorySection.setAttribute('data-aos', 'fade-up');
-                categorySection.setAttribute('data-aos-offset', '150'); // Inizia animazione un po' prima
+                categorySection.setAttribute('data-aos-offset', '150');
 
                 const categoryTitle = document.createElement('h2');
                 categoryTitle.textContent = category;
@@ -392,9 +563,8 @@
                 climateData[category].forEach(item => {
                     const indexItem = document.createElement('div');
                     indexItem.classList.add('index-item');
-                    // Ogni item ha la sua animazione
                     indexItem.setAttribute('data-aos', 'fade-up'); 
-                    indexItem.setAttribute('data-aos-delay', '100'); // Ritardo per un effetto a cascata
+                    indexItem.setAttribute('data-aos-delay', '100');
 
                     const indexHeader = document.createElement('div');
                     indexHeader.classList.add('index-header');
@@ -413,8 +583,21 @@
                         graphicContainer.classList.add('graphic-container');
                         const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
                         graphicFiles.forEach(graphic => {
-                            // PERCORSO IMMAGINI AGGIUSTATO: ora cerca direttamente nella root
-                            graphicContainer.innerHTML += `<img src="./${graphic}" alt="Grafico ${item.indice}">`;
+                            const graphicWrapper = document.createElement('div');
+                            graphicWrapper.classList.add('graphic-wrapper');
+                            const img = document.createElement('img');
+                            img.src = `./${graphic}`; // Percorso immagine corretto (nella root)
+                            img.alt = `Grafico ${item.indice}`;
+                            graphicWrapper.appendChild(img);
+                            
+                            // Aggiungi event listener al wrapper
+                            graphicWrapper.addEventListener('click', (event) => {
+                                // Impedisce che il click propaghi all'indexItem e lo chiuda/apra
+                                event.stopPropagation(); 
+                                showGraphicModal(item, img.src); // Passa l'intero item e la src dell'immagine
+                            });
+
+                            graphicContainer.appendChild(graphicWrapper);
                         });
                         indexDetails.appendChild(graphicContainer);
                     }
@@ -423,9 +606,8 @@
                     categorySection.appendChild(indexItem);
 
                     indexHeader.addEventListener('click', () => {
-                        // Chiudi tutti gli altri dettagli aperti nella stessa categoria
                         document.querySelectorAll('.category-section .index-item.active').forEach(openItem => {
-                            if (openItem !== indexItem) { // Non chiudere se è l'elemento che stiamo cliccando
+                            if (openItem !== indexItem) {
                                 openItem.classList.remove('active');
                             }
                         });
@@ -436,8 +618,6 @@
             }
 
             // Inizializzazione della mappa Leaflet
-            // Assicurarsi che il div #map sia stato renderizzato nel DOM prima di inizializzare la mappa
-            // Aggiungiamo un piccolo ritardo per essere sicuri che la sezione sia visibile
             setTimeout(() => {
                 const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
 
@@ -447,29 +627,7 @@
                 }).addTo(map);
 
                 // TODO: Aggiungi qui i tuoi dati sui rischi climatici (es. GeoJSON)
-                // Esempio (rimuovi o modifica questo blocco se non hai dati GeoJSON):
-                /*
-                fetch('path/to/your/climate_risk_data.geojson')
-                    .then(response => response.json())
-                    .then(data => {
-                        L.geoJson(data, {
-                            style: function(feature) {
-                                // Stile gli elementi in base alle proprietà del rischio
-                                return {color: '#ff0000', weight: 2, opacity: 0.8};
-                            },
-                            onEachFeature: function(feature, layer) {
-                                // Aggiungi un popup con le informazioni sul rischio
-                                if (feature.properties && feature.properties.name) {
-                                    layer.bindPopup(feature.properties.name + ": " + feature.properties.risk_level);
-                                }
-                            }
-                        }).addTo(map);
-                            }
-                        }).addTo(map);
-                    })
-                    .catch(error => console.error('Errore nel caricamento dei dati GeoJSON:', error));
-                */
-            }, 100); // Piccolo ritardo per il caricamento completo del DOM e l'applicazione del CSS
+            }, 100);
         });
     </script>
 </body>
