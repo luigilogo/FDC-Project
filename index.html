@@ -342,7 +342,7 @@
                     "descrizione": "Indica il numero dei giorni secchi consecutivi.",
                     "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che l'indice CDD non è statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è pari a 0, con un p-value di 1. Questo indica l'assenza di un trend lineare definito, sia in aumento che in diminuzione, per la durata massima dei periodi secchi consecutivi a Vercelli. Nonostante l'assenza di un trend significativo, il grafico evidenzia una notevole variabilità interannuale e la presenza di anomalie estreme. In particolare, si è verificato un evento eccezionale nel 1997, quando si è registrata un'anomalia con circa 100 giorni di CDD. Questo valore rappresenta il picco massimo della serie storica, molto al di sopra della media e degli altri anni. Oltre a questa anomalia, gli anni presentano una fluttuazione dei giorni secchi consecutivi che generalmente si mantiene tra i 20 e i 60 giorni, con valori come circa 65 giorni nel 2016 e circa 45 giorni nel 2021.",
                     "impatto": "Health, Agricolture and food security, Water resources and food security, Disaster Risk Reduction, Forestry/GHGs",
-                    "impatto_specifico": "Anche se senza trend significativo, la presenza di eventi estremi come i 100 giorni secchi nel 1997 dimostra la vulnerabilità di Vercelli a periodi di siccità prolungata. Questo minaccia direttamente la disponibilità idrica per l'agricoltura (in primis il riso) e l'approvvigionamento civile.",
+                    "impatto_specifico": "Anche se senza trend significativo, la presenza di eventi estremi come i 100 giorni secchi nel 1997 dimostra la vulnerabilità di Vercelli a periodi di siccità prolungata. Questo minaccia direttamente la disponibilità idrica per l'agricoltura (in primis il riso) e l'approvvigionamento idrico generale, con aumento dei costi e potenziali conflitti per le risorse idriche.",
                     "grafico": "Vercelli_94_24_cdd_ANN.png"
                 },
                 {
@@ -428,6 +428,7 @@
             }
 
             // Inizializzazione della mappa Leaflet
+            // Verificare che il div #map sia presente e visibile quando questo script viene eseguito
             const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
