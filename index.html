@@ -3,645 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clima Vercelli - Un'Esplorazione Interattiva</title>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoM+M70P9bQoF/kM2VjF/4F0L2qg2F+k1b+r2jY="
-     crossorigin=""/>
-    <style>
-        /* Variabili CSS per facilitare la gestione dei colori */
-        :root {
-            --primary-color: #4CAF50; /* Verde brillante */
-            --secondary-color: #2196F3; /* Blu cielo */
-            --accent-color: #FFC107; /* Giallo acceso */
-            --text-color: #333;
-            --light-bg: #e8f5e9; /* Sfondo molto chiaro e leggermente verde */
-            --card-bg: #ffffff;
-            --hover-bg: #e0f2f7; /* Blu chiaro per hover */
-            --border-color: #bbdefb; /* Blu chiaro per i bordi */
-            --header-bg: linear-gradient(to right, #4CAF50, #8BC34A); /* Sfumatura verde */
-            --footer-bg: #388E3C; /* Verde più scuro */
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--light-bg);
-            color: var(--text-color);
-            overflow-x: hidden; /* Evita scroll orizzontale non voluto */
-        }
-
-        header {
-            background: var(--header-bg);
-            color: #fff;
-            padding: 1.5rem 0;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 2.8rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-
-        main {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 30px auto;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 5;
-        }
-
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 15px;
-            margin-top: 40px;
-            font-size: 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: var(--secondary-color);
-            position: absolute;
-            bottom: -3px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 5px;
-        }
-
-        .category-section {
-            margin-bottom: 50px;
-        }
-
-        .index-item {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out; /* Transizione per hover e attivo */
-            overflow: hidden; /* Nasconde ciò che esce durante le animazioni interne */
-        }
-
-        .index-item:hover {
-            background-color: var(--hover-bg);
-            transform: translateY(-5px) scale(1.01); /* Leggero sollevamento e ingrandimento */
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-
-        .index-header {
-            padding: 20px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.15rem;
-            color: var(--secondary-color);
-            background-color: #e3f2fd; /* Sfondo leggermente più scuro per l'header dell'indice */
-            border-radius: 8px 8px 0 0;
-        }
-
-        .index-header::after {
-            content: '▼'; /* Icona a freccia per indicare espansione */
-            font-size: 1rem;
-            transition: transform 0.3s ease-in-out;
-            color: var(--primary-color);
-        }
-
-        .index-item.active .index-header::after {
-            transform: rotate(180deg);
-        }
-
-        .index-details {
-            display: none; /* Nascosto di default */
-            padding: 25px; /* Maggior padding */
-            border-top: 1px solid var(--border-color);
-            background-color: #fcfcfc; /* Sfondo quasi bianco */
-            animation: fadeIn 0.5s ease-out; /* Animazione di comparsa */
-        }
-
-        .index-item.active .index-details {
-            display: block; /* Mostrato quando attivo */
-        }
-
-        .index-details p {
-            margin-bottom: 18px; /* Maggior spazio tra i paragrafi */
-            font-size: 1rem;
-            line-height: 1.7;
-        }
-
-        .index-details strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        .graphic-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; /* Gap tra i contenitori delle immagini */
-            justify-content: center;
-            margin-top: 35px;
-            margin-bottom: 25px;
-        }
-
-        .graphic-wrapper { /* Nuovo wrapper per ogni immagine */
-            flex: 0 0 auto; /* Non cresce, non si restringe, dimensione basata sul contenuto */
-            width: 250px; /* Larghezza fissa per la visualizzazione iniziale */
-            height: 180px; /* Altezza fissa per mantenere le proporzioni iniziali */
-            overflow: hidden; /* Nasconde l'eccesso se l'immagine è più grande */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .graphic-wrapper:hover {
-            transform: translateY(-3px) scale(1.02); /* Leggero sollevamento e ingrandimento */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .graphic-wrapper img {
-            max-width: 100%;
-            max-height: 100%; /* L'immagine si adatta al wrapper */
-            display: block;
-            object-fit: contain; /* Assicura che l'intera immagine sia visibile senza ritagliarsi */
-        }
-
-        #map-section {
-            max-width: 1200px;
-            margin: 50px auto; /* Centra la sezione mappa */
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        #map {
-            height: 500px; /* Altezza della mappa */
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            background: var(--footer-bg);
-            color: #fff;
-            font-size: 1rem;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Animazione di comparsa per i dettagli */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Sopra tutto */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            position: relative;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column; /* Organizza immagine e testo in colonna */
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-close-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .modal-close-button:hover {
-            color: var(--primary-color);
-        }
-
-        .modal-image-container {
-            flex-shrink: 0; /* Impedisce che l'immagine si rimpicciolisca */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px; /* Spazio tra immagine e testo */
-            max-width: 100%;
-            max-height: 60vh; /* Limita l'altezza dell'immagine nel modale */
-        }
-
-        .modal-image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .modal-text-content {
-            flex-grow: 1; /* Permette al testo di occupare lo spazio rimanente */
-            color: var(--text-color);
-            line-height: 1.7;
-        }
-
-        .modal-text-content h3 {
-            color: var(--secondary-color);
-            margin-top: 0;
-            font-size: 1.5rem;
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .modal-text-content p {
-            margin-bottom: 15px;
-            font-size: 1rem;
-        }
-        
-        .modal-text-content strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-
-        /* Media Queries per la responsività */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            h2 {
-                font-size: 1.6rem;
-            }
-            .index-header {
-                font-size: 1rem;
-                padding: 15px;
-            }
-            .index-details {
-                padding: 15px;
-            }
-            .index-details p {
-                font-size: 0.9rem;
-            }
-            .graphic-container {
-                gap: 15px;
-            }
-            .graphic-wrapper {
-                width: 180px; /* Larghezza più piccola su mobile */
-                height: 120px; /* Altezza più piccola su mobile */
-            }
-            #map {
-                height: 300px; /* Altezza mappa su schermi piccoli */
-            }
-            .modal-content {
-                padding: 20px;
-                max-width: 95%;
-                max-height: 95%;
-            }
-            .modal-close-button {
-                font-size: 1.5rem;
-                top: 10px;
-                right: 10px;
-            }
-            .modal-image-container {
-                max-height: 40vh;
-            }
-            .modal-text-content h3 {
-                font-size: 1.2rem;
-            }
-            .modal-text-content p {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <title>La Filiera del PLA: Un Percorso Sostenibile</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoXBTiUDpXk/ugXYM8phyciU2FHRpWdCE+t/wTDw=" crossorigin=""/>
+    
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
+
     <header>
-        <h1>Analisi Climatica per Vercelli</h1>
-        <p>Un viaggio interattivo attraverso i dati dal 1994 al 2024</p>
+        <div class="container">
+            <h1>La Filiera del PLA: Un Percorso Sostenibile e Innovativo</h1>
+            <p>Analisi interdisciplinare per la transizione ecologica</p>
+            <nav>
+                <ul>
+                    <li><a href="#introduzione">Introduzione</a></li>
+                    <li><a href="#materie-prime">Materie Prime</a></li>
+                    <li><a href="#produzione">Processi di Produzione</a></li>
+                    <li><a href="#fine-vita">Uso & Fine Vita</a></li>
+                    <li><a href="#interattivita">Interattività</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main id="climate-data-container">
-        </main>
+    <main class="container">
+        <section id="introduzione" class="section-card">
+            <h2>Cos'è il PLA?</h2>
+            <p>L'Acido Polilattico (PLA) è una bioplastica derivata da risorse rinnovabili come l'amido di mais, la canna da zucchero o altre biomasse. Rappresenta una promettente alternativa sostenibile alle plastiche tradizionali, con applicazioni che spaziano dall'imballaggio ai dispositivi medici.</p>
+            <div class="info-box">
+                <h3>Perché il PLA è importante per la Transizione Ecologica?</h3>
+                <ul>
+                    <li>**Riduzione dipendenza da combustibili fossili:** Deriva da fonti vegetali.</li>
+                    <li>**Biodegradabilità e Compostabilità:** Se gestito correttamente, può ritornare alla natura.</li>
+                    <li>**Ridotto impatto ambientale:** Minori emissioni di CO2 nella produzione rispetto a molte plastiche convenzionali.</li>
+                </ul>
+            </div>
+        </section>
 
-    <section id="map-section" data-aos="fade-up" data-aos-offset="150">
-        <h2>Esplora i Rischi Climatici su Mappa</h2>
-        <div id="map"></div>
-    </section>
+        <section id="materie-prime" class="section-card">
+            <h2>1. Le Materie Prime: Agricoltura Sostenibile</h2>
+            <p>Il punto di partenza della filiera del PLA è l'agricoltura. Analizziamo le sfide e le opportunità nell'approvvigionamento sostenibile di biomasse.</p>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">Mais e Canna da Zucchero: Fonti Principali</button>
+                    <div class="accordion-content">
+                        <p>Tradizionalmente, l'amido di mais e gli zuccheri della canna da zucchero sono le principali fonti. È cruciale valutare l'impatto della monocoltura e proporre pratiche agricole più sostenibili.</p>
+                        <canvas id="materiaPrimaChart"></canvas>
+                        <p class="chart-caption"><em>Distribuzione stimata delle fonti di biomassa per PLA a livello globale (dati fittizi per esempio).</em></p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Prospettive Future: Biomasse di Scarto</button>
+                    <div class="accordion-content">
+                        <p>L'utilizzo di scarti agricoli (paglia, stocchi, residui forestali) offre un potenziale enorme per ridurre la competizione con le colture alimentari e migliorare l'economia circolare della filiera.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-gallery" id="gallery-agricoltura">
+                <a href="images/agricoltura1.jpg" data-sub-html="<h4>Coltivazione di mais</h4><p>Materie prime per il PLA.</p>">
+                    <img src="images/agricoltura1_thumb.jpg" alt="Campo di mais">
+                </a>
+                <a href="images/agricoltura2.jpg" data-sub-html="<h4>Campi di canna da zucchero</h4><p>Fonte primaria di zuccheri.</p>">
+                    <img src="images/agricoltura2_thumb.jpg" alt="Canna da zucchero">
+                </a>
+                <a href="images/agricoltura3.jpg" data-sub-html="<h4>Residui agricoli</h4><p>Nuove fonti sostenibili.</p>">
+                    <img src="images/agricoltura3_thumb.jpg" alt="Residui agricoli">
+                </a>
+            </div>
+            <p class="gallery-caption"><em>Clicca sulle immagini per ingrandire: Dalla terra alla materia prima.</em></p>
+        </section>
+
+        <section id="produzione" class="section-card">
+            <h2>2. Processi di Produzione: Chimica & Biotecnologie</h2>
+            <p>La trasformazione della biomassa in PLA è un processo complesso che unisce chimica sostenibile e biotecnologie avanzate.</p>
+            
+            <div class="process-flow">
+                <div class="process-step">
+                    <h3>Fermentazione (Biotecnologie)</h3>
+                    <p>I microrganismi convertono gli zuccheri in acido lattico. Fondamentale l'ottimizzazione dei ceppi batterici per massimizzare la resa e la purezza.</p>
+                    <canvas id="fermentationEfficiencyChart"></canvas>
+                    <p class="chart-caption"><em>Efficienza di conversione dei ceppi microbici (dati fittizi).</em></p>
+                </div>
+                <div class="process-step">
+                    <h3>Polimerizzazione (Chimica Sostenibile)</h3>
+                    <p>L'acido lattico viene convertito in lattide, che poi polimerizza in PLA. Ricerca per catalizzatori più verdi e processi a basso consumo energetico.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>Il Ruolo della Chimica Verde</h3>
+                <p>La ricerca si concentra su processi che riducano l'uso di solventi tossici, minimizzino la produzione di rifiuti e sfruttino fonti energetiche rinnovabili.</p>
+            </div>
+        </section>
+
+        <section id="fine-vita" class="section-card">
+            <h2>3. Uso e Fine Vita: Economia Circolare</h2>
+            <p>Il vero valore di una bioplastica si misura anche nella sua gestione a fine vita.</p>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">Applicazioni del PLA</button>
+                    <div class="accordion-content">
+                        <p>Imballaggi alimentari, stoviglie usa e getta, fibre tessili, ma anche applicazioni avanzate in medicina (suture riassorbibili) e stampa 3D.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Biodegradazione e Compostaggio</button>
+                    <div class="accordion-content">
+                        <p>Il PLA è compostabile industrialmente. I microrganismi svolgono un ruolo chiave nella sua degradazione in ambienti controllati, trasformandolo in composti naturali.</p>
+                        <canvas id="degradationTimeChart"></canvas>
+                        <p class="chart-caption"><em>Tempo di degradazione del PLA in diverse condizioni (dati fittizi, tempi indicativi).</em></p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Riciclo e Sfide</button>
+                    <div class="accordion-content">
+                        <p>Il riciclo meccanico è possibile ma richiede una separazione efficace dal flusso dei rifiuti. Il riciclo chimico offre nuove opportunità per recuperare i monomeri.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="interattivita" class="section-card">
+            <h2>Scopri di più: Mappa delle Bioraffinerie</h2>
+            <p>Esplora alcune delle principali bioraffinerie e centri di ricerca che stanno guidando l'innovazione nella produzione di bioplastiche a livello globale.</p>
+            <div id="mapid" style="height: 400px; width: 100%;"></div>
+            <p class="map-caption"><em>Clicca sui marker per informazioni aggiuntive.</em></p>
+        </section>
+
+    </main>
 
     <footer>
-        <p>&copy; 2024 Dati Climatici Vercelli. Tutti i diritti riservati.</p>
-        <p>Realizzato per un'esperienza divertente e informativa.</p>
+        <div class="container">
+            <p>&copy; 2025 Gruppo di Lavoro Master. Tutti i diritti riservati.</p>
+        </div>
     </footer>
 
-    <div id="graphicModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close-button">&times;</button>
-            <div class="modal-image-container">
-                <img id="modalGraphicImage" src="" alt="Grafico Dettagliato">
-            </div>
-            <div class="modal-text-content">
-                <h3 id="modalGraphicTitle"></h3>
-                <p><strong>Rilevanza per Vercelli:</strong> <span id="modalRilevanzaVercelli"></span></p>
-                <p><strong>Impatto Generale:</strong> <span id="modalImpattoGenerale"></span></p>
-                <p><strong>Impatto per Vercelli:</strong> <span id="modalImpattoSpecifico"></span></p>
-            </div>
-        </div>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nKqfh1w+S44zMEP9Q4dOFk/0Qh79xN3u0D8dYh4sQ=" crossorigin=""></script>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjGwZZxgsFK+oHNNtpSd5EIsgVyewg="
-     crossorigin=""></script>
-    <script>
-        AOS.init({
-            duration: 800, // Durata animazione in ms
-            once: true,    // Animare solo una volta
-        });
+    <script src="js/script.js"></script>
 
-        const climateData = {
-            "Temperature Minime": [
-                {
-                    "indice": "TR",
-                    "descrizione": "Numero di notti con temperatura minima superiore a 20°C.",
-                    "rilevanza_vercelli": "Dall'analisi visiva del grafico, emerge una chiara e statisticamente significativa tendenza all'aumento nel numero di notti tropicali nel corso del periodo considerato. Sebbene l'andamento annuale presenti delle oscillazioni, indicando una certa variabilità e varianza nel dato, questa varianza risulta proporzionale al passare del tempo, riflettendo una relazione positiva con l'aumento delle temperature globali. È particolarmente rilevante notare che, mentre nell'arco temporale compreso tra il 1995 e il 2015 i valori delle notti tropicali oscillavano prevalentemente tra 0 e 10 giorni, senza una pendenza significativa della retta di regressione, la tendenza positiva complessiva della serie è fortemente influenzata e accentuata negli ultimi 9 anni del periodo di analisi (post-2015). Durante questi anni più recenti, si sono registrati i picchi più elevati, raggiungendo circa 28 notti tropicali nel 2022 e quasi 30 notti tropicali nel 2023. Questo suggerisce un'accelerazione del fenomeno del riscaldamento notturno nel decennio più recente.",
-                    "impatto": "Health, Agricolture and food security, Disaster Risk Reduction, Forestry/GHGs",
-                    "impatto_specifico": "Aumento dello stress termico sulla popolazione vercellese (disturbi del sonno, rischi per anziani). Per l’agricoltura (es. riso), il mancato raffrescamento notturno compromette la crescita e la resa, aumentando il fabbisogno idrico.",
-                    "grafico": "Vercelli_94_24_tr_ANN.png"
-                },
-                {
-                    "indice": "TN10p",
-                    "descrizione": "% di giorni con temperature minime inferiori al 10° percentile.",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza al forte calo del numero di notti molto fredde nel corso del trentennio considerato. Questo decremento è evidente nel passaggio da una percentuale annua che oscillava intorno al 15% nei primi anni della serie (ad esempio, circa 15% nel 1994-1996) a un dato medio di circa il 5% negli anni più recenti (es. 2020-2023). Questa riduzione di circa due terzi della frequenza delle notti più rigide è un segnale inequivocabile del mitigarsi degli inverni sul territorio vercellese. Tale andamento è inoltre coerente con la diminuzione complessiva dei periodi di freddo prolungato, come indicato dal trend in calo dell'indice CSDI (Consecutive Cold Days Index), se disponibile per l'analisi.",
-                    "impatto": "Energy",
-                    "impatto_specifico": "Ridotto fabbisogno energetico per il riscaldamento invernale. Tuttavia, per l'agricoltura (es. riso), la minore mortalità invernale di parassiti e patogeni può comportare un maggiore uso di fitofarmaci nella stagione successiva.",
-                    "grafico": "Vercelli_94_24_tn10p_ANN.png"
-                },
-                {
-                    "indice": "TN90p",
-                    "descrizione": "% di giorni con temperature minime superiori al 90°p.",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva una chiara tendenza all'aumento della percentuale di notti considerate \"molto calde\". Il trend lineare di Sen's Slope, pari a 0.207, con un p-value di 0.005, indica che questo incremento è statisticamente significativo. Questo dato conferma inequivocabilmente il progressivo riscaldamento delle temperature minime notturne, particolarmente evidente durante la stagione estiva. Sebbene l'andamento mostri fluttuazioni interannuali, la direzione generale è verso un numero crescente di notti con minime elevate. Ad esempio, i valori passano da una media iniziale intorno al 5-8% negli anni '90 a picchi superiori al 15% e persino al 20% in anni più recenti (come nel 2014 e 2022).",
-                    "impatto": "Energy",
-                    "impatto_specifico": "Maggiore disagio termico notturno per i residenti di Vercelli. Aumento del consumo di energia elettrica per la climatizzazione notturna, con maggior stress sulle reti elettriche locali. Aumenta lo stress idrico per le risaie e altre colture.",
-                    "grafico": "Vercelli_94_24_tn90p_ANN.png"
-                },
-                {
-                    "indice": "TNm",
-                    "descrizione": "Temperatura Minima Media",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge un andamento in crescita statisticamente significativo. Il valore di Sen's Slope, pari=0.036, con un p-value di 0.014, conferma questa tendenza positiva. Considerando il periodo dal 1995 al 2024, si osserva un aumento complessivo della Temperatura Minima Media di circa 2°C (passando da valori medi intorno ai 7.0-7.5°C nei primi anni a valori frequentemente superiori agli 8.5-9.0°C negli anni più recenti, con un picco oltre 9.0°C). Questo incremento delle temperature minime medie è in stretta correlazione con l'aumento del numero di notti tropicali (indice TR), confermando un riscaldamento generalizzato e persistente anche nelle ore notturne.",
-                    "impatto": "Cryosphere",
-                    "impatto_specifico": "L'aumento generalizzato delle temperature minime a Vercelli si traduce in notti più calde che compromettono il recupero fisiologico della popolazione e delle colture, aumentando lo stress complessivo. Indirettamente influisce sulla fusione del manto nevoso alpino, fonte d'acqua per la provincia.",
-                    "grafico": "Vercelli_94_24_tnm_ANN.png"
-                }
-            ],
-            "Temperature Massime": [
-                {
-                    "indice": "TX90p",
-                    "descrizione": "Giorni con temperatura massima superiore al 90°percentile",
-                    "rilevanza_vercelli": "Dall'osservazione del grafico, emerge una netta e statisticamente significativa tendenza all'aumento del numero di giorni estremamente caldi a Vercelli. Il valore di Sen's Slope, pari a 0.228, con un intervallo di confidenza (lower bound = 0.075, upper bound = 0.384) e un p-value di 0.019, conferma la robustezza statistica di questo incremento. Questo dato indica che le estati a Vercelli stanno diventando più lunghe e intense, caratterizzate da un maggior numero di giornate con temperature massime eccezionalmente elevate. Si nota un aumento evidente e costante dei giorni TX90p nel corso del trentennio. Un picco significativo è stato registrato, ad esempio, nel 2015, dove l'indice ha superato il 20%. Questo incremento degli eventi estremi, con temperature che frequentemente superano i 35°C, è strettamente correlato all'occorrenza delle ondate di calore sul territorio.",
-                    "impatto": "Energy",
-                    "impatto_specifico": "Aumento del rischio di colpi di calore e disidratazione per la popolazione di Vercelli. Maggiore stress idrico per il riso e altre colture agricole. Aumenta il consumo energetico per la climatizzazione, con potenziale sovraccarico della rete elettrica locale. Danni a infrastrutture urbane.",
-                    "grafico": "Vercelli_94_24_tx90p_ANN.png"
-                },
-                {
-                    "indice": "TX10P",
-                    "descrizione": "Giorni con temperatura massima inferiore al 10°percentile",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si evince una chiara e statisticamente significativa tendenza alla diminuzione del numero di giorni molto freddi. Il valore di Sen's Slope, pari a -0.139, con un intervallo di confidenza (lower bound = -0.266, upper bound = -0.024) e un p-value di 0.019, conferma la robustezza statistica di questo trend negativo. Questo decremento indica che le giornate invernali a Vercelli stanno diventando progressivamente meno rigide. Ad esempio, la percentuale di giorni molto freddi, che nei primi anni della serie oscillava frequentemente tra il 10% e il 15% (con picchi vicini al 20% nel 1995 e 2010), negli anni più recenti tende a mantenervi su valori inferiori, spesso sotto il 10%, e ha raggiunto un minimo intorno al 5% nel 2022. Questo rappresenta una significativa riduzione della frequenza delle giornate più fredde nel periodo di riferimento dal 1994 al 2024.",
-                    "impatto": "Energy",
-                    "impatto_specifico": "Riduzione della domanda energetica per il riscaldamento diurno. Tuttavia, la minore incidenza di giorni freddi favorisce la sopravvivenza di parassiti e patogeni agricoli (es. nella risicoltura), riducendo il controllo naturale e potenzialmente aumentando la necessità di interventi fitosanitari.",
-                    "grafico": "Vercelli_94_24_tx10p_ANN.png"
-                },
-                {
-                    "indice": "HWN-TX90/HWF-TX90 (Accorpati)",
-                    "descrizione": "Numero di ondate di calore e Numero di giorni totali all’interno delle ondate di calore.",
-                    "rilevanza_vercelli": "Il grafico Vercelli_94_24_hwf_tx90_ANN.png mostra una chiara tendenza all'aumento dei giorni totali all'interno delle ondate di calore. Il valore di Sen's Slope è di 0.143, con un p-value di 0.07. Sebbene il p-value sia leggermente superiore alla soglia tipica di 0.05 per la piena significatività statistica, il trend positivo è visibile. Si notano picchi significativi nella frequenza cumulativa, con ad esempio circa 15 giorni nel 2010 e nel 2015, e un ulteriore aumento dopo il 2015, con valori costantemente più alti rispetto al periodo precedente al 2010. Il grafico Vercelli_94_24_hwn_tx90_ANN.png indica anch'esso una tendenza all'aumento nel numero di eventi discreti di ondate di calore. Il Sen's Slope è di 0.038, con un p-value di 0.063. Anche qui, nonostante il p-value sia marginale, la direzione del trend è positiva. Si osservano anni con un numero di eventi significativamente superiore, raggiungendo ad esempio 4 ondate nel 2010 e nel 2018, in contrasto con i numerosi anni precedenti al 2005 in cui non si registrava alcuna ondata di calore.",
-                    "impatto": "Health, Agricolture and food security, Water resources and food security, Coasts, Disaster Risk Reduction, Energy, Fisheries, Forestry/GHGs, Cryosphere",
-                    "impatto_specifico": "L'analisi congiunta di questi due indici rivela un quadro coerente e amplificato per il territorio di Vercelli: non solo le ondate di calore stanno diventando più frequenti (aumento di HWN-TX90), ma tendono anche a durare più a lungo e a contribuire a un maggior numero di giorni cumulativi di caldo estremo (aumento di HWF-TX90). Ciò significa che Vercelli è esposta a un numero crescente di eventi di caldo estremo, e ciascuno di questi eventi persiste per un periodo più esteso.",
-                    "grafico": ["Vercelli_94_24_hwn_tx90_ANN.png", "Vercelli_94_24_hwf_tx90_ANN.png"]
-                },
-                {
-                    "indice": "TXm",
-                    "descrizione": "Temperatura Massima Media",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si conferma un andamento in crescita statisticamente significativo della Temperatura Massima Media. Il valore di Sen's Slope, pari a 0.04, con un intervallo di confidenza (lower bound = 0.012, upper bound = 0.067) e un p-value di 0.011, attesta la robustezza di questa tendenza. Nel trentennio di riferimento (1994-2024), si nota un aumento medio complessivo di circa 1°C nella temperatura massima media annuale. Sebbene l'andamento mostri oscillazioni interannuali (come evidente dalle fluttuazioni tra i valori minimi e massimi), la retta di regressione indica una chiara direzione verso l'alto. Si possono osservare anomalie, con un abbassamento delle temperature medie massime, in anni specifici come il 2010 e il periodo 2018-2019. Tali variazioni interannuali significative potrebbero essere influenzate da fenomeni climatici su larga scala, come le oscillazioni legate al El Niño/La Niña (ENSO) o ad altri teleconnessioni atmosferiche come la North Atlantic Oscillation (NAO) e l'Arctic Oscillation (AO), la cui correlazione necessiterebbe di un'analisi specifica.",
-                    "impatto": "Water resources and food security, Cryosphere",
-                    "impatto_specifico": "L'aumento medio delle temperature diurne a Vercelli contribuisce a un maggiore tasso di evapotraspirazione. Ciò si traduce in una crescente domanda idrica per l'irrigazione delle colture, mettendo sotto pressione le risorse idriche del territorio, anche quelle con origine alpina (criosfera).",
-                    "grafico": "Vercelli_94_24_txm_ANN.png"
-                }
-            ],
-            "Precipitazioni": [
-                {
-                    "indice": "PRCPTOT",
-                    "descrizione": "Totale annuale delle precipitazioni ≥1 mm",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che il totale annuale delle precipitazioni a Vercelli non presenta un trend statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è di -0.697, con un p-value di 0.837. Questo elevato p-value indica che la retta di regressione non mostra una tendenza lineare robusta né in aumento né in diminuzione. Nonostante l'assenza di un trend quantitativo significativo, il grafico evidenzia una notevole variabilità interannuale. Il 2014 si distingue come l'anno in cui è stata registrata la maggiore concentrazione di pioggia, con un valore che supera i 1400 mm. Al contrario, si osservano anni con totali di precipitazione notevolmente inferiori, come nel 2020 e 2022, quando i valori sono scesi a circa 400 mm. Indipendentemente dal dato quantitativo complessivamente poco significativo per quanto riguarda un trend lineare, l'osservazione qualitativa suggerisce una diversa distribuzione delle precipitazioni durante le ultime annate. Il livello quantitativo di pioggia annua, pur rimanendo più o meno stabile nel tempo in termini di media, è caratterizzato da una tendenza a un aumento dei giorni piovosi estremi. Questo significa che la stessa quantità di pioggia annuale può cadere in un numero minore di giorni ma con maggiore intensità.",
-                    "impatto": "Agricolture and food security, Water resources and food security, Forestry/GHGs",
-                    "impatto_specifico": "A Vercelli, pur con un totale annuo stabile, l'aumento dei giorni piovosi estremi implica un maggior rischio di allagamenti localizzati, problemi di drenaggio nei campi agricoli (es. risaie) e sovraccarico dei sistemi fognari urbani, compromettendo la gestione delle risorse idriche e la viabilità.",
-                    "grafico": "Vercelli_94_24_prcptot_ANN.png"
-                },
-                {
-                    "indice": "CDD",
-                    "descrizione": "Indica il numero dei giorni secchi consecutivi.",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che l'indice CDD non è statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è pari a 0, con un p-value di 1. Questo indica l'assenza di un trend lineare definito, sia in aumento che in diminuzione, per la durata massima dei periodi secchi consecutivi a Vercelli. Nonostante l'assenza di un trend significativo, il grafico evidenzia una notevole variabilità interannuale e la presenza di anomalie estreme. In particolare, si è verificato un evento eccezionale nel 1997, quando si è registrata un'anomalia con circa 100 giorni di CDD. Questo valore rappresenta il picco massimo della serie storica, molto al di sopra della media e degli altri anni. Oltre a questa anomalia, gli anni presentano una fluttuazione dei giorni secchi consecutivi che generalmente si mantiene tra i 20 e i 60 giorni, con valori come circa 65 giorni nel 2016 e circa 45 giorni nel 2021.",
-                    "impatto": "Health, Agricolture and food security, Water resources and food security, Disaster Risk Reduction, Forestry/GHGs",
-                    "impatto_specifico": "Anche se senza trend significativo, la presenza di eventi estremi come i 100 giorni secchi nel 1997 dimostra la vulnerabilità di Vercelli a periodi di siccità prolungata. Questo minaccia direttamente la disponibilità idrica per l'agricoltura (in primis il riso) e l'approvvigionamento idrico generale, con aumento dei costi e potenziali conflitti per le risorse idriche.",
-                    "grafico": "Vercelli_94_24_cdd_ANN.png"
-                },
-                {
-                    "indice": "R95p",
-                    "descrizione": "Somma delle precipitazioni giornaliere di tutti i giorni in cui la quantità di pioggia è stata superiore al 95° percentile",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, si osserva che l'indice R95p non è statisticamente significativo nel periodo considerato. Il valore di Sen's Slope è pari a -0.106, con un p-value di 0.925. Questo elevato p-value conferma che non esiste una relazione lineare robusta o una tendenza definita (né in aumento né in diminuzione) nella somma cumulativa delle precipitazioni derivanti dai giorni più intensi. La retta di regressione appare infatti sostanzialmente \"piatta\", riflettendo questa assenza di trend. Nonostante la mancanza di un trend significativo, il grafico mostra una notevole variabilità interannuale nell'apporto pluviometrico dai giorni estremi. Si osservano anni con valori molto elevati, come nel 2003 (circa 400 mm da eventi >95° percentile) e nel 2014 (circa 340 mm), in contrasto con anni in cui tale somma è stata estremamente bassa, come il 1997 e il 2004 (intorno ai 50 mm). Questa variabilità indica che, pur non essendoci un aumento costante nel tempo della somma di queste piogge estreme, il territorio è comunque soggetto a singoli anni con precipitazioni molto intense e concentrate.",
-                    "impatto": "Health, Agricolture and food security, Water resources and food security, Forestry/GHGs",
-                    "impatto_specifico": "A Vercelli, pur non essendoci un trend chiaro nella quantità totale di pioggia da eventi estremi, l'occorrenza di singole precipitazioni molto intense (anche se non sempre cumulativamente crescenti anno su anno) può causare rapidi allagamenti e stress ai sistemi di drenaggio urbani e rurali.",
-                    "grafico": "Vercelli_94_24_r95p_ANN.png"
-                },
-                {
-                    "indice": "SPEI (24 mesi)",
-                    "descrizione": "Standardised Precipitation Evapotranspiration Index su scala temporale di 24 mesi.",
-                    "rilevanza_vercelli": "Dall'analisi del grafico, emerge una chiara e statisticamente significativa tendenza alla diminuzione dei valori di SPEI a 24 mesi, indicando una crescente propensione alla siccità idrologica a lungo termine nel territorio vercellese. Il valore di Sen's Slope è di -0.002, con un intervallo di confidenza (lower bound = -0.003, upper bound = 0) e un p-value di 0.017. Questa significatività statistica conferma che il trend di inaridimento non è dovuto a casualità ma rappresenta una tendenza consolidata. Si osserva un'alternanza tra periodi di maggiore umidità (barre blu, come tra il 2008 e il 2010, e un picco nel 2014-2015) e periodi prolungati e intensi di siccità (barre rosse). È evidente come, a partire all'incirca dal 2017-2018, si sia manifestata una fase di siccità particolarmente severa e persistente, con valori negativi dello SPEI che raggiungono e talvolta superano i -2. Questa fase è caratterizzata da una maggiore profondità e durata degli eventi di siccità rispetto ai periodi precedenti, come quelli tra il 1998 e il 2000.",
-                    "impatto": "Health, Agricolture and food security, Water resources and food security, Disaster Risk Reduction, Forestry/GHGs",
-                    "impatto_specifico": "Per Vercelli, lo SPEI evidenzia una crescente e persistente siccità idrologica a lungo termine. Questo si traduce in una ridotta disponibilità d'acqua per la risicoltura e per l'approvvigionamento idrico generale, con aumento dei costi e potenziali conflitti per le risorse idriche.",
-                    "grafico": "Vercelli_94_24_24month_spei_MON.png"
-                }
-            ]
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            AOS.init({
-                duration: 800, // Durata animazione in ms
-                once: true,    // Animare solo una volta
-            });
-
-            const container = document.getElementById('climate-data-container');
-            const graphicModal = document.getElementById('graphicModal');
-            const modalGraphicImage = document.getElementById('modalGraphicImage');
-            const modalGraphicTitle = document.getElementById('modalGraphicTitle');
-            const modalRilevanzaVercelli = document.getElementById('modalRilevanzaVercelli');
-            const modalImpattoGenerale = document.getElementById('modalImpattoGenerale');
-            const modalImpattoSpecifico = document.getElementById('modalImpattoSpecifico');
-            const modalCloseButton = document.querySelector('.modal-close-button');
-
-            function showGraphicModal(item, graphicSrc) {
-                modalGraphicImage.src = graphicSrc;
-                modalGraphicTitle.textContent = `Dettagli per ${item.indice}`;
-                modalRilevanzaVercelli.textContent = item.rilevanza_vercelli;
-                modalImpattoGenerale.textContent = item.impatto;
-                modalImpattoSpecifico.textContent = item.impatto_specifico;
-                graphicModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Blocca lo scroll del body
-            }
-
-            function hideGraphicModal() {
-                graphicModal.classList.remove('active');
-                document.body.style.overflow = ''; // Ripristina lo scroll del body
-            }
-
-            modalCloseButton.addEventListener('click', hideGraphicModal);
-            graphicModal.addEventListener('click', (event) => {
-                if (event.target === graphicModal) { // Chiudi solo se clicchi sull'overlay, non sul contenuto
-                    hideGraphicModal();
-                }
-            });
-
-            for (const category in climateData) {
-                const categorySection = document.createElement('section');
-                categorySection.classList.add('category-section');
-                categorySection.setAttribute('data-aos', 'fade-up');
-                categorySection.setAttribute('data-aos-offset', '150');
-
-                const categoryTitle = document.createElement('h2');
-                categoryTitle.textContent = category;
-                categorySection.appendChild(categoryTitle);
-
-                climateData[category].forEach(item => {
-                    const indexItem = document.createElement('div');
-                    indexItem.classList.add('index-item');
-                    indexItem.setAttribute('data-aos', 'fade-up'); 
-                    indexItem.setAttribute('data-aos-delay', '100');
-
-                    const indexHeader = document.createElement('div');
-                    indexHeader.classList.add('index-header');
-                    indexHeader.textContent = item.indice + " - " + item.descrizione;
-                    indexItem.appendChild(indexHeader);
-
-                    const indexDetails = document.createElement('div');
-                    indexDetails.classList.add('index-details');
-
-                    indexDetails.innerHTML += `<p><strong>Rilevanza per Vercelli:</strong> ${item.rilevanza_vercelli}</p>`;
-                    indexDetails.innerHTML += `<p><strong>Impatto Generale:</strong> ${item.impatto}</p>`;
-                    indexDetails.innerHTML += `<p><strong>Impatto Specifico:</strong> ${item.impatto_specifico}</p>`;
-                    
-                    if (item.grafico) {
-                        const graphicContainer = document.createElement('div');
-                        graphicContainer.classList.add('graphic-container');
-                        const graphicFiles = Array.isArray(item.grafico) ? item.grafico : [item.grafico];
-                        graphicFiles.forEach(graphic => {
-                            const graphicWrapper = document.createElement('div');
-                            graphicWrapper.classList.add('graphic-wrapper');
-                            const img = document.createElement('img');
-                            img.src = `./${graphic}`; // Percorso immagine corretto (nella root)
-                            img.alt = `Grafico ${item.indice}`;
-                            graphicWrapper.appendChild(img);
-                            
-                            // Aggiungi event listener al wrapper
-                            graphicWrapper.addEventListener('click', (event) => {
-                                // Impedisce che il click propaghi all'indexItem e lo chiuda/apre
-                                event.stopPropagation(); 
-                                showGraphicModal(item, img.src); // Passa l'intero item e la src dell'immagine
-                            });
-
-                            graphicContainer.appendChild(graphicWrapper);
-                        });
-                        indexDetails.appendChild(graphicContainer);
-                    }
-
-                    indexItem.appendChild(indexDetails);
-                    categorySection.appendChild(indexItem);
-
-                    indexHeader.addEventListener('click', () => {
-                        document.querySelectorAll('.category-section .index-item.active').forEach(openItem => {
-                            if (openItem !== indexItem) {
-                                openItem.classList.remove('active');
-                            }
-                        });
-                        indexItem.classList.toggle('active');
-                    });
-                });
-                container.appendChild(categorySection);
-            }
-
-            // Inizializzazione della mappa Leaflet
-            // Spostato qui per assicurarsi che il DOM sia caricato e che l'elemento 'map' sia disponibile
-            const map = L.map('map').setView([45.3218, 8.4239], 12); // Coordinate di Vercelli e livello di zoom
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
-            // Aggiungi un marker generico per Vercelli
-            L.marker([45.3218, 8.4239]).addTo(map)
-                .bindPopup('Vercelli')
-                .openPopup();
-
-            // Questo è il nuovo, importante, passo: forza la mappa a ricalcolare le sue dimensioni
-            map.invalidateSize(); 
-        });
-    </script>
 </body>
 </html>
