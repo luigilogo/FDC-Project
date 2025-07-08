@@ -20,18 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const setActiveNavLink = () => {
         let current = '';
+        // Un piccolo offset per rendere l'attivazione più precisa durante lo scroll
+        const offset = window.innerHeight * 0.3; 
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            // Un piccolo offset per rendere l'attivazione più precisa durante lo scroll
-            if (pageYOffset >= sectionTop - sectionHeight / 3) {
+            if (pageYOffset >= sectionTop - offset && pageYOffset < sectionTop + sectionHeight - offset) {
                 current = section.getAttribute('id');
             }
         });
 
         navLinks.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
+            // Assicurati che l'href includa l'ID della sezione corrente
+            if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
             }
         });
@@ -52,9 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.style.paddingTop = '0';
                 content.style.paddingBottom = '0';
             } else {
-                content.style.maxHeight = content.scrollHeight + 40 + 'px'; // Aggiungi padding extra
-                content.style.paddingTop = '20px';
-                content.style.paddingBottom = '20px';
+                content.style.maxHeight = content.scrollHeight + 50 + 'px'; // Aggiungi padding extra
+                content.style.paddingTop = '25px'; // Coerente con il CSS
+                content.style.paddingBottom = '25px'; // Coerente con il CSS
             }
         });
     });
@@ -63,18 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Grafico Composizione Fonti (Pie Chart)
     const sourceCompositionCtx = document.getElementById('sourceCompositionChart');
-    if (sourceCompositionCtx) {
+    if (sourceCompositionCtx) { // Verifica che l'elemento canvas esista
         new Chart(sourceCompositionCtx, {
-            type: 'doughnut', // Doughnut chart per un look moderno
+            type: 'doughnut', 
             data: {
                 labels: ['Mais', 'Canna da Zucchero', 'Biomasse Lignocellulosiche', 'Altre Biomasse'],
                 datasets: [{
                     data: [45, 30, 20, 5], // Dati reali o stimati per la tua analisi
                     backgroundColor: [
-                        'rgba(255, 159, 64, 0.9)', // Arancio vibrante
-                        'rgba(75, 192, 192, 0.9)', // Turchese
-                        'rgba(153, 102, 255, 0.9)', // Viola
-                        'rgba(255, 205, 86, 0.9)'  // Giallo
+                        'rgba(255, 159, 64, 0.9)', 
+                        'rgba(75, 192, 192, 0.9)', 
+                        'rgba(153, 102, 255, 0.9)', 
+                        'rgba(255, 205, 86, 0.9)'  
                     ],
                     borderColor: '#ffffff',
                     borderWidth: 2
@@ -108,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     },
                     title: {
-                        display: false // Il titolo è già nell'HTML
+                        display: false 
                     }
                 }
             }
@@ -117,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Grafico Resa Fermentazione (Bar Chart)
     const fermentationYieldCtx = document.getElementById('fermentationYieldChart');
-    if (fermentationYieldCtx) {
+    if (fermentationYieldCtx) { // Verifica che l'elemento canvas esista
         new Chart(fermentationYieldCtx, {
             type: 'bar',
             data: {
@@ -126,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     label: 'Resa Acido Lattico (g/L)',
                     data: [80, 105, 130], // Dati di esempio di miglioramento
                     backgroundColor: [
-                        'rgba(54, 162, 235, 0.8)', // Blu standard
-                        'rgba(75, 192, 192, 0.8)', // Verde ottimizzato
-                        'rgba(153, 102, 255, 0.8)' // Viola innovativo
+                        'rgba(54, 162, 235, 0.8)', 
+                        'rgba(75, 192, 192, 0.8)', 
+                        'rgba(153, 102, 255, 0.8)' 
                     ],
                     borderColor: [
                         'rgba(54, 162, 235, 1)',
@@ -170,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Grafico Tasso Degradazione (Line Chart)
     const biodegradationRateCtx = document.getElementById('biodegradationRateChart');
-    if (biodegradationRateCtx) {
+    if (biodegradationRateCtx) { // Verifica che l'elemento canvas esista
         new Chart(biodegradationRateCtx, {
             type: 'line',
             data: {
@@ -178,10 +181,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Percentuale Degr. (%)',
                     data: [0, 15, 50, 85, 98, 100], // Dati stimati per compostaggio industriale
-                    borderColor: 'rgba(0, 200, 83, 1)', // Verde secondario
+                    borderColor: 'rgba(0, 200, 83, 1)', 
                     backgroundColor: 'rgba(0, 200, 83, 0.2)',
                     fill: true,
-                    tension: 0.4, // Curva più morbida
+                    tension: 0.4, 
                     pointRadius: 5,
                     pointHoverRadius: 7,
                     pointBackgroundColor: 'rgba(0, 200, 83, 1)'
@@ -226,10 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Galleria Immagini (LightGallery.js) ---
     const productionGallery = document.getElementById('production-gallery');
-    if (productionGallery) {
+    if (productionGallery) { // Verifica che l'elemento esista
         lightGallery(productionGallery, {
             plugins: [lgThumbnail, lgZoom],
-            licenseKey: '0000-0000-0000-0000', // Sostituisci con la tua chiave se ne hai una, altrimenti non è obbligatoria per test.
+            licenseKey: '0000-0000-0000-0000', // Lascia così per ora, è solo per la licenza commerciale
             speed: 600,
             thumbnail: true,
             zoom: true,
@@ -245,53 +248,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Mappa Interattiva (Leaflet.js) ---
     const worldMapElement = document.getElementById('world-map');
-    if (worldMapElement) {
-        const mymap = L.map('world-map').setView([20, 0], 2); // Vista centrata sul mondo, zoom 2
+    if (worldMapElement) { // Verifica che l'elemento mappa esista
+        const mymap = L.map('world-map').setView([20, 0], 2); 
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { // Stile mappa scuro e moderno
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { 
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 18
         }).addTo(mymap);
 
-        // Dati fittizi per i marker (sostituisci con dati reali di bioraffinerie/centri ricerca)
         const plaLocations = [
             { lat: 45.4642, lon: 9.1900, name: 'Polo Innovazione Bioplastica, Italia', info: 'R&D su PLA da sottoprodotti agricoli e applicazioni biomediche.', type: 'R&D' },
             { lat: 39.9042, lon: 116.4074, name: 'Impianto di Produzione PLA, Cina', info: 'Uno dei maggiori produttori mondiali di PLA da amido di mais.', type: 'Produzione' },
             { lat: 33.7490, lon: -84.3880, name: 'Centro di Riciclo Avanzato, USA', info: 'Focus su riciclo chimico e compostaggio del PLA.', type: 'Riciclo' },
             { lat: 52.3676, lon: 4.9041, name: 'Bioraffineria Circolare, Paesi Bassi', info: 'Produzione integrata di PLA e altri bioprodotti da biomassa.', type: 'Produzione' },
-            { lat: -23.5505, lon: -46.6333, name: 'Sviluppo PLA da Canna da Zucchero, Brasile', info: 'Leader nella produzione di biopolimeri da fonti di canna da zucchero.', type: 'Produzione' },
-            { lat: 35.6895, lon: 139.6917, name: 'Laboratorio Biotecnologico, Giappone', info: 'Ricerca su nuovi microrganismi per l\'acido lattico.', type: 'R&D' }
+            { lat: -23.5505, lon: -46.6333, name: 'Sviluppo PLA da Canna da Zucchero, Brasile', info: 'Leader nella produzione di biopolimeri da fonti di canna da zucchero.', type: 'R&D' },
+            { lat: 35.6895, lon: 139.6917, name: 'Laboratorio Biotecnologico, Giappone', info: 'Ricerca su nuovi microrganismi per l\'acido lattico.', type: 'Produzione' }
         ];
 
         // Icone personalizzate per la mappa
+        const getComputedCssProperty = (prop) => getComputedStyle(document.documentElement).getPropertyValue(prop).trim();
+
         const customIcon = (type) => {
             let iconClass = 'fas fa-map-marker-alt';
-            let iconColor = '#ffffff'; // Colore di default
-            let backgroundColor = 'var(--primary-color)';
+            let iconColor = '#ffffff'; 
+            let finalBackgroundColor = getComputedCssProperty('--primary-color'); 
 
             if (type === 'R&D') {
                 iconClass = 'fas fa-flask';
-                backgroundColor = 'var(--accent-color)';
+                finalBackgroundColor = getComputedCssProperty('--accent-color');
             } else if (type === 'Produzione') {
                 iconClass = 'fas fa-factory';
-                backgroundColor = 'var(--secondary-color)';
+                finalBackgroundColor = getComputedCssProperty('--secondary-color');
             } else if (type === 'Riciclo') {
                 iconClass = 'fas fa-recycle';
-                backgroundColor = '#8e24aa'; // Viola
+                finalBackgroundColor = '#8e24aa'; // Viola
             }
-
-            // Nota: per usare le variabili CSS qui, dovremmo estrarre i valori
-            // direttamente da un elemento DOM o hardcodarli. Per semplicità,
-            // li ho hardcodati per l'esempio.
-            const primaryColorVal = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
-            const accentColorVal = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
-            const secondaryColorVal = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim();
-            
-            let finalBackgroundColor = primaryColorVal;
-            if (type === 'R&D') finalBackgroundColor = accentColorVal;
-            else if (type === 'Produzione') finalBackgroundColor = secondaryColorVal;
-            else if (type === 'Riciclo') finalBackgroundColor = '#8e24aa'; // Viola
 
             return L.divIcon({
                 html: `<div style="background-color: ${finalBackgroundColor}; color: ${iconColor}; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; border: 2px solid ${iconColor}; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"><i class="${iconClass}"></i></div>`,
@@ -308,10 +300,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 .bindPopup(`<b>${loc.name}</b><br>${loc.info}`);
         });
 
-        // Adatta la vista della mappa ai marker
-        const group = new L.featureGroup(plaLocations.map(loc => L.marker([loc.lat, loc.lon])));
+        // Adatta la vista della mappa ai marker se ci sono
         if (plaLocations.length > 0) {
-            mymap.fitBounds(group.getBounds().pad(0.5)); // padding per non farli stare sul bordo
+            const group = new L.featureGroup(plaLocations.map(loc => L.marker([loc.lat, loc.lon])));
+            mymap.fitBounds(group.getBounds().pad(0.5));
         }
     }
 });
