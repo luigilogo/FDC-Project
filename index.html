@@ -1,12 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Filiera del PLA: Un Percorso Sostenibile</title>
+    <title>PLA Flow: Sostenibilità Rivoluzionaria</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" />
     
@@ -16,144 +20,191 @@
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <h1>La Filiera del PLA: Un Percorso Sostenibile e Innovativo</h1>
-            <p>Analisi interdisciplinare per la transizione ecologica</p>
-            <nav>
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">PLA<span>Flow</span></div>
+            <nav class="main-nav">
                 <ul>
-                    <li><a href="#introduzione">Introduzione</a></li>
-                    <li><a href="#materie-prime">Materie Prime</a></li>
-                    <li><a href="#produzione">Processi di Produzione</a></li>
-                    <li><a href="#fine-vita">Uso & Fine Vita</a></li>
-                    <li><a href="#interattivita">Interattività</a></li>
+                    <li><a href="#hero">Inizio</a></li>
+                    <li><a href="#intro">Il PLA</a></li>
+                    <li><a href="#raw-materials">Materie Prime</a></li>
+                    <li><a href="#production">Produzione</a></li>
+                    <li><a href="#end-of-life">Fine Vita</a></li>
+                    <li><a href="#insights">Insights</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="container">
-        <section id="introduzione" class="section-card">
-            <h2>Cos'è il PLA?</h2>
-            <p>L'Acido Polilattico (PLA) è una bioplastica derivata da risorse rinnovabili come l'amido di mais, la canna da zucchero o altre biomasse. Rappresenta una promettente alternativa sostenibile alle plastiche tradizionali, con applicazioni che spaziano dall'imballaggio ai dispositivi medici.</p>
-            <div class="info-box">
-                <h3>Perché il PLA è importante per la Transizione Ecologica?</h3>
-                <ul>
-                    <li>**Riduzione dipendenza da combustibili fossili:** Deriva da fonti vegetali.</li>
-                    <li>**Biodegradabilità e Compostabilità:** Se gestito correttamente, può ritornare alla natura.</li>
-                    <li>**Ridotto impatto ambientale:** Minori emissioni di CO2 nella produzione rispetto a molte plastiche convenzionali.</li>
-                </ul>
-            </div>
-        </section>
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 data-aos="fade-up" data-aos-duration="1000">La Filiera del PLA: Il Futuro Sostenibile Inizia Ora.</h1>
+            <p data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">Dal Campo al Compost: Un Viaggio nella Sostenibilità Circolare con le Bioplastiche Avanzate.</p>
+            <a href="#intro" class="cta-button" data-aos="fade-up" data-aos-duration="1400" data-aos-delay="400">Scopri di Più <i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
 
-        <section id="materie-prime" class="section-card">
-            <h2>1. Le Materie Prime: Agricoltura Sostenibile</h2>
-            <p>Il punto di partenza della filiera del PLA è l'agricoltura. Analizziamo le sfide e le opportunità nell'approvvigionamento sostenibile di biomasse.</p>
+    <section id="intro" class="content-section">
+        <div class="container">
+            <h2 data-aos="fade-right">PLA: Rivoluzione Sostenibile</h2>
+            <div class="section-grid">
+                <div class="grid-item" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Che cos'è l'Acido Polilattico?</h3>
+                    <p>Il **PLA (Acido Polilattico)** è una bioplastica innovativa, derivata da risorse vegetali rinnovabili come l'amido di mais, la canna da zucchero o la barbabietola. A differenza delle plastiche tradizionali, il PLA offre un'impronta carbonica significativamente ridotta e la capacità di biodegradare in condizioni specifiche, chiudendo il ciclo della vita del prodotto.</p>
+                </div>
+                <div class="grid-item" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Perché il PLA è Cruciale per la Transizione Ecologica?</h3>
+                    <ul>
+                        <li><i class="fas fa-leaf icon-green"></i> **Fonti Rinnovabili:** Riduce la dipendenza dai combustibili fossili.</li>
+                        <li><i class="fas fa-recycle icon-blue"></i> **Economia Circolare:** Progettato per il compostaggio industriale e il riciclo avanzato.</li>
+                        <li><i class="fas fa-cloud icon-grey"></i> **Minore Impatto Carbonico:** Contribuisce alla riduzione delle emissioni di gas serra.</li>
+                        <li><i class="fas fa-flask icon-orange"></i> **Versatilità:** Ampia gamma di applicazioni, dall'imballaggio alla medicina.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="raw-materials" class="content-section bg-light">
+        <div class="container">
+            <h2 data-aos="fade-right">1. Materie Prime: L'Origine Verde</h2>
+            <p class="section-description" data-aos="fade-left">Il viaggio del PLA inizia nei campi. Esploriamo le materie prime e l'impatto delle moderne tecnologie agricole.</p>
             
-            <div class="accordion">
+            <div class="chart-container" data-aos="fade-up" data-aos-delay="200">
+                <h3>Composizione delle Fonti di Biomassa per PLA</h3>
+                <canvas id="sourceCompositionChart"></canvas>
+                <p class="chart-caption"><em>Distribuzione stimata delle materie prime vegetali utilizzate per la produzione globale di PLA.</em></p>
+            </div>
+
+            <div class="accordion-container" data-aos="fade-up" data-aos-delay="300">
                 <div class="accordion-item">
-                    <button class="accordion-header">Mais e Canna da Zucchero: Fonti Principali</button>
+                    <button class="accordion-header">
+                        <i class="fas fa-seedling icon-small"></i> Coltivazioni Dedicate: Mais & Canna da Zucchero
+                    </button>
                     <div class="accordion-content">
-                        <p>Tradizionalmente, l'amido di mais e gli zuccheri della canna da zucchero sono le principali fonti. È cruciale valutare l'impatto della monocoltura e proporre pratiche agricole più sostenibili.</p>
-                        <canvas id="materiaPrimaChart"></canvas>
-                        <p class="chart-caption"><em>Distribuzione stimata delle fonti di biomassa per PLA a livello globale (dati fittizi per esempio).</em></p>
+                        <p>Le principali fonti di zuccheri fermentabili per il PLA sono storicamente mais e canna da zucchero. L'analisi si concentra sull'ottimizzazione delle pratiche agricole per ridurre l'impronta idrica e l'uso di fertilizzanti e pesticidi, promuovendo un approccio di **agricoltura di precisione**.</p>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <button class="accordion-header">Prospettive Future: Biomasse di Scarto</button>
+                    <button class="accordion-header">
+                        <i class="fas fa-recycle icon-small"></i> Il Futuro: Biomasse di Scarto e Residui Agricoli
+                    </button>
                     <div class="accordion-content">
-                        <p>L'utilizzo di scarti agricoli (paglia, stocchi, residui forestali) offre un potenziale enorme per ridurre la competizione con le colture alimentari e migliorare l'economia circolare della filiera.</p>
+                        <p>L'integrazione di scarti agricoli (come paglia, stocchi, residui forestali) offre un potenziale enorme per ridurre la competizione con le colture alimentari e migliorare l'economia circolare della filiera.</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="image-gallery" id="gallery-agricoltura">
-                <a href="images/agricoltura1.jpg" data-sub-html="<h4>Coltivazione di mais</h4><p>Materie prime per il PLA.</p>">
-                    <img src="images/agricoltura1_thumb.jpg" alt="Campo di mais">
+        </div>
+    </section>
+
+    <section id="production" class="content-section">
+        <div class="container">
+            <h2 data-aos="fade-right">2. Processi di Produzione: Chimica & Biotecnologie al Vertice</h2>
+            <p class="section-description" data-aos="fade-left">La trasformazione della biomassa in PLA è un capolavoro di ingegneria biotecnologica e chimica sostenibile.</p>
+
+            <div class="process-flow-container">
+                <div class="process-step" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-microscope process-icon"></i>
+                    <h3>Fermentazione Microbica</h3>
+                    <p>Gli zuccheri delle biomasse vengono fermentati da microrganismi selezionati per produrre acido lattico. Le **biotecnologie** avanzate permettono di ottimizzare i ceppi e i processi per massimizzare l'efficienza e la purezza, riducendo i sottoprodotti.</p>
+                    <canvas id="fermentationYieldChart"></canvas>
+                    <p class="chart-caption"><em>Comparazione della resa di acido lattico con diverse innovazioni biotecnologiche.</em></p>
+                </div>
+                <div class="process-separator" data-aos="fade-up" data-aos-delay="200"><i class="fas fa-long-arrow-alt-right"></i></div>
+                <div class="process-step" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-atom process-icon"></i>
+                    <h3>Polimerizzazione & Purificazione</h3>
+                    <p>L'acido lattico viene convertito in lattide (un intermedio ciclico) e poi polimerizzato per formare il PLA. La **chimica sostenibile** è fondamentale per sviluppare catalizzatori più verdi e meno tossici, e per processi a basso consumo energetico e minimizzato impatto ambientale.</p>
+                    <div class="info-box accent-box">
+                        <h4><i class="fas fa-lightbulb"></i> Innovazione Chimica Verde</h4>
+                        <p>La ricerca è volta a ridurre l'uso di solventi, ottimizzare le rese di reazione e integrare fonti energetiche rinnovabili, rendendo la produzione sempre più circolare e pulita.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-gallery-grid" id="production-gallery" data-aos="fade-up" data-aos-delay="400">
+                <a href="images/fermenter.jpg" data-sub-html="<h4>Biorattore Industriale</h4><p>Fermentazione su larga scala per acido lattico.</p>">
+                    <img src="images/fermenter_thumb.jpg" alt="Biorattore">
                 </a>
-                <a href="images/agricoltura2.jpg" data-sub-html="<h4>Campi di canna da zucchero</h4><p>Fonte primaria di zuccheri.</p>">
-                    <img src="images/agricoltura2_thumb.jpg" alt="Canna da zucchero">
+                <a href="images/lab.jpg" data-sub-html="<h4>Ricerca di Laboratorio</h4><p>Sviluppo di nuovi catalizzatori e processi.</p>">
+                    <img src="images/lab_thumb.jpg" alt="Laboratorio">
                 </a>
-                <a href="images/agricoltura3.jpg" data-sub-html="<h4>Residui agricoli</h4><p>Nuove fonti sostenibili.</p>">
-                    <img src="images/agricoltura3_thumb.jpg" alt="Residui agricoli">
+                <a href="images/pellets.jpg" data-sub-html="<h4>Pellet di PLA</h4><p>Il prodotto finale pronto per la trasformazione.</p>">
+                    <img src="images/pellets_thumb.jpg" alt="Pellet di PLA">
                 </a>
             </div>
-            <p class="gallery-caption"><em>Clicca sulle immagini per ingrandire: Dalla terra alla materia prima.</em></p>
-        </section>
+            <p class="gallery-caption"><em>Esplora le fasi chiave del processo di produzione del PLA.</em></p>
+        </div>
+    </section>
 
-        <section id="produzione" class="section-card">
-            <h2>2. Processi di Produzione: Chimica & Biotecnologie</h2>
-            <p>La trasformazione della biomassa in PLA è un processo complesso che unisce chimica sostenibile e biotecnologie avanzate.</p>
+    <section id="end-of-life" class="content-section bg-light">
+        <div class="container">
+            <h2 data-aos="fade-right">3. Uso e Fine Vita: Chiudere il Cerchio</h2>
+            <p class="section-description" data-aos="fade-left">La gestione a fine vita è ciò che distingue veramente il PLA, puntando a un'economia realmente circolare.</p>
+
+            <div class="grid-2-cols">
+                <div class="grid-item" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Applicazioni rivoluzionarie del PLA</h3>
+                    <ul>
+                        <li><i class="fas fa-box-open icon-purple"></i> **Imballaggi Sostenibili:** Bottiglie, vaschette, film biodegradabili.</li>
+                        <li><i class="fas fa-tshirt icon-purple"></i> **Tessuti Innovativi:** Fibre per abbigliamento e non-tessuti.</li>
+                        <li><i class="fas fa-clinic-medical icon-purple"></i> **Medicina e Stampa 3D:** Fili di sutura, scaffold, protesi e prototipazione rapida.</li>
+                    </ul>
+                </div>
+                <div class="grid-item" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Biodegradazione e Compostaggio</h3>
+                    <p>Il PLA è compostabile industrialmente. I microrganismi specifici, oggetto di studio delle **biotecnologie microbiche**, scompongono il PLA in acqua, CO2 e biomassa. Questo processo, se correttamente gestito, restituisce valore all'ambiente, evitando l'accumulo di rifiuti plastici.</p>
+                    <canvas id="biodegradationRateChart"></canvas>
+                    <p class="chart-caption"><em>Tasso di degradazione del PLA in un impianto di compostaggio industriale.</em></p>
+                </div>
+            </div>
             
-            <div class="process-flow">
-                <div class="process-step">
-                    <h3>Fermentazione (Biotecnologie)</h3>
-                    <p>I microrganismi convertono gli zuccheri in acido lattico. Fondamentale l'ottimizzazione dei ceppi batterici per massimizzare la resa e la purezza.</p>
-                    <canvas id="fermentationEfficiencyChart"></canvas>
-                    <p class="chart-caption"><em>Efficienza di conversione dei ceppi microbici (dati fittizi).</em></p>
-                </div>
-                <div class="process-step">
-                    <h3>Polimerizzazione (Chimica Sostenibile)</h3>
-                    <p>L'acido lattico viene convertito in lattide, che poi polimerizza in PLA. Ricerca per catalizzatori più verdi e processi a basso consumo energetico.</p>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <h3>Il Ruolo della Chimica Verde</h3>
-                <p>La ricerca si concentra su processi che riducano l'uso di solventi tossici, minimizzino la produzione di rifiuti e sfruttino fonti energetiche rinnovabili.</p>
+            <div class="info-box accent-box-blue" data-aos="fade-up" data-aos-delay="300">
+                <h4><i class="fas fa-handshake"></i> La Chiave è la Corretta Gestione</h4>
+                <p>Affinché il PLA esprima il suo potenziale di sostenibilità, è essenziale che venga correttamente differenziato e indirizzato agli impianti di compostaggio industriale. La sensibilizzazione e le infrastrutture adeguate sono cruciali.</p>
             </div>
         </section>
 
-        <section id="fine-vita" class="section-card">
-            <h2>3. Uso e Fine Vita: Economia Circolare</h2>
-            <p>Il vero valore di una bioplastica si misura anche nella sua gestione a fine vita.</p>
-            
-            <div class="accordion">
-                <div class="accordion-item">
-                    <button class="accordion-header">Applicazioni del PLA</button>
-                    <div class="accordion-content">
-                        <p>Imballaggi alimentari, stoviglie usa e getta, fibre tessili, ma anche applicazioni avanzate in medicina (suture riassorbibili) e stampa 3D.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Biodegradazione e Compostaggio</button>
-                    <div class="accordion-content">
-                        <p>Il PLA è compostabile industrialmente. I microrganismi svolgono un ruolo chiave nella sua degradazione in ambienti controllati, trasformandolo in composti naturali.</p>
-                        <canvas id="degradationTimeChart"></canvas>
-                        <p class="chart-caption"><em>Tempo di degradazione del PLA in diverse condizioni (dati fittizi, tempi indicativi).</em></p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Riciclo e Sfide</button>
-                    <div class="accordion-content">
-                        <p>Il riciclo meccanico è possibile ma richiede una separazione efficace dal flusso dei rifiuti. Il riciclo chimico offre nuove opportunità per recuperare i monomeri.</p>
-                    </div>
-                </div>
+    <section id="insights" class="content-section">
+        <div class="container">
+            <h2 data-aos="fade-right">Dati & Insights: La Prospettiva Globale</h2>
+            <p class="section-description" data-aos="fade-left">Una mappa interattiva dei principali attori della filiera e delle aree di innovazione nel mondo.</p>
+            <div id="world-map" data-aos="fade-up" data-aos-delay="200" style="height: 500px; width: 100%;"></div>
+            <p class="map-caption"><em>Clicca sui marcatori per scoprire i principali centri di produzione, ricerca e innovazione del PLA.</em></p>
+
+            <div class="call-to-action" data-aos="zoom-in" data-aos-delay="300">
+                <h3>Domande? Approfondimenti?</h3>
+                <p>Contattateci per ulteriori dettagli sulla nostra analisi e sul futuro delle bioplastiche.</p>
+                <a href="mailto:vostra.email@example.com" class="cta-button secondary-cta">Contattaci <i class="fas fa-envelope"></i></a>
             </div>
-        </section>
-
-        <section id="interattivita" class="section-card">
-            <h2>Scopri di più: Mappa delle Bioraffinerie</h2>
-            <p>Esplora alcune delle principali bioraffinerie e centri di ricerca che stanno guidando l'innovazione nella produzione di bioplastiche a livello globale.</p>
-            <div id="mapid" style="height: 400px; width: 100%;"></div>
-            <p class="map-caption"><em>Clicca sui marker per informazioni aggiuntive.</em></p>
-        </section>
-
-    </main>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
             <p>&copy; 2025 Gruppo di Lavoro Master. Tutti i diritti riservati.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nKqfh1w+S44zMEP9Q4dOFk/0Qh79xN3u0D8dYh4sQ=" crossorigin=""></script>
-
+    
     <script src="js/script.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Durata animazione in ms
+            once: true,    // Anima solo una volta quando appare
+        });
+    </script>
 
 </body>
 </html>
