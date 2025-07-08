@@ -118,10 +118,12 @@ html {
     justify-content: center;
     text-align: center;
     color: var(--light-text);
-    background: url('../images/hero-bg.jpg') no-repeat center center/cover;
+    /* Usiamo un gradiente come fallback/placeholder per lo sfondo hero */
+    background: linear-gradient(145deg, var(--primary-color), var(--secondary-color)); 
+    /* Se vuoi un'immagine placeholder, puoi usare: */
+    /* background: url('https://via.placeholder.com/1920x1080/2196F3/E0F2F7?text=Sfondo+Sito+PLA') no-repeat center center/cover; */
     overflow: hidden;
     padding: 120px 0;
-    /* Animazione di sfondo (opzionale, richiede JS o GIF/Video) */
 }
 
 .hero-overlay {
