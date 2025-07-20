@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FDC Sustainable Compass - Dashboard ESG</title>
+    <title>ESGY Compass - Dashboard ESG Innovativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f4f6;
-            color: #374151;
+            font-family: 'Inter', sans-serif; /* Un font più moderno */
+            background-color: #f8fafc; /* Light Blue-50 */
+            color: #1f2937; /* Gray-900 */
         }
-        /* Stili aggiuntivi per i semafori */
+        /* Stili per i semafori */
         .semaforo {
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
             display: inline-block;
             margin-left: 0.5rem;
+            flex-shrink: 0; /* Impedisce al semaforo di rimpicciolirsi */
         }
-        .semaforo.verde { background-color: #10B981; } /* Green-500 */
-        .semaforo.giallo { background-color: #FBBF24; } /* Yellow-400 */
+        .semaforo.verde { background-color: #10B981; } /* Emerald-500 */
+        .semaforo.giallo { background-color: #FACC15; } /* Amber-400 */
         .semaforo.rosso { background-color: #EF4444; } /* Red-500 */
 
         /* Stili per le schede dei KPI */
@@ -29,11 +32,15 @@
             background-color: white;
             padding: 1.5rem;
             border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Ombra più morbida */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .kpi-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px); /* Effetto hover più pronunciato */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
         /* Stili per i link del menu laterale */
         .sidebar-link {
@@ -42,288 +49,385 @@
             padding: 0.75rem 1.5rem;
             margin-bottom: 0.5rem;
             border-radius: 0.5rem;
-            color: #6B7280; /* Gray-500 */
+            color: #cbd5e1; /* Slate-300 */
             transition: all 0.2s ease-in-out;
         }
         .sidebar-link.active, .sidebar-link:hover {
-            background-color: #E0F2F7; /* Light Blue-100 */
-            color: #06B6D4; /* Cyan-500 */
+            background-color: #3b82f6; /* Blue-600 */
+            color: white;
         }
         .sidebar-link i {
             margin-right: 0.75rem;
             font-size: 1.25rem;
         }
+        /* Stili per le sezioni di contenuto (per animazioni di ingresso) */
+        .content-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .content-section.active-show {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <aside class="w-64 bg-gray-800 text-white p-6 flex flex-col items-start shadow-lg">
-        <div class="mb-8">
-            <img src="https://via.placeholder.com/150x50/3B82F6/FFFFFF?text=FDC+Logo" alt="FDC Logo" class="mb-4">
-            <h1 class="text-2xl font-bold text-gray-100">FDC Sustainable Compass</h1>
+    <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col items-start shadow-xl">
+        <div class="mb-10 w-full text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">ESGY</h1>
+            <p class="text-sm text-gray-400 mt-1">Sustainable Compass</p>
         </div>
         <nav class="flex-grow w-full">
             <a href="#" class="sidebar-link active" data-section="dashboard">
-                <i class="fas fa-home"></i>Dashboard
+                <i class="fas fa-chart-pie"></i>Dashboard
             </a>
             <a href="#" class="sidebar-link" data-section="data-live">
-                <i class="fas fa-database"></i>Dati Live & Ingestion
+                <i class="fas fa-upload"></i>Dati Live & Ingestion
             </a>
             <a href="#" class="sidebar-link" data-section="progetti-esg">
-                <i class="fas fa-leaf"></i>Progetti ESG
+                <i class="fas fa-seedling"></i>Progetti ESG
             </a>
             <a href="#" class="sidebar-link" data-section="reportistica">
-                <i class="fas fa-file-alt"></i>Reportistica Automatica
+                <i class="fas fa-file-invoice"></i>Reportistica Automatica
             </a>
             <a href="#" class="sidebar-link" data-section="analisi-predittive">
-                <i class="fas fa-chart-line"></i>Analisi Predittive
+                <i class="fas fa-rocket"></i>Analisi Predittive
             </a>
             <a href="#" class="sidebar-link" data-section="benchmark">
-                <i class="fas fa-balance-scale"></i>Benchmark di Settore
+                <i class="fas fa-chart-column"></i>Benchmark di Settore
             </a>
         </nav>
         <div class="w-full mt-auto border-t border-gray-700 pt-4">
             <a href="#" class="sidebar-link">
-                <i class="fas fa-cog"></i>Configurazione & Utenti
+                <i class="fas fa-cogs"></i>Configurazione & Utenti
             </a>
             <a href="#" class="sidebar-link">
-                <i class="fas fa-question-circle"></i>Help & Supporto
+                <i class="fas fa-life-ring"></i>Help & Supporto
             </a>
         </div>
     </aside>
 
     <main class="flex-grow p-8 bg-gray-100">
-        <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-lg shadow-md">
+        <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-md">
             <div>
-                <h2 class="text-3xl font-semibold text-gray-800">Dashboard Aziendale</h2>
-                <p class="text-gray-600">Cliente: BioPack Solutions S.p.A.</p>
+                <h2 class="text-3xl font-bold text-gray-800">Dashboard Aziendale</h2>
+                <p class="text-gray-600 mt-1">Cliente: BioPack Solutions S.p.A.</p>
             </div>
             <div class="text-right">
-                <p class="text-sm text-gray-500">Ultimo Aggiornamento Dati: <span id="last-update">20 Luglio 2025, 15:30</span></p>
+                <p class="text-sm text-gray-500">Ultimo Aggiornamento Dati: <span id="last-update">20 Luglio 2025, 20:34</span></p>
                 <div class="relative inline-block">
-                    <button class="text-red-500 hover:text-red-700 text-lg ml-4">
+                    <button class="text-orange-500 hover:text-orange-700 text-2xl ml-4 focus:outline-none" id="notification-button">
                         <i class="fas fa-bell"></i>
-                        <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">1</span>
+                        <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">1</span>
                     </button>
-                    <div class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">KPI Emissioni Scope 1 fuori target!</a>
+                    <div id="notification-dropdown" class="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl py-2 z-20 hidden transform transition-all duration-300 scale-95 opacity-0">
+                        <h6 class="px-4 py-2 text-xs text-gray-500 uppercase font-semibold">Notifiche Recenti</h6>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 border-b border-gray-200">
+                            <span class="font-semibold text-red-600"><i class="fas fa-exclamation-triangle mr-2"></i>Critico:</span> KPI Emissioni Scope 1 fuori target!
+                            <p class="text-xs text-gray-500 mt-1">20 Luglio, 18:00</p>
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">
+                            <span class="font-semibold text-green-600"><i class="fas fa-check-circle mr-2"></i>Successo:</span> Obiettivo Energie Rinnovabili quasi raggiunto.
+                            <p class="text-xs text-gray-500 mt-1">19 Luglio, 10:15</p>
+                        </a>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div id="dashboard-content" class="content-section">
+        <div id="dashboard-content" class="content-section active-show">
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <div class="kpi-card">
-                    <h3 class="text-lg font-medium text-gray-700 mb-2">Emissioni CO₂ Scope 1&2</h3>
-                    <p class="text-4xl font-bold text-gray-900">1.250 tCO₂e <span class="text-lg font-normal text-gray-500 block">(vs. 1.500 tCO₂e Anno Precedente)</span></p>
-                    <div class="flex items-center mt-2">
-                        <p class="text-xl font-semibold text-green-600">▼ 16%</p>
-                        <span class="semaforo verde"></span>
-                        <p class="ml-2 text-gray-600">(Obiettivo -20% entro fine anno)</p>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <h3 class="text-lg font-medium text-gray-700 mb-2">Consumo Energetico</h3>
-                    <p class="text-4xl font-bold text-gray-900">8.500 MWh <span class="text-lg font-normal text-gray-500 block">(vs. 9.000 MWh Anno Precedente)</span></p>
-                    <div class="flex items-center mt-2">
-                        <p class="text-xl font-semibold text-yellow-600">▼ 5.5%</p>
-                        <span class="semaforo giallo"></span>
-                        <p class="ml-2 text-gray-600">(Obiettivo -10%)</p>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <h3 class="text-lg font-medium text-gray-700 mb-2">Percentuale Energie Rinnovabili</h3>
-                    <p class="text-4xl font-bold text-gray-900">78% <span class="text-lg font-normal text-gray-500 block">(vs. 70% Anno Precedente)</span></p>
-                    <div class="flex items-center mt-2">
-                        <p class="text-xl font-semibold text-green-600">▲ 8%</p>
-                        <span class="semaforo verde"></span>
-                        <p class="ml-2 text-gray-600">(Obiettivo 80%)</p>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <h3 class="text-lg font-medium text-gray-700 mb-2">Rifiuti Prodotti (non riciclati)</h3>
-                    <p class="text-4xl font-bold text-gray-900">120 tonnellate <span class="text-lg font-normal text-gray-500 block">(vs. 150 tonnellate Anno Precedente)</span></p>
-                    <div class="flex items-center mt-2">
-                        <p class="text-xl font-semibold text-green-600">▼ 20%</p>
-                        <span class="semaforo verde"></span>
-                        <p class="ml-2 text-gray-600">(Obiettivo -15%)</p>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <h3 class="text-lg font-medium text-gray-700 mb-2">Gender Equality (Posizioni Direttive)</h3>
-                    <p class="text-4xl font-bold text-gray-900">38% <span class="text-lg font-normal text-gray-500 block">(vs. 35% Anno Precedente)</span></p>
-                    <div class="flex items-center mt-2">
-                        <p class="text-xl font-semibold text-green-600">▲ 3%</p>
-                        <span class="semaforo verde"></span>
-                        <p class="ml-2 text-gray-600">(Obiettivo 40%)</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-lg font-medium text-gray-700 mb-4">ESG Performance Score & Trend</h3>
-                <div class="flex items-center justify-between">
-                    <div class="flex flex-col items-center">
-                        <p class="text-6xl font-extrabold text-blue-600">82<span class="text-4xl font-semibold">/100</span></p>
-                        <p class="text-xl font-semibold text-green-600 mt-2">▲ +5 Punti</p>
-                        <p class="text-gray-500 text-sm">(Ultimo Trimestre)</p>
-                    </div>
-                    <div class="flex-grow ml-8">
-                        <p class="text-gray-700 text-lg">"Eccellente progressione nella performance ambientale e sociale, con forte commitment nella governance."</p>
-                        <div class="bg-gray-200 h-24 w-full rounded-md mt-4 flex items-center justify-center text-gray-500">
-                            Grafico Trend Punteggio ESG (placeholder)
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">Emissioni CO₂ Scope 1&2</h3>
+                        <p class="text-4xl font-bold text-gray-900">1.250 tCO₂e <span class="text-lg font-normal text-gray-500 block">(vs. 1.500 tCO₂e 2024)</span></p>
+                        <div class="flex items-center mt-2">
+                            <p class="text-xl font-semibold text-green-600">▼ 16%</p>
+                            <span class="semaforo verde"></span>
+                            <p class="ml-2 text-gray-600">(Obiettivo -20%)</p>
                         </div>
                     </div>
+                    <canvas id="emissioniChart" class="mt-4 w-full h-24"></canvas>
+                </div>
+                <div class="kpi-card">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">Consumo Energetico</h3>
+                        <p class="text-4xl font-bold text-gray-900">8.500 MWh <span class="text-lg font-normal text-gray-500 block">(vs. 9.000 MWh 2024)</span></p>
+                        <div class="flex items-center mt-2">
+                            <p class="text-xl font-semibold text-orange-600">▼ 5.5%</p>
+                            <span class="semaforo giallo"></span>
+                            <p class="ml-2 text-gray-600">(Obiettivo -10%)</p>
+                        </div>
+                    </div>
+                    <canvas id="energiaChart" class="mt-4 w-full h-24"></canvas>
+                </div>
+                <div class="kpi-card">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">Percentuale Energie Rinnovabili</h3>
+                        <p class="text-4xl font-bold text-gray-900">78% <span class="text-lg font-normal text-gray-500 block">(vs. 70% 2024)</span></p>
+                        <div class="flex items-center mt-2">
+                            <p class="text-xl font-semibold text-green-600">▲ 8%</p>
+                            <span class="semaforo verde"></span>
+                            <p class="ml-2 text-gray-600">(Obiettivo 80%)</p>
+                        </div>
+                    </div>
+                    <canvas id="rinnovabiliChart" class="mt-4 w-full h-24"></canvas>
+                </div>
+                <div class="kpi-card">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">Rifiuti Prodotti (non riciclati)</h3>
+                        <p class="text-4xl font-bold text-gray-900">120 tonnellate <span class="text-lg font-normal text-gray-500 block">(vs. 150 tonnellate 2024)</span></p>
+                        <div class="flex items-center mt-2">
+                            <p class="text-xl font-semibold text-green-600">▼ 20%</p>
+                            <span class="semaforo verde"></span>
+                            <p class="ml-2 text-gray-600">(Obiettivo -15%)</p>
+                        </div>
+                    </div>
+                    <canvas id="rifiutiChart" class="mt-4 w-full h-24"></canvas>
+                </div>
+                <div class="kpi-card">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">Gender Equality (Posizioni Direttive)</h3>
+                        <p class="text-4xl font-bold text-gray-900">38% <span class="text-lg font-normal text-gray-500 block">(vs. 35% 2024)</span></p>
+                        <div class="flex items-center mt-2">
+                            <p class="text-xl font-semibold text-green-600">▲ 3%</p>
+                            <span class="semaforo verde"></span>
+                            <p class="ml-2 text-gray-600">(Obiettivo 40%)</p>
+                        </div>
+                    </div>
+                    <canvas id="genderChart" class="mt-4 w-full h-24"></canvas>
                 </div>
             </section>
 
-            <section class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-lg font-medium text-gray-700 mb-4">AI Assistant ESG</h3>
-                <div class="flex flex-col space-y-4">
-                    <textarea class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Chiedi al tuo assistente AI come migliorare la tua sostenibilità..." rows="3"></textarea>
-                    <button class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors self-end">Chiedi all'AI</button>
-                    <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
-                        <p class="text-gray-700 font-semibold">Risposta AI (Esempio: "Come possiamo ridurre ulteriormente le emissioni Scope 3?")</p>
-                        <p class="text-gray-600 mt-2">"Basandoci sui vostri dati di supply chain e trasporti del 2024, le principali aree di intervento per ridurre le emissioni Scope 3 sono:
-                        <ul class="list-disc list-inside ml-4 mt-1 text-gray-600">
-                            <li>**Logistica:** Ottimizzare le rotte di trasporto (potenziale -5% emissioni su questo segmento). Considerare partnership con trasportatori che utilizzano veicoli elettrici o biocarburanti.</li>
-                            <li>**Fornitori:** Valutare e collaborare con fornitori con rating ESG migliori (es. incentivare l'uso di energie rinnovabili nei loro processi produttivi).</li>
-                            <li>**Gestione Rifiuti:** Ridurre i rifiuti a monte e ottimizzare i processi di riciclo dei vostri prodotti a fine vita.</li>
-                        </ul>
-                        Possiamo generare una simulazione dettagliata di impatto se selezioni 'Analisi Predittive' > 'Simulazione Obiettivi' e specifichi i parametri."</p>
+            <section class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">ESG Performance Score & Trend</h3>
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex flex-col items-center mb-6 md:mb-0 md:mr-8">
+                        <p class="text-7xl font-extrabold text-blue-600">82<span class="text-5xl font-semibold">/100</span></p>
+                        <p class="text-2xl font-semibold text-green-600 mt-2">▲ +5 Punti</p>
+                        <p class="text-gray-500 text-base">(Ultimo Trimestre)</p>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
-                        <p class="text-gray-700 font-semibold">Suggerimenti Automatici Basati sui Dati Storici:</p>
-                        <ul class="list-disc list-inside ml-4 mt-1 text-gray-600">
-                            <li>La tua percentuale di energia rinnovabile è quasi al target. Considera di installare pannelli solari aggiuntivi.</li>
-                            <li>Rilevate opportunità per ottimizzare l'uso dell'acqua nel processo X, che potrebbe ridurre il consumo del 8%.</li>
-                        </ul>
+                    <div class="flex-grow w-full">
+                        <p class="text-gray-700 text-lg mb-4">"Eccellente progressione nella performance ambientale e sociale, con forte commitment nella governance. Continuare su questa strada per raggiungere gli obiettivi 2026."</p>
+                        <canvas id="esgScoreChart" class="w-full h-48"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">AI Assistant ESG</h3>
+                <div class="flex flex-col space-y-4">
+                    <textarea id="ai-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Chiedi al tuo assistente AI come migliorare la tua sostenibilità..." rows="3"></textarea>
+                    <button id="ai-send-button" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors self-end">Chiedi all'AI</button>
+                    <div id="ai-response-area" class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[100px] flex flex-col justify-between">
+                        <p class="text-gray-700 font-semibold mb-2">Risposta AI:</p>
+                        <div id="ai-response-content" class="text-gray-600">
+                            "Sono qui per aiutarti! Prova a chiedere qualcosa come: 'Quali sono le nostre emissioni attuali?' o 'Come possiamo migliorare il nostro punteggio di diversità?'"
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-gray-200">
+                            <p class="text-gray-700 font-semibold mb-2">Suggerimenti automatici basati sui dati storici:</p>
+                            <ul class="list-disc list-inside ml-4 text-gray-600 text-sm">
+                                <li>La tua percentuale di energia rinnovabile è quasi al target. Considera di installare pannelli solari aggiuntivi.</li>
+                                <li>Rilevate opportunità per ottimizzare l'uso dell'acqua nel processo di tintura, che potrebbe ridurre il consumo del 8%.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
 
         <div id="data-live-content" class="content-section hidden">
-            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Dati Live & Ingestion</h3>
-            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                <h4 class="text-lg font-medium text-gray-700 mb-4">Input Manuale Dati ESG</h4>
-                <p class="text-gray-600 mb-4">Inserisci manualmente i dati ESG che non provengono da fonti automatiche.</p>
-                <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Dati Live & Ingestion</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4">Input Manuale Dati ESG</h4>
+                <p class="text-gray-600 mb-4">Inserisci manualmente i dati ESG che non provengono da fonti automatiche, garantendo la tracciabilità completa.</p>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="kpi-name" class="block text-sm font-medium text-gray-700">KPI / Metrica</label>
-                        <input type="text" id="kpi-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <input type="text" id="kpi-name" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label for="kpi-value" class="block text-sm font-medium text-gray-700">Valore</label>
-                        <input type="number" id="kpi-value" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <input type="number" id="kpi-value" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label for="kpi-unit" class="block text-sm font-medium text-gray-700">Unità di Misura</label>
-                        <input type="text" id="kpi-unit" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <input type="text" id="kpi-unit" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label for="kpi-date" class="block text-sm font-medium text-gray-700">Data Riferimento</label>
-                        <input type="date" id="kpi-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <input type="date" id="kpi-date" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div class="md:col-span-2">
-                        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">Salva Dati</button>
+                        <button type="submit" class="bg-green-600 text-white py-2.5 px-6 rounded-lg hover:bg-green-700 transition-colors">
+                            <i class="fas fa-save mr-2"></i>Salva Dati
+                        </button>
                     </div>
                 </form>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h4 class="text-lg font-medium text-gray-700 mb-4">Log Ingestion Dati Automatici</h4>
-                <ul class="space-y-2 text-gray-600 text-sm">
-                    <li>[20/07/2025 15:00] Dati Consumo Energetico da Sensori Impianto A: OK</li>
-                    <li>[20/07/2025 14:30] Dati HR da API Gestionale: OK</li>
-                    <li>[19/07/2025 23:00] Import Dati Finanziari (Excel): Completato con 2 warnings.</li>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4">Log Ingestion Dati Automatici</h4>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i><span class="font-semibold">[20/07/2025 15:00]</span> Dati Consumo Energetico da Sensori Impianto A: <span class="text-green-600">OK</span></li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i><span class="font-semibold">[20/07/2025 14:30]</span> Dati HR da API Gestionale: <span class="text-green-600">OK</span></li>
+                    <li class="flex items-center"><i class="fas fa-exclamation-circle text-orange-500 mr-3"></i><span class="font-semibold">[19/07/2025 23:00]</span> Import Dati Finanziari (Excel): Completato con <span class="text-orange-600">2 warnings</span> (formato data).</li>
                 </ul>
             </div>
         </div>
 
         <div id="progetti-esg-content" class="content-section hidden">
-            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Gestione Progetti ESG</h3>
-            <button class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors mb-6">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Gestione Progetti ESG</h3>
+            <button class="bg-green-600 text-white py-2.5 px-6 rounded-lg hover:bg-green-700 transition-colors mb-6 shadow-md">
                 <i class="fas fa-plus mr-2"></i>Nuovo Progetto
             </button>
 
-            <div class="kpi-card mb-6">
-                <h4 class="text-xl font-bold text-gray-800 mb-2">Zero Waste Production Line</h4>
-                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2">Ambientale (Economia Circolare)</span>
-                <p class="text-gray-700 mb-3">Implementazione di nuove tecnologie e processi per ridurre a zero i rifiuti di produzione non riciclabili entro il 2026.</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-4">
-                    <div><i class="fas fa-chart-line mr-2"></i>**Obiettivo KPI:** Riduzione 20% rifiuti (non riciclati)</div>
-                    <div><i class="fas fa-tasks mr-2"></i>**Stato:** In Corso (75% Completato)</div>
-                    <div><i class="fas fa-user-tie mr-2"></i>**Responsabile:** Ing. Marco Bianchi</div>
-                    <div><i class="fas fa-calendar-alt mr-2"></i>**Data Inizio:** 01/01/2025</div>
-                    <div><i class="fas fa-flag-checkered mr-2"></i>**Data Fine Prevista:** 31/12/2026</div>
-                    <div><i class="fas fa-arrow-up mr-2"></i>**Contributo ESG AI Trust Score:** +5 Punti</div>
+            <div class="kpi-card mb-6 p-6">
+                <h4 class="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                    Zero Waste Production Line <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2.5 py-1 ml-4 rounded-full font-semibold">Ambientale</span>
+                </h4>
+                <p class="text-gray-700 mb-4">Implementazione di nuove tecnologie e processi per ridurre a zero i rifiuti di produzione non riciclabili, verso un'economia circolare completa entro il 2026.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-6 text-base text-gray-700 mb-6">
+                    <div><i class="fas fa-bullseye text-blue-500 mr-2"></i>**Obiettivo KPI:** Riduzione 20% rifiuti (non riciclati)</div>
+                    <div><i class="fas fa-user-circle text-purple-500 mr-2"></i>**Responsabile:** Ing. Marco Bianchi</div>
+                    <div><i class="fas fa-calendar-alt text-gray-500 mr-2"></i>**Periodo:** 01/01/2025 - 31/12/2026</div>
+                    <div><i class="fas fa-award text-yellow-500 mr-2"></i>**Contributo ESG AI Trust Score:** +5 Punti</div>
+                    <div><i class="fas fa-tags text-green-500 mr-2"></i>**Tag:** #EconomiaCircolare #RifiutiZero #Innovazione</div>
+                    <div><i class="fas fa-dollar-sign text-emerald-500 mr-2"></i>**Risparmio Stimato:** € 30.000 annui</div>
                 </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Stato di Avanzamento:</p>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-blue-600 h-3 rounded-full" style="width: 75%;"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1 text-right">75% Completato</p>
+                </div>
+
                 <div class="border-t border-gray-200 pt-4 mt-4">
-                    <h5 class="font-medium text-gray-700 mb-2">Dati Associati al Progetto:</h5>
-                    <ul class="list-disc list-inside text-gray-600 text-sm mb-2">
-                        <li>**Rifiuti Ridotti finora:** 50 tonnellate (rispetto al baseline)</li>
-                        <li>**Costo Implementazione:** € 150.000 (stimati € 200.000)</li>
-                        <li>**Risparmio Stimato:** € 30.000 annui (da minori costi di smaltimento)</li>
+                    <h5 class="font-bold text-gray-800 mb-3">Dettagli & Dati Associati:</h5>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li>**Rifiuti Ridotti finora:** <span class="font-semibold text-green-700">50 tonnellate</span> (rispetto al baseline)</li>
+                        <li>**Costo Implementazione Attuale:** € 150.000 (Budget Totale: € 200.000)</li>
+                        <li>**Prossima Milestones:** Completamento Fase 3 di test entro 30/09/2025</li>
                     </ul>
-                    <p class="text-xs text-gray-500 mb-2">Ultimo Aggiornamento: 20/07/2025</p>
-                    <a href="#" class="text-blue-600 hover:underline text-sm"><i class="fas fa-file-alt mr-1"></i>Vedi Documentazione Completa</a>
+                    <p class="text-xs text-gray-500 mt-3">Ultimo Aggiornamento Dati Progetto: 20/07/2025</p>
+                    <a href="#" class="text-blue-600 hover:underline text-sm font-medium mt-3 inline-block">
+                        <i class="fas fa-external-link-alt mr-1"></i>Accedi al Documento di Progetto Completo
+                    </a>
                 </div>
             </div>
 
-            <div class="kpi-card mb-6">
-                <h4 class="text-xl font-bold text-gray-800 mb-2">Women in STEM Mentorship Program</h4>
-                <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full mb-2">Sociale (Gender Equality)</span>
-                <p class="text-gray-700 mb-3">Programma di mentoring per promuovere donne in ruoli STEM all'interno dell'azienda.</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-4">
-                    <div><i class="fas fa-chart-line mr-2"></i>**Obiettivo KPI:** Aumento 5% donne in ruoli tecnici/direttivi</div>
-                    <div><i class="fas fa-tasks mr-2"></i>**Stato:** Attivo (Iniziale)</div>
-                    <div><i class="fas fa-user-tie mr-2"></i>**Responsabile:** Dott.ssa Sofia Ricci (HR)</div>
-                    <div><i class="fas fa-calendar-alt mr-2"></i>**Data Inizio:** 01/06/2025</div>
-                    <div><i class="fas fa-flag-checkered mr-2"></i>**Data Fine Prevista:** 31/12/2027</div>
-                    <div><i class="fas fa-arrow-up mr-2"></i>**Contributo ESG AI Trust Score:** +2 Punti (Stimato)</div>
+            <div class="kpi-card mb-6 p-6">
+                <h4 class="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                    Women in STEM Mentorship Program <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2.5 py-1 ml-4 rounded-full font-semibold">Sociale</span>
+                </h4>
+                <p class="text-gray-700 mb-4">Programma strutturato di mentoring per promuovere la carriera e la leadership delle donne nei ruoli tecnici (STEM) all'interno dell'azienda.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-6 text-base text-gray-700 mb-6">
+                    <div><i class="fas fa-bullseye text-blue-500 mr-2"></i>**Obiettivo KPI:** Aumento 5% donne in ruoli tecnici/direttivi</div>
+                    <div><i class="fas fa-user-circle text-purple-500 mr-2"></i>**Responsabile:** Dott.ssa Sofia Ricci</div>
+                    <div><i class="fas fa-calendar-alt text-gray-500 mr-2"></i>**Periodo:** 01/06/2025 - 31/12/2027</div>
+                    <div><i class="fas fa-award text-yellow-500 mr-2"></i>**Contributo ESG AI Trust Score:** +2 Punti (Stimato)</div>
+                    <div><i class="fas fa-tags text-orange-500 mr-2"></i>**Tag:** #Inclusione #Diversità #SviluppoProfessionale</div>
                 </div>
+
+                <div class="mb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Stato di Avanzamento:</p>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-purple-600 h-3 rounded-full" style="width: 20%;"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1 text-right">20% Completato</p>
+                </div>
+
                 <div class="border-t border-gray-200 pt-4 mt-4">
-                    <h5 class="font-medium text-gray-700 mb-2">Dati Associati al Progetto:</h5>
-                    <ul class="list-disc list-inside text-gray-600 text-sm mb-2">
-                        <li>**Partecipanti Attuali:** 12 Mentee, 6 Mentor</li>
-                        <li>**Feedback Medio:** 4.8/5 stelle</li>
+                    <h5 class="font-bold text-gray-800 mb-3">Dettagli & Dati Associati:</h5>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li>**Partecipanti Attuali:** 12 Mentee, 6 Mentor attivi</li>
+                        <li>**Feedback Medio Programma:** 4.8/5 stelle</li>
+                        <li>**Prossima Milestones:** Sessione di Mid-term review con i mentor entro 31/08/2025</li>
                     </ul>
-                    <p class="text-xs text-gray-500 mb-2">Ultimo Aggiornamento: 15/07/2025</p>
-                    <a href="#" class="text-blue-600 hover:underline text-sm"><i class="fas fa-file-alt mr-1"></i>Vedi Report Intermedio</a>
+                    <p class="text-xs text-gray-500 mt-3">Ultimo Aggiornamento Dati Progetto: 15/07/2025</p>
+                    <a href="#" class="text-blue-600 hover:underline text-sm font-medium mt-3 inline-block">
+                        <i class="fas fa-external-link-alt mr-1"></i>Visualizza Report Intermedio del Programma
+                    </a>
                 </div>
             </div>
         </div>
 
         <div id="reportistica-content" class="content-section hidden">
-            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Reportistica Automatica</h3>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p class="text-gray-600">Qui verranno generati e scaricati i bilanci di sostenibilità (GRI, CSRD) e le relazioni d'impatto automaticamente.</p>
-                <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-pdf mr-2"></i>Bilancio di Sostenibilità GRI 2024 (PDF)</a></li>
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-pdf mr-2"></i>Relazione d'Impatto Società Benefit 2024 (PDF)</a></li>
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-excel mr-2"></i>Esportazione Dati CSRD (Excel)</a></li>
-                </ul>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Reportistica Automatica</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <p class="text-gray-700 mb-4">Genera, visualizza e scarica automaticamente i bilanci di sostenibilità conformi ai principali standard (GRI, CSRD) e le relazioni d'impatto.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-file-pdf text-red-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Bilancio di Sostenibilità GRI 2024</p>
+                            <p class="text-sm text-gray-600">Generato il: 01/03/2025</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-file-pdf text-red-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Relazione d'Impatto Società Benefit 2024</p>
+                            <p class="text-sm text-gray-600">Generata il: 01/03/2025</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-file-excel text-green-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Esportazione Dati CSRD (Excel)</p>
+                            <p class="text-sm text-gray-600">Ultima esportazione: 15/07/2025</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
         <div id="analisi-predittive-content" class="content-section hidden">
-            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Analisi Predittive</h3>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p class="text-gray-600">Utilizza i modelli AI per simulare scenari futuri e prevedere il raggiungimento degli obiettivi ESG.</p>
-                <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-cogs mr-2"></i>Simulazione Obiettivi 2030</a></li>
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-chart-pie mr-2"></i>Previsioni Trend KPI</a></li>
-                </ul>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Analisi Predittive</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <p class="text-gray-700 mb-4">Utilizza i modelli AI per simulare scenari futuri e prevedere il raggiungimento dei tuoi obiettivi ESG, ottimizzando le strategie.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-magic text-purple-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Simulazione Obiettivi 2030</p>
+                            <p class="text-sm text-gray-600">Prevedi il percorso per la Net-Zero.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-chart-line text-blue-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Previsioni Trend KPI</p>
+                            <p class="text-sm text-gray-600">Proiezioni sui KPI ambientali e sociali.</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
         <div id="benchmark-content" class="content-section hidden">
-            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Benchmark di Settore</h3>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p class="text-gray-600">Confronta le tue performance ESG con i benchmark di settore e i principali competitor.</p>
-                <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-chart-bar mr-2"></i>Confronto Emissioni CO₂</a></li>
-                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-users mr-2"></i>Confronto Diversità & Inclusione</a></li>
-                </ul>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Benchmark di Settore</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <p class="text-gray-700 mb-4">Confronta le tue performance ESG con i benchmark di settore e identifica le aree di eccellenza o di miglioramento.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-chart-area text-orange-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Confronto Emissioni CO₂</p>
+                            <p class="text-sm text-gray-600">Posizionamento rispetto ai competitor.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                        <i class="fas fa-users text-teal-500 text-2xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-gray-800">Confronto Diversità & Inclusione</p>
+                            <p class="text-sm text-gray-600">Metriche HR nel settore.</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -333,34 +437,181 @@
         document.addEventListener('DOMContentLoaded', () => {
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
             const contentSections = document.querySelectorAll('.content-section');
+            const aiInput = document.getElementById('ai-input');
+            const aiSendButton = document.getElementById('ai-send-button');
+            const aiResponseContent = document.getElementById('ai-response-content');
+            const notificationButton = document.getElementById('notification-button');
+            const notificationDropdown = document.getElementById('notification-dropdown');
 
-            // Funzione per mostrare la sezione corretta
+            // Funzione per mostrare la sezione corretta con animazione
             function showSection(sectionId) {
                 contentSections.forEach(section => {
-                    section.classList.add('hidden'); // Nasconde tutte le sezioni
+                    section.classList.remove('active-show');
+                    section.classList.add('hidden');
                 });
-                document.getElementById(sectionId + '-content').classList.remove('hidden'); // Mostra la sezione desiderata
+                const targetSection = document.getElementById(sectionId + '-content');
+                targetSection.classList.remove('hidden');
+                // Forza un reflow per far partire l'animazione
+                void targetSection.offsetWidth; 
+                targetSection.classList.add('active-show');
             }
+
+            // Inizializza i mini-grafici (Chart.js)
+            function initCharts() {
+                // Dati simulati per i grafici
+                const chartData = {
+                    labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug'],
+                    emissioni: [160, 155, 148, 140, 135, 128, 125],
+                    energia: [900, 880, 870, 860, 855, 850, 850],
+                    rinnovabili: [70, 72, 74, 75, 76, 77, 78],
+                    rifiuti: [150, 145, 138, 130, 125, 122, 120],
+                    gender: [35, 35, 36, 37, 37, 38, 38],
+                    esgScore: [70, 72, 75, 77, 79, 81, 82]
+                };
+
+                // Funzione helper per creare un grafico in linea
+                const createLineChart = (elementId, data, borderColor, label) => {
+                    const ctx = document.getElementById(elementId)?.getContext('2d');
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: chartData.labels,
+                                datasets: [{
+                                    label: label,
+                                    data: data,
+                                    borderColor: borderColor,
+                                    backgroundColor: 'rgba(0,0,0,0)', // Trasparente
+                                    tension: 0.3, // Curva la linea
+                                    pointRadius: 3,
+                                    pointBackgroundColor: borderColor
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: { display: false },
+                                    tooltip: { mode: 'index', intersect: false }
+                                },
+                                scales: {
+                                    x: { display: false },
+                                    y: { display: false }
+                                }
+                            }
+                        });
+                    }
+                };
+
+                createLineChart('emissioniChart', chartData.emissioni, '#10B981', 'Emissioni');
+                createLineChart('energiaChart', chartData.energia, '#FACC15', 'Energia');
+                createLineChart('rinnovabiliChart', chartData.rinnovabili, '#10B981', 'Rinnovabili');
+                createLineChart('rifiutiChart', chartData.rifiuti, '#10B981', 'Rifiuti');
+                createLineChart('genderChart', chartData.gender, '#10B981', 'Gender');
+                
+                // Grafico ESG Score più grande
+                const esgCtx = document.getElementById('esgScoreChart')?.getContext('2d');
+                if (esgCtx) {
+                    new Chart(esgCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Gen 2024', 'Apr 2024', 'Lug 2024', 'Ott 2024', 'Gen 2025', 'Apr 2025', 'Lug 2025'],
+                            datasets: [{
+                                label: 'ESG Score',
+                                data: [65, 68, 72, 75, 77, 80, 82],
+                                borderColor: '#3b82f6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blu con trasparenza
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#3b82f6',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { 
+                                    mode: 'index', 
+                                    intersect: false,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `Score: ${context.raw}/100`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false }
+                                },
+                                y: {
+                                    min: 0,
+                                    max: 100,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + '/100';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
 
             // Aggiungi event listener ai link della sidebar
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Previene il comportamento di default del link
-                    
-                    // Rimuovi la classe 'active' da tutti i link
+                    e.preventDefault();
                     sidebarLinks.forEach(item => item.classList.remove('active'));
-                    
-                    // Aggiungi la classe 'active' al link cliccato
                     link.classList.add('active');
-                    
-                    // Mostra la sezione corrispondente
                     const sectionId = link.dataset.section;
                     showSection(sectionId);
                 });
             });
 
-            // Inizialmente mostra la dashboard
+            // Logica simulata per AI Assistant
+            aiSendButton.addEventListener('click', () => {
+                const query = aiInput.value.toLowerCase().trim();
+                let response = "";
+                if (query.includes("emissioni scope 3")) {
+                    response = "Basandoci sui vostri dati di supply chain e trasporti del 2024, le principali aree di intervento per ridurre le emissioni Scope 3 sono:<ul class='list-disc list-inside ml-4 mt-1 text-gray-600'><li>**Logistica:** Ottimizzare le rotte di trasporto (potenziale -5% emissioni su questo segmento). Considerare partnership con trasportatori che utilizzano veicoli elettrici o biocarburanti.</li><li>**Fornitori:** Valutare e collaborare con fornitori con rating ESG migliori (es. incentivare l'uso di energie rinnovabili nei loro processi produttivi).</li><li>**Gestione Rifiuti:** Ridurre i rifiuti a monte e ottimizzare i processi di riciclo dei vostri prodotti a fine vita.</li></ul>Possiamo generare una simulazione dettagliata di impatto se selezioni 'Analisi Predittive' > 'Simulazione Obiettivi' e specifichi i parametri.";
+                } else if (query.includes("emissioni attuali")) {
+                    response = "Le vostre emissioni attuali di Scope 1 e 2 sono di **1.250 tCO₂e**. Questo rappresenta una riduzione del 16% rispetto all'anno precedente.";
+                } else if (query.includes("migliorare diversità")) {
+                    response = "Per migliorare il vostro punteggio di diversità, si raccomanda di continuare con il 'Women in STEM Mentorship Program' e di esplorare nuove partnership con enti che promuovono l'inclusione. Potremmo anche analizzare i dati dei colloqui per identificare bias impliciti.";
+                } else {
+                    response = "Mi dispiace, non ho compreso la tua richiesta. Prova a formulare la domanda in modo più specifico o scegli uno dei suggerimenti automatici.";
+                }
+                aiResponseContent.innerHTML = response;
+                aiInput.value = ''; // Pulisce l'input
+            });
+
+            // Logica per il dropdown delle notifiche
+            notificationButton.addEventListener('click', () => {
+                notificationDropdown.classList.toggle('hidden');
+                notificationDropdown.classList.toggle('scale-95');
+                notificationDropdown.classList.toggle('opacity-0');
+                notificationDropdown.classList.toggle('scale-100');
+                notificationDropdown.classList.toggle('opacity-100');
+            });
+
+            // Chiudi il dropdown se si clicca fuori
+            window.addEventListener('click', (e) => {
+                if (!notificationButton.contains(e.target) && !notificationDropdown.contains(e.target)) {
+                    notificationDropdown.classList.add('hidden');
+                    notificationDropdown.classList.remove('scale-100', 'opacity-100');
+                    notificationDropdown.classList.add('scale-95', 'opacity-0');
+                }
+            });
+
+            // Inizialmente mostra la dashboard e inizializza i grafici
             showSection('dashboard');
+            initCharts();
         });
     </script>
 </body>
