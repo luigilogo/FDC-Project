@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESGY Compass - Dashboard ESG Innovativa</title>
+    <title>Impacta - Dashboard ESG Innovativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
@@ -69,6 +70,13 @@
         .content-section.active-show {
             opacity: 1;
             transform: translateY(0);
+        }
+        /* Contenitore per i grafici piccoli */
+        .chart-container {
+            position: relative;
+            height: 80px; /* Altezza fissa per i mini-grafici */
+            width: 100%;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -149,7 +157,9 @@
                             <p class="ml-2 text-gray-600">(Obiettivo -20%)</p>
                         </div>
                     </div>
-                    <canvas id="emissioniChart" class="mt-4 w-full h-24"></canvas>
+                    <div class="chart-container">
+                        <canvas id="emissioniChart"></canvas>
+                    </div>
                 </div>
                 <div class="kpi-card">
                     <div>
@@ -161,7 +171,9 @@
                             <p class="ml-2 text-gray-600">(Obiettivo -10%)</p>
                         </div>
                     </div>
-                    <canvas id="energiaChart" class="mt-4 w-full h-24"></canvas>
+                    <div class="chart-container">
+                        <canvas id="energiaChart"></canvas>
+                    </div>
                 </div>
                 <div class="kpi-card">
                     <div>
@@ -173,7 +185,9 @@
                             <p class="ml-2 text-gray-600">(Obiettivo 80%)</p>
                         </div>
                     </div>
-                    <canvas id="rinnovabiliChart" class="mt-4 w-full h-24"></canvas>
+                    <div class="chart-container">
+                        <canvas id="rinnovabiliChart"></canvas>
+                    </div>
                 </div>
                 <div class="kpi-card">
                     <div>
@@ -185,7 +199,9 @@
                             <p class="ml-2 text-gray-600">(Obiettivo -15%)</p>
                         </div>
                     </div>
-                    <canvas id="rifiutiChart" class="mt-4 w-full h-24"></canvas>
+                    <div class="chart-container">
+                        <canvas id="rifiutiChart"></canvas>
+                    </div>
                 </div>
                 <div class="kpi-card">
                     <div>
@@ -197,7 +213,9 @@
                             <p class="ml-2 text-gray-600">(Obiettivo 40%)</p>
                         </div>
                     </div>
-                    <canvas id="genderChart" class="mt-4 w-full h-24"></canvas>
+                    <div class="chart-container">
+                        <canvas id="genderChart"></canvas>
+                    </div>
                 </div>
             </section>
 
@@ -209,9 +227,7 @@
                         <p class="text-2xl font-semibold text-green-600 mt-2">▲ +5 Punti</p>
                         <p class="text-gray-500 text-base">(Ultimo Trimestre)</p>
                     </div>
-                    <div class="flex-grow w-full">
-                        <p class="text-gray-700 text-lg mb-4">"Eccellente progressione nella performance ambientale e sociale, con forte commitment nella governance. Continuare su questa strada per raggiungere gli obiettivi 2026."</p>
-                        <canvas id="esgScoreChart" class="w-full h-48"></canvas>
+                    <div class="flex-grow w-full" style="height: 240px;"> <canvas id="esgScoreChart"></canvas>
                     </div>
                 </div>
             </section>
@@ -466,7 +482,7 @@
                     rinnovabili: [70, 72, 74, 75, 76, 77, 78],
                     rifiuti: [150, 145, 138, 130, 125, 122, 120],
                     gender: [35, 35, 36, 37, 37, 38, 38],
-                    esgScore: [70, 72, 75, 77, 79, 81, 82]
+                    esgScore: [65, 68, 72, 75, 77, 80, 82] // Adjusted for a smoother trend
                 };
 
                 // Funzione helper per creare un grafico in linea
@@ -483,8 +499,8 @@
                                     borderColor: borderColor,
                                     backgroundColor: 'rgba(0,0,0,0)', // Trasparente
                                     tension: 0.3, // Curva la linea
-                                    pointRadius: 3,
-                                    pointBackgroundColor: borderColor
+                                    pointRadius: 0, // Nessun punto per i mini-grafici
+                                    borderWidth: 2 // Linea più sottile
                                 }]
                             },
                             options: {
@@ -492,11 +508,19 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: { display: false },
-                                    tooltip: { mode: 'index', intersect: false }
+                                    tooltip: { enabled: false } // Nasconde i tooltip per i mini-grafici
                                 },
                                 scales: {
                                     x: { display: false },
                                     y: { display: false }
+                                },
+                                layout: {
+                                    padding: {
+                                        left: 0,
+                                        right: 0,
+                                        top: 5, // Piccolo padding per evitare che la linea tocchi il bordo superiore
+                                        bottom: 0
+                                    }
                                 }
                             }
                         });
@@ -518,7 +542,7 @@
                             labels: ['Gen 2024', 'Apr 2024', 'Lug 2024', 'Ott 2024', 'Gen 2025', 'Apr 2025', 'Lug 2025'],
                             datasets: [{
                                 label: 'ESG Score',
-                                data: [65, 68, 72, 75, 77, 80, 82],
+                                data: chartData.esgScore,
                                 borderColor: '#3b82f6',
                                 backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blu con trasparenza
                                 fill: true,
@@ -548,8 +572,8 @@
                                     grid: { display: false }
                                 },
                                 y: {
-                                    min: 0,
-                                    max: 100,
+                                    min: 60, // Impostato un minimo più realistico
+                                    max: 90, // Impostato un massimo più realistico
                                     ticks: {
                                         callback: function(value) {
                                             return value + '/100';
@@ -585,7 +609,7 @@
                 } else if (query.includes("migliorare diversità")) {
                     response = "Per migliorare il vostro punteggio di diversità, si raccomanda di continuare con il 'Women in STEM Mentorship Program' e di esplorare nuove partnership con enti che promuovono l'inclusione. Potremmo anche analizzare i dati dei colloqui per identificare bias impliciti.";
                 } else {
-                    response = "Mi dispiace, non ho compreso la tua richiesta. Prova a formulare la domanda in modo più specifico o scegli uno dei suggerimenti automatici.";
+                    response = "Mi dispiaccio, non ho compreso la tua richiesta. Prova a formulare la domanda in modo più specifico o scegli uno dei suggerimenti automatici.";
                 }
                 aiResponseContent.innerHTML = response;
                 aiInput.value = ''; // Pulisce l'input
