@@ -3,209 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLA Flow: Sostenibilità Rivoluzionaria</title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap">
-    
+    <title>FDC Sustainable Compass - Dashboard ESG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" />
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoXBTiUDpXk/ugXYM8phyciU2FHRpWdCE+t/wTDw=" crossorigin=""/>
-    
-    <link rel="stylesheet" href="css/style.css"> 
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        /* Stili aggiuntivi per i semafori */
+        .semaforo {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        .semaforo.verde { background-color: #10B981; } /* Green-500 */
+        .semaforo.giallo { background-color: #FBBF24; } /* Yellow-400 */
+        .semaforo.rosso { background-color: #EF4444; } /* Red-500 */
+
+        /* Stili per le schede dei KPI */
+        .kpi-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+        /* Stili per i link del menu laterale */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: #6B7280; /* Gray-500 */
+            transition: all 0.2s ease-in-out;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #E0F2F7; /* Light Blue-100 */
+            color: #06B6D4; /* Cyan-500 */
+        }
+        .sidebar-link i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+    </style>
 </head>
-<body>
+<body class="flex min-h-screen">
 
-    <header class="main-header">
-        <div class="container header-content">
-            <div class="logo">PLA<span>Flow</span></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#hero">Inizio</a></li>
-                    <li><a href="#intro">Il PLA</a></li>
-                    <li><a href="#raw-materials">Materie Prime</a></li>
-                    <li><a href="#production">Produzione</a></li>
-                    <li><a href="#end-of-life">Fine Vita</a></li>
-                    <li><a href="#insights">Insights</a></li>
+    <aside class="w-64 bg-gray-800 text-white p-6 flex flex-col items-start shadow-lg">
+        <div class="mb-8">
+            <img src="https://via.placeholder.com/150x50/3B82F6/FFFFFF?text=FDC+Logo" alt="FDC Logo" class="mb-4">
+            <h1 class="text-2xl font-bold text-gray-100">FDC Sustainable Compass</h1>
+        </div>
+        <nav class="flex-grow w-full">
+            <a href="#" class="sidebar-link active" data-section="dashboard">
+                <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="#" class="sidebar-link" data-section="data-live">
+                <i class="fas fa-database"></i>Dati Live & Ingestion
+            </a>
+            <a href="#" class="sidebar-link" data-section="progetti-esg">
+                <i class="fas fa-leaf"></i>Progetti ESG
+            </a>
+            <a href="#" class="sidebar-link" data-section="reportistica">
+                <i class="fas fa-file-alt"></i>Reportistica Automatica
+            </a>
+            <a href="#" class="sidebar-link" data-section="analisi-predittive">
+                <i class="fas fa-chart-line"></i>Analisi Predittive
+            </a>
+            <a href="#" class="sidebar-link" data-section="benchmark">
+                <i class="fas fa-balance-scale"></i>Benchmark di Settore
+            </a>
+        </nav>
+        <div class="w-full mt-auto border-t border-gray-700 pt-4">
+            <a href="#" class="sidebar-link">
+                <i class="fas fa-cog"></i>Configurazione & Utenti
+            </a>
+            <a href="#" class="sidebar-link">
+                <i class="fas fa-question-circle"></i>Help & Supporto
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-grow p-8 bg-gray-100">
+        <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-lg shadow-md">
+            <div>
+                <h2 class="text-3xl font-semibold text-gray-800">Dashboard Aziendale</h2>
+                <p class="text-gray-600">Cliente: BioPack Solutions S.p.A.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Ultimo Aggiornamento Dati: <span id="last-update">20 Luglio 2025, 15:30</span></p>
+                <div class="relative inline-block">
+                    <button class="text-red-500 hover:text-red-700 text-lg ml-4">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">1</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-10 hidden">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">KPI Emissioni Scope 1 fuori target!</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="dashboard-content" class="content-section">
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="kpi-card">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Emissioni CO₂ Scope 1&2</h3>
+                    <p class="text-4xl font-bold text-gray-900">1.250 tCO₂e <span class="text-lg font-normal text-gray-500 block">(vs. 1.500 tCO₂e Anno Precedente)</span></p>
+                    <div class="flex items-center mt-2">
+                        <p class="text-xl font-semibold text-green-600">▼ 16%</p>
+                        <span class="semaforo verde"></span>
+                        <p class="ml-2 text-gray-600">(Obiettivo -20% entro fine anno)</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Consumo Energetico</h3>
+                    <p class="text-4xl font-bold text-gray-900">8.500 MWh <span class="text-lg font-normal text-gray-500 block">(vs. 9.000 MWh Anno Precedente)</span></p>
+                    <div class="flex items-center mt-2">
+                        <p class="text-xl font-semibold text-yellow-600">▼ 5.5%</p>
+                        <span class="semaforo giallo"></span>
+                        <p class="ml-2 text-gray-600">(Obiettivo -10%)</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Percentuale Energie Rinnovabili</h3>
+                    <p class="text-4xl font-bold text-gray-900">78% <span class="text-lg font-normal text-gray-500 block">(vs. 70% Anno Precedente)</span></p>
+                    <div class="flex items-center mt-2">
+                        <p class="text-xl font-semibold text-green-600">▲ 8%</p>
+                        <span class="semaforo verde"></span>
+                        <p class="ml-2 text-gray-600">(Obiettivo 80%)</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Rifiuti Prodotti (non riciclati)</h3>
+                    <p class="text-4xl font-bold text-gray-900">120 tonnellate <span class="text-lg font-normal text-gray-500 block">(vs. 150 tonnellate Anno Precedente)</span></p>
+                    <div class="flex items-center mt-2">
+                        <p class="text-xl font-semibold text-green-600">▼ 20%</p>
+                        <span class="semaforo verde"></span>
+                        <p class="ml-2 text-gray-600">(Obiettivo -15%)</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Gender Equality (Posizioni Direttive)</h3>
+                    <p class="text-4xl font-bold text-gray-900">38% <span class="text-lg font-normal text-gray-500 block">(vs. 35% Anno Precedente)</span></p>
+                    <div class="flex items-center mt-2">
+                        <p class="text-xl font-semibold text-green-600">▲ 3%</p>
+                        <span class="semaforo verde"></span>
+                        <p class="ml-2 text-gray-600">(Obiettivo 40%)</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-lg font-medium text-gray-700 mb-4">ESG Performance Score & Trend</h3>
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <p class="text-6xl font-extrabold text-blue-600">82<span class="text-4xl font-semibold">/100</span></p>
+                        <p class="text-xl font-semibold text-green-600 mt-2">▲ +5 Punti</p>
+                        <p class="text-gray-500 text-sm">(Ultimo Trimestre)</p>
+                    </div>
+                    <div class="flex-grow ml-8">
+                        <p class="text-gray-700 text-lg">"Eccellente progressione nella performance ambientale e sociale, con forte commitment nella governance."</p>
+                        <div class="bg-gray-200 h-24 w-full rounded-md mt-4 flex items-center justify-center text-gray-500">
+                            Grafico Trend Punteggio ESG (placeholder)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-medium text-gray-700 mb-4">AI Assistant ESG</h3>
+                <div class="flex flex-col space-y-4">
+                    <textarea class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Chiedi al tuo assistente AI come migliorare la tua sostenibilità..." rows="3"></textarea>
+                    <button class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors self-end">Chiedi all'AI</button>
+                    <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
+                        <p class="text-gray-700 font-semibold">Risposta AI (Esempio: "Come possiamo ridurre ulteriormente le emissioni Scope 3?")</p>
+                        <p class="text-gray-600 mt-2">"Basandoci sui vostri dati di supply chain e trasporti del 2024, le principali aree di intervento per ridurre le emissioni Scope 3 sono:
+                        <ul class="list-disc list-inside ml-4 mt-1 text-gray-600">
+                            <li>**Logistica:** Ottimizzare le rotte di trasporto (potenziale -5% emissioni su questo segmento). Considerare partnership con trasportatori che utilizzano veicoli elettrici o biocarburanti.</li>
+                            <li>**Fornitori:** Valutare e collaborare con fornitori con rating ESG migliori (es. incentivare l'uso di energie rinnovabili nei loro processi produttivi).</li>
+                            <li>**Gestione Rifiuti:** Ridurre i rifiuti a monte e ottimizzare i processi di riciclo dei vostri prodotti a fine vita.</li>
+                        </ul>
+                        Possiamo generare una simulazione dettagliata di impatto se selezioni 'Analisi Predittive' > 'Simulazione Obiettivi' e specifichi i parametri."</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-md border border-gray-200">
+                        <p class="text-gray-700 font-semibold">Suggerimenti Automatici Basati sui Dati Storici:</p>
+                        <ul class="list-disc list-inside ml-4 mt-1 text-gray-600">
+                            <li>La tua percentuale di energia rinnovabile è quasi al target. Considera di installare pannelli solari aggiuntivi.</li>
+                            <li>Rilevate opportunità per ottimizzare l'uso dell'acqua nel processo X, che potrebbe ridurre il consumo del 8%.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="data-live-content" class="content-section hidden">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Dati Live & Ingestion</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h4 class="text-lg font-medium text-gray-700 mb-4">Input Manuale Dati ESG</h4>
+                <p class="text-gray-600 mb-4">Inserisci manualmente i dati ESG che non provengono da fonti automatiche.</p>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="kpi-name" class="block text-sm font-medium text-gray-700">KPI / Metrica</label>
+                        <input type="text" id="kpi-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    </div>
+                    <div>
+                        <label for="kpi-value" class="block text-sm font-medium text-gray-700">Valore</label>
+                        <input type="number" id="kpi-value" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    </div>
+                    <div>
+                        <label for="kpi-unit" class="block text-sm font-medium text-gray-700">Unità di Misura</label>
+                        <input type="text" id="kpi-unit" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    </div>
+                    <div>
+                        <label for="kpi-date" class="block text-sm font-medium text-gray-700">Data Riferimento</label>
+                        <input type="date" id="kpi-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">Salva Dati</button>
+                    </div>
+                </form>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h4 class="text-lg font-medium text-gray-700 mb-4">Log Ingestion Dati Automatici</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>[20/07/2025 15:00] Dati Consumo Energetico da Sensori Impianto A: OK</li>
+                    <li>[20/07/2025 14:30] Dati HR da API Gestionale: OK</li>
+                    <li>[19/07/2025 23:00] Import Dati Finanziari (Excel): Completato con 2 warnings.</li>
                 </ul>
-            </nav>
+            </div>
         </div>
-    </header>
 
-    <section id="hero" class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <h1 data-aos="fade-up" data-aos-duration="1000">La Filiera del PLA: Il Futuro Sostenibile Inizia Ora.</h1>
-            <p data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">Dal Campo al Compost: Un Viaggio nella Sostenibilità Circolare con le Bioplastiche Avanzate.</p>
-            <a href="#intro" class="cta-button" data-aos="fade-up" data-aos-duration="1400" data-aos-delay="400">Scopri di Più <i class="fas fa-chevron-down"></i></a>
-        </div>
-    </section>
+        <div id="progetti-esg-content" class="content-section hidden">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Gestione Progetti ESG</h3>
+            <button class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors mb-6">
+                <i class="fas fa-plus mr-2"></i>Nuovo Progetto
+            </button>
 
-    <section id="intro" class="content-section">
-        <div class="container">
-            <h2 data-aos="fade-right">PLA: Rivoluzione Sostenibile</h2>
-            <div class="section-grid">
-                <div class="grid-item" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Che cos'è l'Acido Polilattico?</h3>
-                    <p>Il **PLA (Acido Polilattico)** è una bioplastica innovativa, derivata da risorse vegetali rinnovabili come l'amido di mais, la canna da zucchero o la barbabietola. A differenza delle plastiche tradizionali, il PLA offre un'impronta carbonica significativamente ridotta e la capacità di biodegradare in condizioni specifiche, chiudendo il ciclo della vita del prodotto.</p>
+            <div class="kpi-card mb-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Zero Waste Production Line</h4>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2">Ambientale (Economia Circolare)</span>
+                <p class="text-gray-700 mb-3">Implementazione di nuove tecnologie e processi per ridurre a zero i rifiuti di produzione non riciclabili entro il 2026.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-4">
+                    <div><i class="fas fa-chart-line mr-2"></i>**Obiettivo KPI:** Riduzione 20% rifiuti (non riciclati)</div>
+                    <div><i class="fas fa-tasks mr-2"></i>**Stato:** In Corso (75% Completato)</div>
+                    <div><i class="fas fa-user-tie mr-2"></i>**Responsabile:** Ing. Marco Bianchi</div>
+                    <div><i class="fas fa-calendar-alt mr-2"></i>**Data Inizio:** 01/01/2025</div>
+                    <div><i class="fas fa-flag-checkered mr-2"></i>**Data Fine Prevista:** 31/12/2026</div>
+                    <div><i class="fas fa-arrow-up mr-2"></i>**Contributo ESG AI Trust Score:** +5 Punti</div>
                 </div>
-                <div class="grid-item" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Perché il PLA è Cruciale per la Transizione Ecologica?</h3>
-                    <ul>
-                        <li><i class="fas fa-leaf icon-green"></i> **Fonti Rinnovabili:** Riduce la dipendenza dai combustibili fossili.</li>
-                        <li><i class="fas fa-recycle icon-blue"></i> **Economia Circolare:** Progettato per il compostaggio industriale e il riciclo avanzato.</li>
-                        <li><i class="fas fa-cloud icon-grey"></i> **Minore Impatto Carbonico:** Contribuisce alla riduzione delle emissioni di gas serra.</li>
-                        <li><i class="fas fa-flask icon-orange"></i> **Versatilità:** Ampia gamma di applicazioni, dall'imballaggio alla medicina.</li>
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h5 class="font-medium text-gray-700 mb-2">Dati Associati al Progetto:</h5>
+                    <ul class="list-disc list-inside text-gray-600 text-sm mb-2">
+                        <li>**Rifiuti Ridotti finora:** 50 tonnellate (rispetto al baseline)</li>
+                        <li>**Costo Implementazione:** € 150.000 (stimati € 200.000)</li>
+                        <li>**Risparmio Stimato:** € 30.000 annui (da minori costi di smaltimento)</li>
                     </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="raw-materials" class="content-section bg-light">
-        <div class="container">
-            <h2 data-aos="fade-right">1. Materie Prime: L'Origine Verde</h2>
-            <p class="section-description" data-aos="fade-left">Il viaggio del PLA inizia nei campi. Esploriamo le materie prime e l'impatto delle moderne tecnologie agricole.</p>
-            
-            <div class="chart-container" data-aos="fade-up" data-aos-delay="200">
-                <h3>Composizione delle Fonti di Biomassa per PLA</h3>
-                <canvas id="sourceCompositionChart"></canvas>
-                <p class="chart-caption"><em>Distribuzione stimata delle materie prime vegetali utilizzate per la produzione globale di PLA.</em></p>
-            </div>
-
-            <div class="accordion-container" data-aos="fade-up" data-aos-delay="300">
-                <div class="accordion-item">
-                    <button class="accordion-header">
-                        <i class="fas fa-seedling icon-small"></i> Coltivazioni Dedicate: Mais & Canna da Zucchero
-                    </button>
-                    <div class="accordion-content">
-                        <p>Le principali fonti di zuccheri fermentabili per il PLA sono storicamente mais e canna da zucchero. L'analisi si concentra sull'ottimizzazione delle pratiche agricole per ridurre l'impronta idrica e l'uso di fertilizzanti e pesticidi, promuovendo un approccio di **agricoltura di precisione**.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">
-                        <i class="fas fa-recycle icon-small"></i> Il Futuro: Biomasse di Scarto e Residui Agricoli
-                    </button>
-                    <div class="accordion-content">
-                        <p>L'integrazione di scarti agricoli (come paglia, stocchi, residui forestali) offre un potenziale enorme per ridurre la competizione con le colture alimentari e migliorare l'economia circolare della filiera.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="production" class="content-section">
-        <div class="container">
-            <h2 data-aos="fade-right">2. Processi di Produzione: Chimica & Biotecnologie al Vertice</h2>
-            <p class="section-description" data-aos="fade-left">La trasformazione della biomassa in PLA è un capolavoro di ingegneria biotecnologica e chimica sostenibile.</p>
-
-            <div class="process-flow-container">
-                <div class="process-step" data-aos="zoom-in" data-aos-delay="100">
-                    <i class="fas fa-microscope process-icon"></i>
-                    <h3>Fermentazione Microbica</h3>
-                    <p>Gli zuccheri delle biomasse vengono fermentati da microrganismi selezionati per produrre acido lattico. Le **biotecnologie** avanzate permettono di ottimizzare i ceppi e i processi per massimizzare l'efficienza e la purezza, riducendo i sottoprodotti.</p>
-                    <canvas id="fermentationYieldChart"></canvas>
-                    <p class="chart-caption"><em>Comparazione della resa di acido lattico con diverse innovazioni biotecnologiche.</em></p>
-                </div>
-                <div class="process-separator" data-aos="fade-up" data-aos-delay="200"><i class="fas fa-long-arrow-alt-right"></i></div>
-                <div class="process-step" data-aos="zoom-in" data-aos-delay="300">
-                    <i class="fas fa-atom process-icon"></i>
-                    <h3>Polimerizzazione & Purificazione</h3>
-                    <p>L'acido lattico viene convertito in lattide (un intermedio ciclico) e poi polimerizzato per formare il PLA. La **chimica sostenibile** è fondamentale per sviluppare catalizzatori più verdi e meno tossici, e per processi a basso consumo energetico e minimizzato impatto ambientale.</p>
-                    <div class="info-box accent-box">
-                        <h4><i class="fas fa-lightbulb"></i> Innovazione Chimica Verde</h4>
-                        <p>La ricerca è volta a ridurre l'uso di solventi, ottimizzare le rese di reazione e integrare fonti energetiche rinnovabili, rendendo la produzione sempre più circolare e pulita.</p>
-                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Ultimo Aggiornamento: 20/07/2025</p>
+                    <a href="#" class="text-blue-600 hover:underline text-sm"><i class="fas fa-file-alt mr-1"></i>Vedi Documentazione Completa</a>
                 </div>
             </div>
 
-            <div class="image-gallery-grid" id="production-gallery" data-aos="fade-up" data-aos-delay="400">
-                <a href="https://via.placeholder.com/1200x800/E0F2F7/2196F3?text=Biorattore+Industriale" data-sub-html="<h4>Biorattore Industriale</h4><p>Fermentazione su larga scala per acido lattico.</p>">
-                    <img src="https://via.placeholder.com/400x300/E0F2F7/2196F3?text=Biorattore" alt="Biorattore">
-                </a>
-                <a href="https://via.placeholder.com/1200x800/F8F0E3/FF9800?text=Ricerca+di+Laboratorio" data-sub-html="<h4>Ricerca di Laboratorio</h4><p>Sviluppo di nuovi catalizzatori e processi.</p>">
-                    <img src="https://via.placeholder.com/400x300/F8F0E3/FF9800?text=Laboratorio" alt="Laboratorio">
-                </a>
-                <a href="https://via.placeholder.com/1200x800/E8F5E9/4CAF50?text=Pellet+di+PLA" data-sub-html="<h4>Pellet di PLA</h4><p>Il prodotto finale pronto per la trasformazione.</p>">
-                    <img src="https://via.placeholder.com/400x300/E8F5E9/4CAF50?text=Pellet+PLA" alt="Pellet di PLA">
-                </a>
-            </div>
-            <p class="gallery-caption"><em>Esplora le fasi chiave del processo di produzione del PLA.</em></p>
-        </div>
-    </section>
-
-    <section id="end-of-life" class="content-section bg-light">
-        <div class="container">
-            <h2 data-aos="fade-right">3. Uso e Fine Vita: Chiudere il Cerchio</h2>
-            <p class="section-description" data-aos="fade-left">La gestione a fine vita è ciò che distingue veramente il PLA, puntando a un'economia realmente circolare.</p>
-
-            <div class="grid-2-cols">
-                <div class="grid-item" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Applicazioni rivoluzionarie del PLA</h3>
-                    <ul>
-                        <li><i class="fas fa-box-open icon-purple"></i> **Imballaggi Sostenibili:** Bottiglie, vaschette, film biodegradabili.</li>
-                        <li><i class="fas fa-tshirt icon-purple"></i> **Tessuti Innovativi:** Fibre per abbigliamento e non-tessuti.</li>
-                        <li><i class="fas fa-clinic-medical icon-purple"></i> **Medicina e Stampa 3D:** Fili di sutura, scaffold, protesi e prototipazione rapida.</li>
+            <div class="kpi-card mb-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Women in STEM Mentorship Program</h4>
+                <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full mb-2">Sociale (Gender Equality)</span>
+                <p class="text-gray-700 mb-3">Programma di mentoring per promuovere donne in ruoli STEM all'interno dell'azienda.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-4">
+                    <div><i class="fas fa-chart-line mr-2"></i>**Obiettivo KPI:** Aumento 5% donne in ruoli tecnici/direttivi</div>
+                    <div><i class="fas fa-tasks mr-2"></i>**Stato:** Attivo (Iniziale)</div>
+                    <div><i class="fas fa-user-tie mr-2"></i>**Responsabile:** Dott.ssa Sofia Ricci (HR)</div>
+                    <div><i class="fas fa-calendar-alt mr-2"></i>**Data Inizio:** 01/06/2025</div>
+                    <div><i class="fas fa-flag-checkered mr-2"></i>**Data Fine Prevista:** 31/12/2027</div>
+                    <div><i class="fas fa-arrow-up mr-2"></i>**Contributo ESG AI Trust Score:** +2 Punti (Stimato)</div>
+                </div>
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h5 class="font-medium text-gray-700 mb-2">Dati Associati al Progetto:</h5>
+                    <ul class="list-disc list-inside text-gray-600 text-sm mb-2">
+                        <li>**Partecipanti Attuali:** 12 Mentee, 6 Mentor</li>
+                        <li>**Feedback Medio:** 4.8/5 stelle</li>
                     </ul>
-                </div>
-                <div class="grid-item" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Biodegradazione e Compostaggio</h3>
-                    <p>Il PLA è compostabile industrialmente. I microrganismi specifici, oggetto di studio delle **biotecnologie microbiche**, scompongono il PLA in acqua, CO2 e biomassa. Questo processo, se correttamente gestito, restituisce valore all'ambiente, evitando l'accumulo di rifiuti plastici.</p>
-                    <canvas id="biodegradationRateChart"></canvas>
-                    <p class="chart-caption"><em>Tasso di degradazione del PLA in un impianto di compostaggio industriale.</em></p>
+                    <p class="text-xs text-gray-500 mb-2">Ultimo Aggiornamento: 15/07/2025</p>
+                    <a href="#" class="text-blue-600 hover:underline text-sm"><i class="fas fa-file-alt mr-1"></i>Vedi Report Intermedio</a>
                 </div>
             </div>
-            
-            <div class="info-box accent-box-blue" data-aos="fade-up" data-aos-delay="300">
-                <h4><i class="fas fa-handshake"></i> La Chiave è la Corretta Gestione</h4>
-                <p>Affinché il PLA esprima il suo potenziale di sostenibilità, è essenziale che venga correttamente differenziato e indirizzato agli impianti di compostaggio industriale. La sensibilizzazione e le infrastrutture adeguate sono cruciali.</p>
+        </div>
+
+        <div id="reportistica-content" class="content-section hidden">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Reportistica Automatica</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600">Qui verranno generati e scaricati i bilanci di sostenibilità (GRI, CSRD) e le relazioni d'impatto automaticamente.</p>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-pdf mr-2"></i>Bilancio di Sostenibilità GRI 2024 (PDF)</a></li>
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-pdf mr-2"></i>Relazione d'Impatto Società Benefit 2024 (PDF)</a></li>
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-file-excel mr-2"></i>Esportazione Dati CSRD (Excel)</a></li>
+                </ul>
             </div>
         </div>
-    </section>
-
-    <section id="insights" class="content-section">
-        <div class="container">
-            <h2 data-aos="fade-right">Dati & Insights: La Prospettiva Globale</h2>
-            <p class="section-description" data-aos="fade-left">Una mappa interattiva dei principali attori della filiera e delle aree di innovazione nel mondo.</p>
-            <div id="world-map" data-aos="fade-up" data-aos-delay="200" style="height: 500px; width: 100%;"></div>
-            <p class="map-caption"><em>Clicca sui marcatori per scoprire i principali centri di produzione, ricerca e innovazione del PLA.</em></p>
-
-            <div class="call-to-action" data-aos="zoom-in" data-aos-delay="300">
-                <h3>Domande? Approfondimenti?</h3>
-                <p>Contattateci per ulteriori dettagli sulla nostra analisi e sul futuro delle bioplastiche.</p>
-                <a href="mailto:vostra.email@example.com" class="cta-button secondary-cta">Contattaci <i class="fas fa-envelope"></i></a>
+        <div id="analisi-predittive-content" class="content-section hidden">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Analisi Predittive</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600">Utilizza i modelli AI per simulare scenari futuri e prevedere il raggiungimento degli obiettivi ESG.</p>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-cogs mr-2"></i>Simulazione Obiettivi 2030</a></li>
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-chart-pie mr-2"></i>Previsioni Trend KPI</a></li>
+                </ul>
             </div>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Gruppo di Lavoro Master. Tutti i diritti riservati.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
+        <div id="benchmark-content" class="content-section hidden">
+            <h3 class="text-2xl font-semibold mb-6 text-gray-800">Benchmark di Settore</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600">Confronta le tue performance ESG con i benchmark di settore e i principali competitor.</p>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-chart-bar mr-2"></i>Confronto Emissioni CO₂</a></li>
+                    <li><a href="#" class="text-blue-600 hover:underline"><i class="fas fa-users mr-2"></i>Confronto Diversità & Inclusione</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/lightgallery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nKqfh1w+S44zMEP9Q4dOFk/0Qh79xN3u0D8dYh4sQ=" crossorigin=""></script>
-    
-    <script src="js/script.js"></script>
+    </main>
+
     <script>
-        // Inizializzazione AOS (Animate On Scroll)
-        AOS.init({
-            duration: 1000, 
-            once: true,    
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            // Funzione per mostrare la sezione corretta
+            function showSection(sectionId) {
+                contentSections.forEach(section => {
+                    section.classList.add('hidden'); // Nasconde tutte le sezioni
+                });
+                document.getElementById(sectionId + '-content').classList.remove('hidden'); // Mostra la sezione desiderata
+            }
+
+            // Aggiungi event listener ai link della sidebar
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Previene il comportamento di default del link
+                    
+                    // Rimuovi la classe 'active' da tutti i link
+                    sidebarLinks.forEach(item => item.classList.remove('active'));
+                    
+                    // Aggiungi la classe 'active' al link cliccato
+                    link.classList.add('active');
+                    
+                    // Mostra la sezione corrispondente
+                    const sectionId = link.dataset.section;
+                    showSection(sectionId);
+                });
+            });
+
+            // Inizialmente mostra la dashboard
+            showSection('dashboard');
         });
     </script>
-
 </body>
 </html>
