@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impacta - Dashboard ESG Innovativa</title>
+    <title>ESGY Compass - Dashboard ESG Innovativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
@@ -78,13 +77,20 @@
             width: 100%;
             margin-top: 1rem;
         }
+        /* Contenitore per grafici di media dimensione */
+        .medium-chart-container {
+            position: relative;
+            height: 250px; /* Altezza fissa per grafici a barre/doughnut */
+            width: 100%;
+            margin-top: 1.5rem;
+        }
     </style>
 </head>
 <body class="flex min-h-screen">
 
     <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col items-start shadow-xl">
         <div class="mb-10 w-full text-center">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTA</h1>
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">ESGY</h1>
             <p class="text-sm text-gray-400 mt-1">Sustainable Compass</p>
         </div>
         <nav class="flex-grow w-full">
@@ -124,7 +130,7 @@
                 <p class="text-gray-600 mt-1">Cliente: BioPack Solutions S.p.A.</p>
             </div>
             <div class="text-right">
-                <p class="text-sm text-gray-500">Ultimo Aggiornamento Dati: <span id="last-update">20 Luglio 2025, 20:34</span></p>
+                <p class="text-sm text-gray-500">Ultimo Aggiornamento Dati: <span id="last-update">20 Luglio 2025, 20:47</span></p>
                 <div class="relative inline-block">
                     <button class="text-orange-500 hover:text-orange-700 text-2xl ml-4 focus:outline-none" id="notification-button">
                         <i class="fas fa-bell"></i>
@@ -229,6 +235,22 @@
                     </div>
                     <div class="flex-grow w-full" style="height: 240px;"> <canvas id="esgScoreChart"></canvas>
                     </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Emissioni CO₂ per Fonte</h3>
+                    <div class="medium-chart-container">
+                        <canvas id="emissioniFontiChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Analisi delle principali fonti di emissione di anidride carbonica all'interno dell'azienda.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Composizione Fonti Energetiche</h3>
+                    <div class="medium-chart-container flex items-center justify-center"> <canvas id="fontiEnergeticheChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Ripartizione percentuale dell'energia consumata in base alla sua origine.</p>
                 </div>
             </section>
 
@@ -482,10 +504,20 @@
                     rinnovabili: [70, 72, 74, 75, 76, 77, 78],
                     rifiuti: [150, 145, 138, 130, 125, 122, 120],
                     gender: [35, 35, 36, 37, 37, 38, 38],
-                    esgScore: [65, 68, 72, 75, 77, 80, 82] // Adjusted for a smoother trend
+                    esgScore: [65, 68, 72, 75, 77, 80, 82], // Adjusted for a smoother trend
+                    emissioniFonti: {
+                        labels: ['Produzione', 'Uffici', 'Logistica', 'Riscaldamento'],
+                        data: [500, 150, 300, 200],
+                        colors: ['#4299E1', '#667EEA', '#81E6D9', '#ECC94B']
+                    },
+                    fontiEnergetiche: {
+                        labels: ['Rinnovabili', 'Fossili', 'Altro'],
+                        data: [78, 20, 2],
+                        colors: ['#38A169', '#F6AD55', '#A0AEC0']
+                    }
                 };
 
-                // Funzione helper per creare un grafico in linea
+                // Funzione helper per creare un grafico in linea (mini-grafici)
                 const createLineChart = (elementId, data, borderColor, label) => {
                     const ctx = document.getElementById(elementId)?.getContext('2d');
                     if (ctx) {
@@ -527,6 +559,7 @@
                     }
                 };
 
+                // Inizializzazione mini-grafici
                 createLineChart('emissioniChart', chartData.emissioni, '#10B981', 'Emissioni');
                 createLineChart('energiaChart', chartData.energia, '#FACC15', 'Energia');
                 createLineChart('rinnovabiliChart', chartData.rinnovabili, '#10B981', 'Rinnovabili');
@@ -581,6 +614,92 @@
                                     }
                                 }
                             }
+                        }
+                    });
+                }
+
+                // Nuovo Grafico a Barre: Emissioni per Fonte
+                const emissioniFontiCtx = document.getElementById('emissioniFontiChart')?.getContext('2d');
+                if (emissioniFontiCtx) {
+                    new Chart(emissioniFontiCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: chartData.emissioniFonti.labels,
+                            datasets: [{
+                                label: 'Emissioni CO₂e (t)',
+                                data: chartData.emissioniFonti.data,
+                                backgroundColor: chartData.emissioniFonti.colors,
+                                borderColor: chartData.emissioniFonti.colors.map(color => Chart.helpers.color(color).darken(0.1).rgbString()), // Rende il bordo leggermente più scuro
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }, // Legenda non necessaria se c'è un solo dataset
+                                tooltip: { mode: 'index', intersect: false }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 12 } }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Tonnellate CO₂e',
+                                        font: { size: 14, weight: 'bold' }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Nuovo Grafico a Ciambella: Composizione Fonti Energetiche
+                const fontiEnergeticheCtx = document.getElementById('fontiEnergeticheChart')?.getContext('2d');
+                if (fontiEnergeticheCtx) {
+                    new Chart(fontiEnergeticheCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: chartData.fontiEnergetiche.labels,
+                            datasets: [{
+                                label: 'Percentuale Fonti Energetiche',
+                                data: chartData.fontiEnergetiche.data,
+                                backgroundColor: chartData.fontiEnergetiche.colors,
+                                hoverOffset: 8, // Sposta leggermente le fette al passaggio del mouse
+                                borderWidth: 2 // Bordo tra le fette
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right', // Legenda a destra per non coprire il centro
+                                    labels: {
+                                        font: { size: 12 },
+                                        boxWidth: 20 // Dimensione del colore nella legenda
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += context.parsed + '%';
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '70%' // Per creare il "buco" del doughnut
                         }
                     });
                 }
