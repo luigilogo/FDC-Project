@@ -78,6 +78,28 @@
             width: 100%;
             margin-top: 1.5rem;
         }
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -470,6 +492,10 @@
 
     </main>
 
+    <button id="back-to-top" class="hidden">
+        <i class="fas fa-arrow-up mr-2"></i>Torna su
+    </button>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -480,6 +506,7 @@
             const notificationButton = document.getElementById('notification-button');
             const notificationDropdown = document.getElementById('notification-dropdown');
             const aiAssistantShortcut = document.getElementById('ai-assistant-shortcut');
+            const backToTopButton = document.getElementById('back-to-top');
 
             function showSection(sectionId) {
                 contentSections.forEach(section => {
@@ -749,6 +776,24 @@
                     notificationDropdown.classList.remove('scale-100', 'opacity-100');
                     notificationDropdown.classList.add('scale-95', 'opacity-0');
                 }
+            });
+
+            // Back to top button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopButton.classList.add('show');
+                    backToTopButton.classList.remove('hidden');
+                } else {
+                    backToTopButton.classList.remove('show');
+                    backToTopButton.classList.add('hidden');
+                }
+            });
+
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             });
 
             showSection('dashboard');
