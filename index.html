@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMPACTA Compass - Dashboard ESG Innovativa</title>
+    <title>IMPACTA - Dashboard ESG Innovativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
@@ -99,6 +99,52 @@
         #back-to-top.show {
             opacity: 1;
             visibility: visible;
+        }
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
         }
     </style>
 </head>
@@ -457,28 +503,28 @@
             <div class="bg-white p-6 rounded-xl shadow-md">
                 <p class="text-gray-700 mb-4">Genera, visualizza e scarica automaticamente i bilanci di sostenibilità conformi ai principali standard (GRI, CSRD) e le relazioni d'impatto. I report si aggiornano dinamicamente con i dati inseriti, anche manualmente.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm report-link" data-report-id="bilancio-sostenibilita-2024">
                         <i class="fas fa-file-pdf text-red-500 text-2xl mr-4"></i>
                         <div>
                             <p class="font-semibold text-gray-800">Bilancio di Sostenibilità GRI 2024</p>
                             <p class="text-sm text-gray-600">Generato il: 01/03/2025</p>
                         </div>
                     </a>
-                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm report-link" data-report-id="relazione-impatto-2024">
                         <i class="fas fa-file-pdf text-red-500 text-2xl mr-4"></i>
                         <div>
                             <p class="font-semibold text-gray-800">Relazione d'Impatto Società Benefit 2024</p>
                             <p class="text-sm text-gray-600">Generata il: 01/03/2025</p>
                         </div>
                     </a>
-                     <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                     <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm report-link" data-report-id="report-energetico">
                         <i class="fas fa-file-alt text-blue-500 text-2xl mr-4"></i>
                         <div>
                             <p class="font-semibold text-gray-800">Report Dettaglio Consumo Energetico</p>
                             <p id="report-energetico-update" class="text-sm text-gray-600">Ultimo aggiornamento: 20 Luglio 2025</p>
                         </div>
                     </a>
-                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+                    <a href="#" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors shadow-sm report-link" data-report-id="esportazione-csrd">
                         <i class="fas fa-file-excel text-green-500 text-2xl mr-4"></i>
                         <div>
                             <p class="font-semibold text-gray-800">Esportazione Dati CSRD (Excel)</p>
@@ -539,6 +585,20 @@
         <i class="fas fa-arrow-up mr-2"></i>Torna su
     </button>
 
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-modal">&times;</button>
+            <h3 id="modal-report-title" class="text-2xl font-bold text-gray-800 mb-4"></h3>
+            <div id="modal-report-content" class="text-gray-700 text-base leading-relaxed">
+                </div>
+            <div class="mt-6 pt-4 border-t border-gray-200 text-right">
+                <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Scarica PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -552,6 +612,11 @@
             const backToTopButton = document.getElementById('back-to-top');
             const manualDataForm = document.getElementById('manual-data-form');
             const reportEnergeticoUpdate = document.getElementById('report-energetico-update');
+            const reportLinks = document.querySelectorAll('.report-link');
+            const reportModal = document.getElementById('report-modal');
+            const closeModalButton = document.getElementById('close-modal');
+            const modalReportTitle = document.getElementById('modal-report-title');
+            const modalReportContent = document.getElementById('modal-report-content');
 
 
             function showSection(sectionId) {
@@ -863,6 +928,115 @@
                      alert(`Dati "${kpiName}: ${kpiValue} ${kpiUnit}" salvati con successo. I report rilevanti verranno aggiornati.`);
                 }
                
+            });
+
+            // Report Modal Logic
+            const reportContents = {
+                'bilancio-sostenibilita-2024': {
+                    title: 'Bilancio di Sostenibilità GRI 2024',
+                    content: `
+                        <p class="mb-3">Questo documento presenta il Bilancio di Sostenibilità di BioPack Solutions S.p.A. per l'anno 2024, redatto in conformità agli standard Global Reporting Initiative (GRI).</p>
+                        <h4 class="font-semibold text-lg mb-2">Sezione Ambientale (E)</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Emissioni CO₂ Scope 1&2: 1.500 tCO₂e (riduzione del 10% rispetto al 2023).</li>
+                            <li>Consumo Energetico: 9.000 MWh, di cui 70% da fonti rinnovabili.</li>
+                            <li>Gestione Rifiuti: 150 tonnellate totali, con un tasso di riciclo del 65%.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Sezione Sociale (S)</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Dipendenti: 250 FTE.</li>
+                            <li>Gender Equality (Posizioni Direttive): 35%.</li>
+                            <li>Ore di formazione erogate: 1.200 ore totali, focus su sicurezza e sostenibilità.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Sezione Governance (G)</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Codice Etico e di Condotta aggiornato e diffuso.</li>
+                            <li>Valutazione dei rischi ESG integrata nel processo decisionale.</li>
+                            <li>Numero di reclami per corruzione: 0.</li>
+                        </ul>
+                        <p class="mt-4 text-sm text-gray-600">Per maggiori dettagli, scarica il PDF completo.</p>
+                    `
+                },
+                'relazione-impatto-2024': {
+                    title: 'Relazione d\'Impatto Società Benefit 2024',
+                    content: `
+                        <p class="mb-3">La presente Relazione illustra il perseguimento delle finalità di beneficio comune da parte di BioPack Solutions S.p.A. nel corso del 2024, in quanto Società Benefit.</p>
+                        <h4 class="font-semibold text-lg mb-2">Obiettivi di Beneficio Comune perseguiti:</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Promozione di pratiche produttive a basso impatto ambientale:
+                                <p class="ml-4">- Lancio della linea di packaging biodegradabile 'EcoPack Pro', con un aumento del 25% nelle vendite rispetto alle stime.</p>
+                                <p class="ml-4">- Riduzione del 10% del consumo di acqua nei processi produttivi grazie a nuovi sistemi di ricircolo.</p>
+                            </li>
+                            <li>Supporto alla comunità locale e al benessere dei dipendenti:
+                                <p class="ml-4">- Donazioni per €15.000 a organizzazioni no-profit locali per progetti educativi ambientali.</p>
+                                <p class="ml-4">- Implementazione di un programma di welfare aziendale con copertura sanitaria estesa per tutti i dipendenti.</p>
+                            </li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Valutazione dell'Impatto (B Impact Assessment):</h4>
+                        <p class="mb-3">Il nostro punteggio nel B Impact Assessment è salito a 95.8, superando l'obiettivo di 90 punti.</p>
+                        <p class="mt-4 text-sm text-gray-600">Per una disamina completa delle metriche di impatto, scarica il PDF dettagliato.</p>
+                    `
+                },
+                'report-energetico': {
+                    title: 'Report Dettaglio Consumo Energetico',
+                    content: `
+                        <p class="mb-3">Questo report analizza in dettaglio il consumo energetico per l'ultimo trimestre.</p>
+                        <h4 class="font-semibold text-lg mb-2">Dati Aggregati:</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Consumo totale: 8.500 MWh.</li>
+                            <li>Provenienza rinnovabile: 78%.</li>
+                            <li>Consumo medio giornaliero: 92.4 MWh.</li>
+                        </ul>
+                        <h4 class="font-semibold text-lg mb-2">Analisi per Reparto:</h4>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Produzione: 65% del consumo totale.</li>
+                            <li>Uffici: 15% del consumo totale.</li>
+                            <li>Magazzino e Logistica: 20% del consumo totale.</li>
+                        </ul>
+                        <p class="mt-4 text-sm text-gray-600">Questi dati sono aggiornati in tempo reale con i dati da sensori IoT e input manuali.</p>
+                    `
+                },
+                'esportazione-csrd': {
+                    title: 'Esportazione Dati CSRD (Excel)',
+                    content: `
+                        <p class="mb-3">Questa funzione ti permette di esportare i dati ESG in formato compatibile con la direttiva CSRD (Corporate Sustainability Reporting Directive) dell'Unione Europea.</p>
+                        <p class="mb-3">L'esportazione include tutte le metriche richieste, organizzate per facilitare la compilazione del report finale.</p>
+                        <p class="mb-3 font-semibold">Dati inclusi:</p>
+                        <ul class="list-disc list-inside ml-4 mb-3">
+                            <li>Indicatori Ambientali (emissioni, consumo acqua/energia, rifiuti)</li>
+                            <li>Indicatori Sociali (diversità, parità di genere, condizioni di lavoro)</li>
+                            <li>Indicatori di Governance (struttura del board, politiche anti-corruzione)</li>
+                        </ul>
+                        <p class="mt-4 text-sm text-gray-600">Clicca sul pulsante "Scarica PDF" per avviare il download del file Excel con i dati strutturati. (Nota: per questa demo, si aprirà un pop-up con dati simulati.)</p>
+                    `
+                }
+            };
+
+            reportLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const reportId = link.dataset.reportId;
+                    const report = reportContents[reportId];
+
+                    if (report) {
+                        modalReportTitle.textContent = report.title;
+                        modalReportContent.innerHTML = report.content;
+                        reportModal.classList.add('show');
+                    } else {
+                        alert('Report non trovato.');
+                    }
+                });
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                reportModal.classList.remove('show');
+            });
+
+            // Close modal when clicking outside of it
+            reportModal.addEventListener('click', (e) => {
+                if (e.target === reportModal) {
+                    reportModal.classList.remove('show');
+                }
             });
 
 
