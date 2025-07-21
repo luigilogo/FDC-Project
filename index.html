@@ -3,64 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMPACTA - Dashboard ESG Innovativa</title>
+    <title>ESGY Compass - Dashboard ESG Innovativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     
     <style>
         body {
-            font-family: 'Inter', sans-serif; /* Un font più moderno */
-            background-color: #f8fafc; /* Light Blue-50 */
-            color: #1f2937; /* Gray-900 */
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
         }
-        /* Stili per i semafori */
         .semaforo {
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
             display: inline-block;
             margin-left: 0.5rem;
-            flex-shrink: 0; /* Impedisce al semaforo di rimpicciolirsi */
+            flex-shrink: 0;
         }
-        .semaforo.verde { background-color: #10B981; } /* Emerald-500 */
-        .semaforo.giallo { background-color: #FACC15; } /* Amber-400 */
-        .semaforo.rosso { background-color: #EF4444; } /* Red-500 */
+        .semaforo.verde { background-color: #10B981; }
+        .semaforo.giallo { background-color: #FACC15; }
+        .semaforo.rosso { background-color: #EF4444; }
 
-        /* Stili per le schede dei KPI */
         .kpi-card {
             background-color: white;
             padding: 1.5rem;
             border-radius: 0.75rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Ombra più morbida */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         .kpi-card:hover {
-            transform: translateY(-8px); /* Effetto hover più pronunciato */
+            transform: translateY(-8px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
-        /* Stili per i link del menu laterale */
         .sidebar-link {
             display: flex;
             align-items: center;
             padding: 0.75rem 1.5rem;
             margin-bottom: 0.5rem;
             border-radius: 0.5rem;
-            color: #cbd5e1; /* Slate-300 */
+            color: #cbd5e1;
             transition: all 0.2s ease-in-out;
         }
         .sidebar-link.active, .sidebar-link:hover {
-            background-color: #3b82f6; /* Blue-600 */
+            background-color: #3b82f6;
             color: white;
         }
         .sidebar-link i {
             margin-right: 0.75rem;
             font-size: 1.25rem;
         }
-        /* Stili per le sezioni di contenuto (per animazioni di ingresso) */
         .content-section {
             opacity: 0;
             transform: translateY(20px);
@@ -70,17 +66,15 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* Contenitore per i grafici piccoli */
         .chart-container {
             position: relative;
-            height: 80px; /* Altezza fissa per i mini-grafici */
+            height: 80px;
             width: 100%;
             margin-top: 1rem;
         }
-        /* Contenitore per grafici di media dimensione */
         .medium-chart-container {
             position: relative;
-            height: 250px; /* Altezza fissa per grafici a barre/doughnut */
+            height: 250px;
             width: 100%;
             margin-top: 1.5rem;
         }
@@ -90,7 +84,7 @@
 
     <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col items-start shadow-xl">
         <div class="mb-10 w-full text-center">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTA</h1>
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">ESGY</h1>
             <p class="text-sm text-gray-400 mt-1">Sustainable Compass</p>
         </div>
         <nav class="flex-grow w-full">
@@ -233,7 +227,8 @@
                         <p class="text-2xl font-semibold text-green-600 mt-2">▲ +5 Punti</p>
                         <p class="text-gray-500 text-base">(Ultimo Trimestre)</p>
                     </div>
-                    <div class="flex-grow w-full" style="height: 240px;"> <canvas id="esgScoreChart"></canvas>
+                    <div class="flex-grow w-full" style="height: 240px;">
+                        <canvas id="esgScoreChart"></canvas>
                     </div>
                 </div>
             </section>
@@ -248,7 +243,8 @@
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">Composizione Fonti Energetiche</h3>
-                    <div class="medium-chart-container flex items-center justify-center"> <canvas id="fontiEnergeticheChart"></canvas>
+                    <div class="medium-chart-container flex items-center justify-center">
+                        <canvas id="fontiEnergeticheChart"></canvas>
                     </div>
                     <p class="text-sm text-gray-600 mt-4">Ripartizione percentuale dell'energia consumata in base alla sua origine.</p>
                 </div>
@@ -481,7 +477,6 @@
             const notificationButton = document.getElementById('notification-button');
             const notificationDropdown = document.getElementById('notification-dropdown');
 
-            // Funzione per mostrare la sezione corretta con animazione
             function showSection(sectionId) {
                 contentSections.forEach(section => {
                     section.classList.remove('active-show');
@@ -489,14 +484,11 @@
                 });
                 const targetSection = document.getElementById(sectionId + '-content');
                 targetSection.classList.remove('hidden');
-                // Forza un reflow per far partire l'animazione
                 void targetSection.offsetWidth; 
                 targetSection.classList.add('active-show');
             }
 
-            // Inizializza i mini-grafici (Chart.js)
             function initCharts() {
-                // Dati simulati per i grafici
                 const chartData = {
                     labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug'],
                     emissioni: [160, 155, 148, 140, 135, 128, 125],
@@ -504,7 +496,7 @@
                     rinnovabili: [70, 72, 74, 75, 76, 77, 78],
                     rifiuti: [150, 145, 138, 130, 125, 122, 120],
                     gender: [35, 35, 36, 37, 37, 38, 38],
-                    esgScore: [65, 68, 72, 75, 77, 80, 82], // Adjusted for a smoother trend
+                    esgScore: [65, 68, 72, 75, 77, 80, 82],
                     emissioniFonti: {
                         labels: ['Produzione', 'Uffici', 'Logistica', 'Riscaldamento'],
                         data: [500, 150, 300, 200],
@@ -517,7 +509,6 @@
                     }
                 };
 
-                // Funzione helper per creare un grafico in linea (mini-grafici)
                 const createLineChart = (elementId, data, borderColor, label) => {
                     const ctx = document.getElementById(elementId)?.getContext('2d');
                     if (ctx) {
@@ -529,10 +520,10 @@
                                     label: label,
                                     data: data,
                                     borderColor: borderColor,
-                                    backgroundColor: 'rgba(0,0,0,0)', // Trasparente
-                                    tension: 0.3, // Curva la linea
-                                    pointRadius: 0, // Nessun punto per i mini-grafici
-                                    borderWidth: 2 // Linea più sottile
+                                    backgroundColor: 'rgba(0,0,0,0)',
+                                    tension: 0.3,
+                                    pointRadius: 0,
+                                    borderWidth: 2
                                 }]
                             },
                             options: {
@@ -540,7 +531,7 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: { display: false },
-                                    tooltip: { enabled: false } // Nasconde i tooltip per i mini-grafici
+                                    tooltip: { enabled: false }
                                 },
                                 scales: {
                                     x: { display: false },
@@ -550,7 +541,7 @@
                                     padding: {
                                         left: 0,
                                         right: 0,
-                                        top: 5, // Piccolo padding per evitare che la linea tocchi il bordo superiore
+                                        top: 5,
                                         bottom: 0
                                     }
                                 }
@@ -559,14 +550,12 @@
                     }
                 };
 
-                // Inizializzazione mini-grafici
                 createLineChart('emissioniChart', chartData.emissioni, '#10B981', 'Emissioni');
                 createLineChart('energiaChart', chartData.energia, '#FACC15', 'Energia');
                 createLineChart('rinnovabiliChart', chartData.rinnovabili, '#10B981', 'Rinnovabili');
                 createLineChart('rifiutiChart', chartData.rifiuti, '#10B981', 'Rifiuti');
                 createLineChart('genderChart', chartData.gender, '#10B981', 'Gender');
                 
-                // Grafico ESG Score più grande
                 const esgCtx = document.getElementById('esgScoreChart')?.getContext('2d');
                 if (esgCtx) {
                     new Chart(esgCtx, {
@@ -577,7 +566,7 @@
                                 label: 'ESG Score',
                                 data: chartData.esgScore,
                                 borderColor: '#3b82f6',
-                                backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blu con trasparenza
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
                                 fill: true,
                                 tension: 0.4,
                                 pointRadius: 5,
@@ -605,8 +594,8 @@
                                     grid: { display: false }
                                 },
                                 y: {
-                                    min: 60, // Impostato un minimo più realistico
-                                    max: 90, // Impostato un massimo più realistico
+                                    min: 60,
+                                    max: 90,
                                     ticks: {
                                         callback: function(value) {
                                             return value + '/100';
@@ -618,7 +607,6 @@
                     });
                 }
 
-                // Nuovo Grafico a Barre: Emissioni per Fonte
                 const emissioniFontiCtx = document.getElementById('emissioniFontiChart')?.getContext('2d');
                 if (emissioniFontiCtx) {
                     new Chart(emissioniFontiCtx, {
@@ -629,7 +617,7 @@
                                 label: 'Emissioni CO₂e (t)',
                                 data: chartData.emissioniFonti.data,
                                 backgroundColor: chartData.emissioniFonti.colors,
-                                borderColor: chartData.emissioniFonti.colors.map(color => Chart.helpers.color(color).darken(0.1).rgbString()), // Rende il bordo leggermente più scuro
+                                borderColor: chartData.emissioniFonti.colors.map(color => Chart.helpers.color(color).darken(0.1).rgbString()),
                                 borderWidth: 1
                             }]
                         },
@@ -637,7 +625,7 @@
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: {
-                                legend: { display: false }, // Legenda non necessaria se c'è un solo dataset
+                                legend: { display: false },
                                 tooltip: { mode: 'index', intersect: false }
                             },
                             scales: {
@@ -658,7 +646,6 @@
                     });
                 }
 
-                // Nuovo Grafico a Ciambella: Composizione Fonti Energetiche
                 const fontiEnergeticheCtx = document.getElementById('fontiEnergeticheChart')?.getContext('2d');
                 if (fontiEnergeticheCtx) {
                     new Chart(fontiEnergeticheCtx, {
@@ -669,8 +656,8 @@
                                 label: 'Percentuale Fonti Energetiche',
                                 data: chartData.fontiEnergetiche.data,
                                 backgroundColor: chartData.fontiEnergetiche.colors,
-                                hoverOffset: 8, // Sposta leggermente le fette al passaggio del mouse
-                                borderWidth: 2 // Bordo tra le fette
+                                hoverOffset: 8,
+                                borderWidth: 2
                             }]
                         },
                         options: {
@@ -678,10 +665,10 @@
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: {
-                                    position: 'right', // Legenda a destra per non coprire il centro
+                                    position: 'right',
                                     labels: {
                                         font: { size: 12 },
-                                        boxWidth: 20 // Dimensione del colore nella legenda
+                                        boxWidth: 20
                                     }
                                 },
                                 tooltip: {
@@ -699,14 +686,12 @@
                                     }
                                 }
                             },
-                            cutout: '70%' // Per creare il "buco" del doughnut
+                            cutout: '70%'
                         }
                     });
                 }
             }
 
-
-            // Aggiungi event listener ai link della sidebar
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -717,7 +702,6 @@
                 });
             });
 
-            // Logica simulata per AI Assistant
             aiSendButton.addEventListener('click', () => {
                 const query = aiInput.value.toLowerCase().trim();
                 let response = "";
@@ -731,10 +715,9 @@
                     response = "Mi dispiaccio, non ho compreso la tua richiesta. Prova a formulare la domanda in modo più specifico o scegli uno dei suggerimenti automatici.";
                 }
                 aiResponseContent.innerHTML = response;
-                aiInput.value = ''; // Pulisce l'input
+                aiInput.value = '';
             });
 
-            // Logica per il dropdown delle notifiche
             notificationButton.addEventListener('click', () => {
                 notificationDropdown.classList.toggle('hidden');
                 notificationDropdown.classList.toggle('scale-95');
@@ -743,7 +726,6 @@
                 notificationDropdown.classList.toggle('opacity-100');
             });
 
-            // Chiudi il dropdown se si clicca fuori
             window.addEventListener('click', (e) => {
                 if (!notificationButton.contains(e.target) && !notificationDropdown.contains(e.target)) {
                     notificationDropdown.classList.add('hidden');
@@ -752,7 +734,6 @@
                 }
             });
 
-            // Inizialmente mostra la dashboard e inizializza i grafici
             showSection('dashboard');
             initCharts();
         });
