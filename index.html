@@ -106,7 +106,7 @@
 
     <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col items-start shadow-xl">
         <div class="mb-10 w-full text-center">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTO</h1>
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTA</h1>
             <p class="text-sm text-gray-400 mt-1">Sustainable Compass</p>
         </div>
         <nav class="flex-grow w-full">
@@ -118,6 +118,9 @@
             </a>
             <a href="#" class="sidebar-link" data-section="progetti-esg">
                 <i class="fas fa-seedling"></i>Progetti ESG
+            </a>
+            <a href="#" class="sidebar-link" data-section="gamification">
+                <i class="fas fa-gamepad"></i>Gamification & Coinvolgimento
             </a>
             <a href="#" class="sidebar-link" data-section="reportistica">
                 <i class="fas fa-file-invoice"></i>Reportistica Automatica
@@ -278,12 +281,12 @@
             <section id="ai-assistant-esg-section" class="bg-white p-6 rounded-xl shadow-md">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">AI Assistant ESG</h3>
                 <div class="flex flex-col space-y-4">
-                    <textarea id="ai-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Chiedi al tuo assistente AI come migliorare la tua sostenibilità..." rows="3"></textarea>
+                    <textarea id="ai-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Chiedi al tuo assistente AI come migliorare la tua sostenibilità... Esempio: 'Simula impatto di -10% consumo acqua'." rows="3"></textarea>
                     <button id="ai-send-button" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors self-end">Chiedi all'AI</button>
                     <div id="ai-response-area" class="bg-gray-50 p-3 rounded-lg border border-gray-200 min-h-[100px] flex flex-col justify-between">
                         <p class="text-gray-700 font-semibold mb-2">Risposta AI:</p>
                         <div id="ai-response-content" class="text-gray-600">
-                            "Sono qui per aiutarti! Prova a chiedere qualcosa come: 'Quali sono le nostre emissioni attuali?' o 'Come possiamo migliorare il nostro punteggio di diversità?'"
+                            "Sono qui per aiutarti! Prova a chiedere qualcosa come: 'Quali sono le nostre emissioni attuali?' o 'Simula l'impatto di un investimento in rinnovabili'."
                         </div>
                         <div class="mt-4 pt-2 border-t border-gray-200">
                             <p class="text-gray-700 font-semibold mb-2">Suggerimenti automatici basati sui dati storici:</p>
@@ -325,6 +328,42 @@
                         </button>
                     </div>
                 </form>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    <i class="fas fa-microchip text-blue-500 mr-3"></i>Stato Sensori & Dati IoT in Tempo Reale
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-bolt text-yellow-500 text-xl mr-3"></i>
+                        <div>
+                            <p class="font-semibold">Consumo Energetico - Macchina A</p>
+                            <p class="text-2xl font-bold text-gray-900">12.5 kW <span class="text-sm font-normal text-gray-500">(Ultimo minuto)</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-tint text-blue-500 text-xl mr-3"></i>
+                        <div>
+                            <p class="font-semibold">Consumo Idrico - Reparto Tintura</p>
+                            <p class="text-2xl font-bold text-gray-900">0.8 m³/h <span class="text-sm font-normal text-gray-500">(Ultimo minuto)</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-temperature-high text-red-500 text-xl mr-3"></i>
+                        <div>
+                            <p class="font-semibold">Temperatura Magazzino</p>
+                            <p class="text-2xl font-bold text-gray-900">22.3 °C <span class="text-sm font-normal text-gray-500">(Ora)</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-smog text-gray-600 text-xl mr-3"></i>
+                        <div>
+                            <p class="font-semibold">Qualità Aria - Zona Produzione</p>
+                            <p class="text-2xl font-bold text-gray-900">Buona <span class="text-sm font-normal text-gray-500">(PM2.5: 15 µg/m³)</span></p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mt-4">Dati automaticamente acquisiti da sensori IoT. Monitoraggio continuo per ottimizzazione in tempo reale.</p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-md">
                 <h4 class="text-xl font-semibold text-gray-700 mb-4">Log Ingestion Dati Automatici</h4>
@@ -413,6 +452,106 @@
                         <i class="fas fa-external-link-alt mr-1"></i>Visualizza Report Intermedio del Programma
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <div id="gamification-content" class="content-section hidden">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Gamification & Coinvolgimento Dipendenti</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    <i class="fas fa-trophy text-yellow-500 mr-3"></i>La Tua Performance ESG
+                </h4>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-5xl font-extrabold text-blue-600">1.250 <span class="text-2xl font-semibold text-gray-500">Punti ESG</span></p>
+                        <p class="text-lg text-gray-600 mt-1">Classifica Aziendale: #5</p>
+                    </div>
+                    <div>
+                        <img src="https://via.placeholder.com/80/D1FAE5/10B981?text=Badge" alt="Badge Eco-Innovatore" class="rounded-full border-4 border-green-400">
+                        <p class="text-center text-sm text-gray-700 mt-1 font-semibold">Eco-Innovatore</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                        <i class="fas fa-list-check text-green-500 mr-3"></i>Sfide Attive
+                    </h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-800">Sfida "Rifiuti Zero Ufficio"</p>
+                                <p class="text-sm text-gray-600">Obiettivo: Ridurre del 15% la carta stampata questo mese.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold">50 Punti</span>
+                                <p class="text-xs text-gray-500 mt-1">Scadenza: 31 Luglio</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-800">Campagna "Trasporto Sostenibile"</p>
+                                <p class="text-sm text-gray-600">Obiettivo: Usare mezzi pubblici/bici per 3 giorni a settimana.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold">80 Punti</span>
+                                <p class="text-xs text-gray-500 mt-1">Scadenza: 15 Agosto</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors w-full">
+                        <i class="fas fa-plus mr-2"></i>Esplora Altre Sfide
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                        <i class="fas fa-award text-teal-500 mr-3"></i>I Tuoi Badge Sostenibilità
+                    </h4>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <img src="https://via.placeholder.com/60/BBF7D0/15803D?text=🌿" alt="Badge Verde" class="rounded-full mx-auto mb-1">
+                            <p class="text-xs font-medium text-gray-700">Riciclatore Pro</p>
+                        </div>
+                        <div>
+                            <img src="https://via.placeholder.com/60/BFDBFE/1D4ED8?text=💡" alt="Badge Verde" class="rounded-full mx-auto mb-1">
+                            <p class="text-xs font-medium text-gray-700">Energia Efficiente</p>
+                        </div>
+                        <div>
+                            <img src="https://via.placeholder.com/60/FEF3C7/B45309?text=🌱" alt="Badge Verde" class="rounded-full mx-auto mb-1">
+                            <p class="text-xs font-medium text-gray-700">Impronta Minima</p>
+                        </div>
+                        <div>
+                            <img src="https://via.placeholder.com/60/FEE2E2/B91C1C?text=💧" alt="Badge Verde" class="rounded-full mx-auto mb-1 opacity-50 grayscale">
+                            <p class="text-xs font-medium text-gray-700">Acqua Saver (coming soon)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-500 mr-3"></i>Classifica Leader Aziendale
+                </h4>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-center justify-between p-2 rounded-lg bg-indigo-50 font-bold">
+                        <span>#1 Maria Rossi (Marketing)</span>
+                        <span>1.800 Punti</span>
+                    </li>
+                    <li class="flex items-center justify-between p-2 rounded-lg">
+                        <span>#2 Giovanni Verdi (Produzione)</span>
+                        <span>1.650 Punti</span>
+                    </li>
+                    <li class="flex items-center justify-between p-2 rounded-lg">
+                        <span>#3 Sofia Neri (HR)</span>
+                        <span>1.420 Punti</span>
+                    </li>
+                    <li class="flex items-center justify-between p-2 rounded-lg bg-blue-50">
+                        <span>#5 Tu</span>
+                        <span>1.250 Punti</span>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -515,8 +654,13 @@
                 });
                 const targetSection = document.getElementById(sectionId + '-content');
                 targetSection.classList.remove('hidden');
+                // Force reflow to ensure animation
                 void targetSection.offsetWidth; 
                 targetSection.classList.add('active-show');
+
+                // Update active sidebar link
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                document.querySelector(`.sidebar-link[data-section="${sectionId}"]`).classList.add('active');
             }
 
             function initCharts() {
@@ -701,19 +845,19 @@
                                         font: { size: 12 },
                                         boxWidth: 20
                                     }
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += context.parsed + '%';
+                                            }
+                                            return label;
                                         }
-                                        if (context.parsed !== null) {
-                                            label += context.parsed + '%';
-                                        }
-                                        return label;
                                     }
                                 }
                             },
@@ -726,11 +870,6 @@
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    sidebarLinks.forEach(item => item.classList.remove('active'));
-                    // Ensure 'dashboard' is always active when its content is shown or if it's the main dashboard link
-                    if (link.dataset.section === 'dashboard') {
-                        link.classList.add('active');
-                    }
                     const sectionId = link.dataset.section;
                     showSection(sectionId);
                 });
@@ -755,7 +894,10 @@
                     response = "Le vostre emissioni attuali di Scope 1 e 2 sono di <b>1.250 tCO₂e</b>. Questo rappresenta una riduzione del 16% rispetto all'anno precedente.";
                 } else if (query.includes("migliorare diversità")) {
                     response = "Per migliorare il vostro punteggio di diversità, si raccomanda di continuare con il 'Women in STEM Mentorship Program' e di esplorare nuove partnership con enti che promuovono l'inclusione. Potremmo anche analizzare i dati dei colloqui per identificare bias impliciti.";
-                } else {
+                } else if (query.includes("simula impatto di -10% consumo acqua")) {
+                    response = "Comprendo! Una riduzione del 10% nel consumo idrico porterebbe i seguenti benefici previsti:<ul class='list-disc list-inside ml-4 mt-1 text-gray-600'><li><b>Risparmio Economico:</b> Stimato in € 7.500 annui sui costi diretti dell'acqua.</li><li><b>Impatto Ambientale:</b> Riduzione di circa 500 m³ di scarichi annui e un miglioramento del 'Water Stewardship Score' di 3 punti.</li><li><b>Reputazione ESG:</b> Potenziale aumento di 1 punto nel vostro ESG Trust Score complessivo.</li></ul>Suggerimento: L'ottimizzazione dei processi di pulizia e l'installazione di sistemi di riciclo dell'acqua nel Reparto Tintura potrebbero aiutarvi a raggiungere questo obiettivo.";
+                }
+                 else {
                     response = "Mi dispiaccio, non ho compreso la tua richiesta. Prova a formulare la domanda in modo più specifico o scegli uno dei suggerimenti automatici.";
                 }
                 aiResponseContent.innerHTML = response;
