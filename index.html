@@ -106,7 +106,7 @@
 
     <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col items-start shadow-xl">
         <div class="mb-10 w-full text-center">
-            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTA</h1>
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mt-2">IMPACTO</h1>
             <p class="text-sm text-gray-400 mt-1">Sustainable Compass</p>
         </div>
         <nav class="flex-grow w-full">
@@ -492,7 +492,7 @@
 
     </main>
 
-    <button id="back-to-top" class="hidden">
+    <button id="back-to-top">
         <i class="fas fa-arrow-up mr-2"></i>Torna su
     </button>
 
@@ -701,19 +701,19 @@
                                         font: { size: 12 },
                                         boxWidth: 20
                                     }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            let label = context.label || '';
-                                            if (label) {
-                                                label += ': ';
-                                            }
-                                            if (context.parsed !== null) {
-                                                label += context.parsed + '%';
-                                            }
-                                            return label;
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
                                         }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
                                     }
                                 }
                             },
@@ -780,12 +780,10 @@
 
             // Back to top button logic
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) { // Show button after scrolling 300px
+                if (window.scrollY > 300) { // Mostra il pulsante dopo aver scrollato 300px
                     backToTopButton.classList.add('show');
-                    backToTopButton.classList.remove('hidden');
                 } else {
                     backToTopButton.classList.remove('show');
-                    backToTopButton.classList.add('hidden');
                 }
             });
 
